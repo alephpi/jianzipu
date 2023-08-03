@@ -1,3 +1,4 @@
+# domain of jianzi
 FINGERS = {
           '散音':0,'大指':1,'食指':1,'中指':1,'名指':1,'跪指':1,
           #,'就',
@@ -21,3 +22,25 @@ MODIFIERS = ['注','绰','吟','猱','上','下','急','缓','紧','慢']
 
 MARKERS = ['泛起','泛止', # 泛音、音符号不单独出现注明，散音视为一种特殊的左手指法（即无指法），省略之
           '少息','大息','入拍','入慢','。','间','再作','从头再作','曲终','操终']
+
+# BN-form see readme.md
+
+## symbol pattern
+# 保证匹配字符长的在前（防止勾剔只匹配了勾）
+LEFT_FINGER = r'(?P<left_finger>散音|大指|食指|中指|名指|跪指)'
+RIGHT_FINGER = r'(?P<right_finger>抹挑|勾剔|擘|托|抹|挑|勾|剔|打|摘|历)'
+BOTH_FINGER = r'(?P<both_finger>掐撮三声|掐撮声|分开|同声|应合|放合)'
+MODIFIER = r'(?P<modifier>注|绰|吟|猱|上|下|急|缓|紧|慢)'
+MARKER = r'(?P<marker>从头再作|泛起|泛止|少息|大息|入拍|入慢|再作|曲终|操终|。|间)'
+XIAN = r'(?P<xian>(一弦|二弦|三弦|四弦|五弦|六弦|七弦)*)'
+HUI = r'(?P<hui>((十一徽|十二徽|十三徽|一徽|二徽|三徽|四徽|五徽|六徽|七徽|八徽|九徽|十徽)(一分|二分|三分|四分|五分|六分|七分|八分|九分|半)?|徽外)*)'
+
+## phrase pattern
+LEFT_FINGER_PHRASE = fr'(?P<left_finger_phrase>{LEFT_FINGER}{HUI})'
+RIGHT_FINGER_PHRASE = fr'(?P<right_finger_phrase>{RIGHT_FINGER}{XIAN})'
+
+## form pattern
+COMMON_FORM = fr'(?P<common_form>{LEFT_FINGER_PHRASE}?{MODIFIER}?{RIGHT_FINGER_PHRASE}?)'
+
+import re
+FINGER_LANG = re.compile(fr'{COMMON_FORM}')
