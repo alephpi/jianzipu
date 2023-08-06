@@ -34,3 +34,30 @@ class D,D' clear;
 1. RIME 减字谱读法输入方案，或者简称为 RIME 减字谱输入方案：这是为了方便快速输入用于解析的减字谱读法。
 2. jianzipu 包：用于解析减字谱读法自然语言串
 3. 减字谱显示方案：待定
+
+# 参考文献
+
+减字编码相关：
+
+1. 《减字谱指法符号简释》 成公亮辑订
+2. 《琴学探微》 龚一
+3. [古琴减字谱百科](http://jianzipu.wikidot.com/)
+4. [存见古琴指法辑录 查阜西](http://www.silkqin.com/11misc/images/zhadocs/zhazhifa.pdf)
+5. http://www.silkqin.com/
+6. http://www.unicode.org/L2/L2019/19107-n5041-jianzi-notation.pdf
+7. https://unicode.org/L2/L2019/19226-n5074-jianzi-cmt.pdf
+8. https://appsrv.cse.cuhk.edu.hk/~irg/irg/irg52/IRGN2372_intro_jianzi.pdf
+9. 《古琴艺术的机器演绎》 周昌乐
+
+字体实现：
+
+1. [KAGE engine](https://github.com/kurgm/kage-engine)
+2. [字统网](https://zi.tools/)
+
+# 致敬
+
+向为古琴数字化工作努力的各位前辈，以及本方案出现前的各类方案致敬。
+
+保留一切权利 润心 2023-至今
+
+All rights reserved alephpi 2023-PRESENT
