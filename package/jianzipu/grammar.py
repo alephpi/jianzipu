@@ -1,11 +1,33 @@
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 import re
 
 from .constant import JIANZI
 
+class Element(ABC):
+    """减字谱语法基本元素抽象类"""
+    
+    @abstractmethod
+    def __str__(self) -> str:
+        """返回对应的读法
+        """
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def ids(self) -> str:
+        """返回对应的表意文字序列
+        """
+        raise NotImplementedError
 
 @dataclass
-class Token:
+class Symbol(Element):
+    """减字符号的类
+
+    Attributes:
+        id (str): 减字符号的名称
+        char (str): 减字符号的字面形式（文字或表意文字序列）
+    """
     id: str = ''
     def __post_init__(self) -> None:
         self.char = JIANZI.get(self.id, '')
@@ -22,20 +44,28 @@ class Token:
         return re.sub(pattern, '', self.char).replace('〇','')
 
 @dataclass
-class Finger(Token):
+class Finger(Symbol):
+    """指字符号的类
+    """
     pass
 @dataclass
-class Number(Token):
+class Number(Symbol):
+    """数字符号的类
+    """
     def __post_init__(self) -> None:
         key = self.id.replace('弦','').replace('徽','').replace('分','')
         self.char = JIANZI[key]
 
 @dataclass
-class Modifier(Token):
+class Modifier(Symbol):
+    """修饰符号的类
+    """
     pass
 
 @dataclass
-class Marker(Token):
+class Marker(Symbol):
+    """标记符号的类
+    """
     pass
 
 # @dataclass
@@ -56,7 +86,14 @@ class Marker(Token):
 #     cls = Modifier
 
 @dataclass
-class FingerPhrase():
+class FingerPhrase(Element):
+    """指法短语的类
+
+    Attributes:
+        finger (Finger): 指法符号
+        number (list[Number]): 数字符号列表
+
+    """
     finger: Finger = None 
     number: list[Number] = field(default_factory=list)
 
@@ -72,14 +109,17 @@ class FingerPhrase():
 
     @property
     def ids(self):
-        if self.number == []:
-            pass
+        if len(self.number) == 0:
+            return self.finger.ids
+            
         return self.finger.char.replace('〇',self.number.char).replace('[','').replace(']','')
 
     def __str__(self) -> str:
         return str(self.finger) + ''.join(str(n) for n in self.number)
 
-class Note:
+class Note(Element):
+    """减字谱字的类
+    """
     def __init__(self) -> None:
         raise NotImplementedError
     def __str__(self) -> str:
@@ -113,6 +153,14 @@ class Note:
         raise NotImplementedError
 @dataclass
 class SimpleForm(Note):
+    """简式谱字的类
+
+    Attributes:
+        hui_finger_phrase (FingerPhrase): 徽位指法短语
+        xian_finger_phrase (FingerPhrase): 弦序指法短语
+        special_finger (Finger): 特殊指法
+
+    """
     hui_finger_phrase: FingerPhrase = None
     xian_finger_phrase: FingerPhrase = None
     special_finger: Finger = None
@@ -129,6 +177,13 @@ class SimpleForm(Note):
 
 @dataclass
 class ComplexForm(Note):
+    """复式谱字的类
+
+    Attributes:
+        complex_finger (Finger): 复式指法
+        left_sub_phrase (SimpleForm): 左侧指法短语
+        right_sub_phrase (SimpleForm): 右侧指法短语
+    """
     complex_finger: Finger = None
     left_sub_phrase: SimpleForm = None
     right_sub_phrase: SimpleForm = None
@@ -145,6 +200,13 @@ class ComplexForm(Note):
 
 @dataclass
 class AsideForm(Note):
+    """旁字的类
+
+    Attributes:
+        modifier (Modifier): 修饰词
+        special_finger (Finger): 特殊指法
+        move_finger_phrase (FingerPhrase): 走位指法短语
+    """
     modifier: Modifier = None
     special_finger: Finger = None
     move_finger_phrase: FingerPhrase = None
