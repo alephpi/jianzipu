@@ -1,26 +1,34 @@
-from copyreg import constructor
-from dataclasses import dataclass
-from typing import Literal
-from .constant import *
+from dataclasses import dataclass, field
+from typing import Any
+from .constant import JIANZI
 
 
 @dataclass
-class Token():
-    name: str
+class Token:
+    id: str = None
+    def __post_init__(self) -> None:
+        if self.id is None:
+            self.char = ''
+        else:
+            self.char = JIANZI[self.id]
+
     def __str__(self) -> str:
-        if not self.name:
+        if self.id is None:
             return ''
-        return self.name
+        return self.id
+
+    @property
+    def ids(self) -> str:
+        return self.char
 
 @dataclass
 class Finger(Token):
     pass
-
 @dataclass
 class Number(Token):
-    NUMBERS = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10,'十一':11,'十二':12,'十三':13,'半':5}
-    pass
-    # type: Literal['弦位','徽位'] 
+    def __post_init__(self) -> None:
+        key = self.id.replace('弦','').replace('徽','').replace('分','')
+        self.char = JIANZI[key]
 
 @dataclass
 class Modifier(Token):
@@ -30,36 +38,112 @@ class Modifier(Token):
 class Marker(Token):
     pass
 
-class Phrase():
-    cls = None
-    def __init__(self, tokens: list[str]) -> None:
-        self.tokens =  None if tokens is None or tokens == [] else list(map(self.cls, tokens))
+# @dataclass
+# class Phrase:
+#     cls = None
+#     def __init__(self, tokens: list[str]) -> None:
+#         self.tokens =  list(map(self.cls, tokens))
+
+#     def __str__(self) -> str:
+#         if not self.tokens:
+#             return ''
+#         return ''.join(str(token) for token in self.tokens)
+
+# class NumberPhrase(Phrase):
+#     cls = Number
+
+# class ModifierPhrase(Phrase):
+#     cls = Modifier
+
+@dataclass
+class FingerPhrase():
+    finger: Finger = None 
+    number: list[Number] = field(default_factory=list)
+
+    @classmethod
+    def from_dict(cls, d) -> None:
+        finger = Finger(d.get('finger'))
+        number = list(map(Number, d.get('number')))
+        return cls(finger=finger, number=number)
 
     def __str__(self) -> str:
-        if not self.tokens:
-            return ''
-        return ''.join(str(token) for token in self.tokens)
+        return str(self.finger) + ''.join(str(n) for n in self.number)
 
-class NumberPhrase(Phrase):
-    cls = Number
+class Note:
+    def __init__(self) -> None:
+        raise NotImplementedError
+    def __str__(self) -> str:
+        raise NotImplementedError
+    @classmethod
+    def from_dict(self, d) -> None:
+        if 'simple_form' in d:
+            return SimpleForm.from_dict(d['simple_form'])
+        elif 'complex_form' in d:
+            return ComplexForm.from_dict(d['complex_form'])
+        elif 'aside_form' in d:
+            return AsideForm.from_dict(d['aside_form'])
+        elif 'marker' in d:
+            return Marker(d['marker'])
+    @property
+    def ids(self, c=None):
+        raise NotImplementedError
+    @property
+    def pitch(self, p=None):
+        if p is None:
+            try:
+                xian = self.rightor.number_phrase.tokens
+            except:
+                xian = None
+            try:
+                hui = self.leftor.number_phrase.tokens
+            except:
+                hui = None
+        # TODO
+        raise NotImplementedError
+@dataclass
+class SimpleForm(Note):
+    hui_finger_phrase: FingerPhrase = None
+    xian_finger_phrase: FingerPhrase = None
+    special_finger: Finger = None
 
-class ModifierPhrase(Phrase):
-    cls = Modifier
+    @classmethod
+    def from_dict(cls, d) -> None:
+        hui_finger_phrase = FingerPhrase.from_dict(d.get('hui_finger_phrase'))
+        xian_finger_phrase = FingerPhrase.from_dict(d.get('xian_finger_phrase'))
+        special_finger = Finger(d.get('special_finger'))
+        return cls(hui_finger_phrase=hui_finger_phrase, xian_finger_phrase=xian_finger_phrase, special_finger=special_finger)
+
+    def __str__(self) -> str:
+        return str(self.hui_finger_phrase)+ str(self.special_finger) + str(self.xian_finger_phrase)
+
+@dataclass
+class ComplexForm(Note):
+    complex_finger: Finger = None
+    left_sub_phrase: SimpleForm = None
+    right_sub_phrase: SimpleForm = None
+
+    @classmethod
+    def from_dict(cls, d) -> None:
+        complex_finger = Finger(d['complex_finger'])
+        left_sub_phrase = SimpleForm.from_dict(d['left_sub_phrase'])
+        right_sub_phrase = SimpleForm.from_dict(d['right_sub_phrase'])
+        return cls(complex_finger=complex_finger, left_sub_phrase=left_sub_phrase, right_sub_phrase=right_sub_phrase)
+
+    def __str__(self) -> str:
+        return str(self.complex_finger) + str(self.left_sub_phrase) + str(self.right_sub_phrase)
+
+@dataclass
+class AsideForm(Note):
+    modifier: Modifier = None
+    special_finger: Finger = None
+    move_finger_phrase: FingerPhrase = None
+
+    @classmethod
+    def from_dict(cls, d) -> None:
+        modifier = Modifier(d.get('modifier'))
+        special_finger = Finger(d.get('special_finger'))
+        move_finger_phrase = FingerPhrase.from_dict(d.get('move_finger_phrase'))
+        return cls(modifier=modifier, special_finger=special_finger, move_finger_phrase=move_finger_phrase)
     
-class FingerPhrase(Phrase):
-    def __init__(self, finger:str, numbers:list[str]) -> None:
-        self.finger = None if finger is None else Finger(finger)
-        self.numbers =  None if numbers is None or numbers == [] else NumberPhrase(numbers)
-
     def __str__(self) -> str:
-        return str(self.finger) + str(self.numbers)
-
-class Note():
-    def __init__(self, rightor:FingerPhrase, leftor:FingerPhrase, modifiers: ModifierPhrase, marker: Marker) -> None:
-        self.rightor = rightor 
-        self.leftor = leftor 
-        self.modifiers = modifiers
-        self.marker = marker
-
-    def __str__(self) -> str:
-        return str(self.leftor)+ str(self.modifiers) + str(self.rightor) + str(self.marker)
+        return str(self.modifier) + str(self.special_finger) + str(self.move_finger_phrase)
