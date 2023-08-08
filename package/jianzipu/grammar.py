@@ -1,16 +1,14 @@
 from dataclasses import dataclass, field
-from typing import Any
+import re
+
 from .constant import JIANZI
 
 
 @dataclass
 class Token:
-    id: str = None
+    id: str = ''
     def __post_init__(self) -> None:
-        if self.id is None:
-            self.char = ''
-        else:
-            self.char = JIANZI[self.id]
+        self.char = JIANZI.get(self.id, '')
 
     def __str__(self) -> str:
         if self.id is None:
@@ -19,7 +17,9 @@ class Token:
 
     @property
     def ids(self) -> str:
-        return self.char
+        # remove format chars in token for single jianzi
+        pattern = r'\[.*?\]'
+        return re.sub(pattern, '', self.char).replace('〇','')
 
 @dataclass
 class Finger(Token):
@@ -62,9 +62,19 @@ class FingerPhrase():
 
     @classmethod
     def from_dict(cls, d) -> None:
-        finger = Finger(d.get('finger'))
-        number = list(map(Number, d.get('number')))
+        if isinstance(d, dict):
+            finger = Finger(d.get('finger',''))
+            number = list(map(Number, d.get('number',[])))
+        else:
+            finger = Finger('')
+            number = list(map(Number, []))
         return cls(finger=finger, number=number)
+
+    @property
+    def ids(self):
+        if self.number == []:
+            pass
+        return self.finger.char.replace('〇',self.number.char).replace('[','').replace(']','')
 
     def __str__(self) -> str:
         return str(self.finger) + ''.join(str(n) for n in self.number)
@@ -76,6 +86,7 @@ class Note:
         raise NotImplementedError
     @classmethod
     def from_dict(self, d) -> None:
+        assert isinstance(d, dict), f'input is not dict but of type {type(d)}'
         if 'simple_form' in d:
             return SimpleForm.from_dict(d['simple_form'])
         elif 'complex_form' in d:

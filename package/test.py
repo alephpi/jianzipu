@@ -9,6 +9,12 @@ def test_simple_form_parse_and_str():
       '中指徽外勾剔七弦',
       '中指徽外历二弦三弦',
       '散音历二弦三弦',
+      '大指七徽六分掩',
+      '名指七徽六分掐起',
+      '打圆',
+      '不动',
+      '推出',
+      '滚拂',
       ]
   for i in l:
     assert str(parse(i)) == i
