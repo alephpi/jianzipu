@@ -6,20 +6,7 @@ import yaml
 with open('./jianzipu/data.yaml', 'r', encoding='utf-8') as f:
   d: Dict[str, Dict[str, str]] = yaml.safe_load(f)
 
-# IDC
-class IDC:
-  left_right='⿰'
-  above_below='⿱'
-  left_middle_right='⿲'
-  above_middle_below='⿳'
-  full_surround='⿴'
-  surround_above='⿵'
-  surround_below='⿶'
-  surround_left='⿷'
-  surround_upper_left='⿸'
-  surround_upper_right='⿹'
-  surround_lower_left='⿺'
-  overlaid='⿻'
+
 
 NUMBER = {
  '一': '一',
@@ -36,7 +23,7 @@ NUMBER = {
  '十二': '⿸十二',
  '十三': '⿸十三',
  '外': '卜',
- '半': '半'
+ '半': '𰀁' #扩G
 }
 
 JIANZI = reduce(operator.ior, [*d.values(), NUMBER], {})

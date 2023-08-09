@@ -1,70 +1,64 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-import re
+from functools import reduce
 
 from .constant import JIANZI
+from .ids import IDS
 
 class Element(ABC):
     """减字谱语法基本元素抽象类"""
-    
+
     @abstractmethod
     def __str__(self) -> str:
         """返回对应的读法
         """
         raise NotImplementedError
-
-    @property
+    
     @abstractmethod
-    def ids(self) -> str:
-        """返回对应的表意文字序列
-        """
+    def draw(self):
         raise NotImplementedError
-
 @dataclass
 class Symbol(Element):
-    """减字符号的类
+    """减字符号
 
     Attributes:
         id (str): 减字符号的名称
-        char (str): 减字符号的字面形式（文字或表意文字序列）
+        char (str): 减字符号的字面形式（文字或表意文字描述序列）
     """
     id: str = ''
     def __post_init__(self) -> None:
-        self.char = JIANZI.get(self.id, '')
+        self.char = IDS(JIANZI.get(self.id, ''))
 
     def __str__(self) -> str:
         if self.id is None:
             return ''
         return self.id
-
-    @property
-    def ids(self) -> str:
-        # remove format chars in token for single jianzi
-        pattern = r'\[.*?\]'
-        return re.sub(pattern, '', self.char).replace('〇','')
+    
+    def draw(self):
+        self.char.draw()
 
 @dataclass
 class Finger(Symbol):
-    """指字符号的类
+    """指法符号
     """
     pass
 @dataclass
 class Number(Symbol):
-    """数字符号的类
+    """数字符号
     """
     def __post_init__(self) -> None:
         key = self.id.replace('弦','').replace('徽','').replace('分','')
-        self.char = JIANZI[key]
+        self.char = IDS(JIANZI[key])
 
 @dataclass
 class Modifier(Symbol):
-    """修饰符号的类
+    """修饰符号
     """
     pass
 
 @dataclass
 class Marker(Symbol):
-    """标记符号的类
+    """标记符号
     """
     pass
 
@@ -87,7 +81,7 @@ class Marker(Symbol):
 
 @dataclass
 class FingerPhrase(Element):
-    """指法短语的类
+    """指法短语
 
     Attributes:
         finger (Finger): 指法符号
@@ -108,17 +102,19 @@ class FingerPhrase(Element):
         return cls(finger=finger, number=number)
 
     @property
-    def ids(self):
+    def char(self):
         if len(self.number) == 0:
-            return self.finger.ids
-            
-        return self.finger.char.replace('〇',self.number.char).replace('[','').replace(']','')
+            return self.finger.char
+        return self.finger.char * reduce(IDS.__add__, (n.char for n in self.number))
+    
+    def draw(self):
+        self.char.draw()
 
     def __str__(self) -> str:
         return str(self.finger) + ''.join(str(n) for n in self.number)
 
 class Note(Element):
-    """减字谱字的类
+    """谱字
     """
     def __init__(self) -> None:
         raise NotImplementedError
@@ -136,24 +132,27 @@ class Note(Element):
         elif 'marker' in d:
             return Marker(d['marker'])
     @property
-    def ids(self, c=None):
+    def char(self):
         raise NotImplementedError
-    @property
-    def pitch(self, p=None):
-        if p is None:
-            try:
-                xian = self.rightor.number_phrase.tokens
-            except:
-                xian = None
-            try:
-                hui = self.leftor.number_phrase.tokens
-            except:
-                hui = None
-        # TODO
-        raise NotImplementedError
+    
+    def draw(self):
+        return self.char.draw()
+    # @property
+    # def pitch(self, p=None):
+    #     if p is None:
+    #         try:
+    #             xian = self.rightor.number_phrase.tokens
+    #         except:
+    #             xian = None
+    #         try:
+    #             hui = self.leftor.number_phrase.tokens
+    #         except:
+    #             hui = None
+    #     # TODO
+    #     raise NotImplementedError
 @dataclass
 class SimpleForm(Note):
-    """简式谱字的类
+    """简式谱字
 
     Attributes:
         hui_finger_phrase (FingerPhrase): 徽位指法短语
@@ -172,12 +171,16 @@ class SimpleForm(Note):
         special_finger = Finger(d.get('special_finger'))
         return cls(hui_finger_phrase=hui_finger_phrase, xian_finger_phrase=xian_finger_phrase, special_finger=special_finger)
 
+    @property
+    def char(self):
+        return self.hui_finger_phrase.char + self.special_finger.char * self.xian_finger_phrase.char
+
     def __str__(self) -> str:
         return str(self.hui_finger_phrase)+ str(self.special_finger) + str(self.xian_finger_phrase)
 
 @dataclass
 class ComplexForm(Note):
-    """复式谱字的类
+    """复式谱字
 
     Attributes:
         complex_finger (Finger): 复式指法
@@ -194,13 +197,21 @@ class ComplexForm(Note):
         left_sub_phrase = SimpleForm.from_dict(d['left_sub_phrase'])
         right_sub_phrase = SimpleForm.from_dict(d['right_sub_phrase'])
         return cls(complex_finger=complex_finger, left_sub_phrase=left_sub_phrase, right_sub_phrase=right_sub_phrase)
+    
+    @property
+    def char(self):
+        # TODO
+        return IDS('⿱⿰正在⿰施工')
+    
+    def draw(self):
+        self.char.draw()
 
     def __str__(self) -> str:
         return str(self.complex_finger) + str(self.left_sub_phrase) + str(self.right_sub_phrase)
 
 @dataclass
 class AsideForm(Note):
-    """旁字的类
+    """旁字
 
     Attributes:
         modifier (Modifier): 修饰词
@@ -218,5 +229,12 @@ class AsideForm(Note):
         move_finger_phrase = FingerPhrase.from_dict(d.get('move_finger_phrase'))
         return cls(modifier=modifier, special_finger=special_finger, move_finger_phrase=move_finger_phrase)
     
+    @property
+    def char(self):
+        return self.modifier.char + self.special_finger.char * self.move_finger_phrase.char
+    
+    def draw(self):
+        self.char.draw()
+
     def __str__(self) -> str:
         return str(self.modifier) + str(self.special_finger) + str(self.move_finger_phrase)
