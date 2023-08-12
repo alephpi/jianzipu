@@ -33,7 +33,21 @@ class D,D' clear;
 
 1. RIME 减字谱读法输入方案，或者简称为 RIME 减字谱输入方案：这是为了方便快速输入用于解析的减字谱读法。
 2. jianzipu 包：用于解析减字谱读法自然语言串
-3. 减字谱显示方案：待定
+3. 减字谱显示方案：待定（暂时使用字统网 api）
+
+# 如何参与开发
+
+## 克隆、安装依赖
+
+```bash
+git clone git@github.com:alephpi/jianzipu.git
+```
+
+使用你偏爱的包管理工具创建虚拟环境，安装 python3.10、pyparsing、notebook、pytest
+进入 `package/jianzipu`文件夹
+
+- `showcase.ipynb` 用于展示 api
+- `pytest test.py`进行单元测试
 
 # 参考文献
 
