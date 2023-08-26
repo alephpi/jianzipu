@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "jianzipu"
+version = "0.4.1"
+description = "根据古琴减字谱读法渲染减字图像"
+authors = ["alephpi <maosicheng98@gmail.com>"]
+readme = "README.md"
+classifiers = [
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Natural Language :: Chinese (Simplified)",
+    "Natural Language :: Chinese (Traditional)",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Text Processing :: Fonts"
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyparsing = "^3.1.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
