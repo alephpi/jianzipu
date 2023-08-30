@@ -35,7 +35,13 @@ class D,D' clear;
 2. jianzipu 包：用于解析减字谱读法自然语言串
 3. 减字谱显示方案：待定（暂时使用字统网 api）
 
-# 如何参与开发
+# 使用
+
+```
+pip install jianzipu
+```
+
+# 开发
 
 ## 克隆、安装依赖
 
@@ -43,8 +49,7 @@ class D,D' clear;
 git clone git@github.com:alephpi/jianzipu.git
 ```
 
-使用你偏爱的包管理工具创建虚拟环境，安装 python3.10、pyparsing、notebook、pytest
-进入 `package/jianzipu`文件夹
+使用你偏爱的包管理工具创建虚拟环境，进入 `package/jianzipu`文件夹，执行`poetry install`
 
 - `showcase.ipynb` 用于展示 api
 - `pytest test.py`进行单元测试
