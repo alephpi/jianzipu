@@ -4,6 +4,7 @@ from functools import reduce
 
 from .constant import JIANZI
 from .ids import IDS
+from .kage import Kage
 
 class Element(ABC):
     """减字谱语法基本元素抽象类"""
@@ -28,6 +29,7 @@ class Symbol(Element):
     id: str = ''
     def __post_init__(self) -> None:
         self.char = IDS(JIANZI.get(self.id, ''))
+        self.kage = Kage.primitive(self.id)
 
     def __str__(self) -> str:
         if self.id is None:
@@ -49,6 +51,7 @@ class Number(Symbol):
     def __post_init__(self) -> None:
         key = self.id.replace('弦','').replace('徽','').replace('分','')
         self.char = IDS(JIANZI[key])
+        self.kage = Kage.primitive(key)
 
 @dataclass
 class Modifier(Symbol):
@@ -107,6 +110,10 @@ class FingerPhrase(Element):
             return self.finger.char
         return self.finger.char * reduce(IDS.__add__, (n.char for n in self.number))
     
+    @property
+    def kage(self):
+        raise NotImplementedError
+
     def draw(self):
         self.char.draw()
 
@@ -135,6 +142,10 @@ class Note(Element):
     def char(self):
         raise NotImplementedError
     
+    @property
+    def kage(self):
+        raise NotImplementedError
+
     def draw(self):
         return self.char.draw()
     # @property
@@ -175,8 +186,22 @@ class SimpleForm(Note):
     def char(self):
         return self.hui_finger_phrase.char + self.special_finger.char * self.xian_finger_phrase.char
 
+    @property
+    def kage(self):
+        a = self.hui_finger_phrase is not None
+        b = self.xian_finger_phrase is not None
+        c = self.special_finger is not None
+        match a,b,c:
+            case True, True, True:
+                return Kage.top_bottom(self.hui_finger_phrase.kage, Kage.left_right(self.special_finger.kage, self.xian_finger_phrase.kage))
+            case True, True, False:
+                return Kage.top_bottom(self.hui_finger_phrase.kage, self.xian_finger_phrase.kage)
+            case False, True, True:
+                return Kage.left_right(self.special_finger.kage, self.xian_finger_phrase.kage)
+            case False, True, False:
+                return self.xian_finger_phrase.kage
     def __str__(self) -> str:
-        return str(self.hui_finger_phrase)+ str(self.special_finger) + str(self.xian_finger_phrase)
+        return str(self.hui_finger_phrase) + str(self.special_finger) + str(self.xian_finger_phrase)
 
 @dataclass
 class ComplexForm(Note):

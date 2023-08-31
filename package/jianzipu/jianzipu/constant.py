@@ -1,12 +1,18 @@
 from functools import reduce
 import operator
+import os
 from typing import Dict
 import yaml
 
-with open('./jianzipu/ids.yaml', 'r', encoding='utf-8') as f:
+# Get the current directory of the script
+current_directory = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the full path to the file
+relative_file_path = "ids.yaml"
+full_path = os.path.join(current_directory, relative_file_path)
+
+with open(full_path, 'r', encoding='utf-8') as f:
   d: Dict[str, Dict[str, str]] = yaml.safe_load(f)
-
-
 
 NUMBER = {
  '一': '一',
