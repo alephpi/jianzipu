@@ -3,7 +3,7 @@ import operator
 from typing import Dict
 import yaml
 
-with open('./jianzipu/data.yaml', 'r', encoding='utf-8') as f:
+with open('./jianzipu/ids.yaml', 'r', encoding='utf-8') as f:
   d: Dict[str, Dict[str, str]] = yaml.safe_load(f)
 
 
