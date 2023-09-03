@@ -57,7 +57,7 @@ complex_form = Group(complex_finger + left_sub_phrase + right_sub_phrase).set_re
 aside_form = Group(Opt(modifier) + Opt(special_finger) + move_finger_phrase).set_results_name('aside_form')
 
 # 谱字, lazy matching, order is important
-PUZI = complex_form | marker | both_finger | aside_form |  simple_form  
+PUZI = complex_form | marker | both_finger | aside_form | simple_form
 
 def parse(s: str) -> Note:
   d = PUZI.parse_string(s).as_dict()

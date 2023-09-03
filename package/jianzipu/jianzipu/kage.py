@@ -34,6 +34,8 @@ class Kage:
 
     @classmethod
     def primitive(cls, name):
+        if name is None:
+            return cls('', '')
         if name in KAGE:
             return cls(KAGE[name], CLOSURE[KAGE[name]])
         else:
@@ -67,4 +69,10 @@ class Kage:
         left_box = f'99:0:0:0:0:{DPI*ratio1}:{DPI}:{left.key}:0:0:0'
         right_box = f'99:0:0:{DPI*ratio2}:0:{DPI}:{DPI}:{right.key}:0:0:0'
         data = f'{left_box}${right_box}'
+        return cls(key, data)
+    
+    @classmethod
+    def finger_phrase(cls, finger: Self, *number: Self):
+        key = '(' + finger.key +'_'+ {'_'.join(n.key for n in number)} + ')'
+        data = f'99:0:0:0:0:0:0:{DPI}:{finger.key}:0:0:0$99:0:0:0:0:0:{DPI}:{phrase.key}:0:0:0'
         return cls(key, data)

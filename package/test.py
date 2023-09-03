@@ -1,4 +1,4 @@
-from jianzipu.parser import parse
+from jianzipu.jianzipu.parser import parse
 
 def test_simple_form_parse_and_str():
   l = [

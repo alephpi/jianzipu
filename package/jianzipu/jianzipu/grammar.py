@@ -29,7 +29,7 @@ class Symbol(Element):
     id: str = ''
     def __post_init__(self) -> None:
         self.char = IDS(JIANZI.get(self.id, ''))
-        self.kage = Kage.primitive(self.id)
+        # self.kage = Kage.primitive(self.id)
 
     def __str__(self) -> str:
         if self.id is None:
@@ -51,7 +51,7 @@ class Number(Symbol):
     def __post_init__(self) -> None:
         key = self.id.replace('弦','').replace('徽','').replace('分','')
         self.char = IDS(JIANZI[key])
-        self.kage = Kage.primitive(key)
+        # self.kage = Kage.primitive(key)
 
 @dataclass
 class Modifier(Symbol):
@@ -76,8 +76,31 @@ class Marker(Symbol):
 #             return ''
 #         return ''.join(str(token) for token in self.tokens)
 
-# class NumberPhrase(Phrase):
-#     cls = Number
+class NumberPhrase(list):
+    def __init__(self, args: list[Number]):
+        if isinstance(args, list) & all(isinstance(arg, Number) for arg in args):
+            super().__init__(args)
+        else:
+            raise TypeError("Number phrase should be a list of Number")
+
+
+    def __str__(self) -> str:
+        return ''.join(str(n) for n in self)
+
+    def __repr__(self) -> str:
+        return f"[{','.join(repr(n) for n in self)}]"
+
+    @property
+    def char(self) -> IDS:
+        return reduce(IDS.__add__, (n.char for n in self))
+    
+    @property
+    def kage(self) -> IDS:
+        return NotImplementedError
+
+    def draw(self):
+        return self.char.draw()
+    
 
 # class ModifierPhrase(Phrase):
 #     cls = Modifier
@@ -92,27 +115,33 @@ class FingerPhrase(Element):
 
     """
     finger: Finger = None 
-    number: list[Number] = field(default_factory=list)
+    number: NumberPhrase = None
 
     @classmethod
     def from_dict(cls, d) -> None:
         if isinstance(d, dict):
             finger = Finger(d.get('finger',''))
-            number = list(map(Number, d.get('number',[])))
+            number = NumberPhrase(list(map(Number, d.get('number',[]))))
         else:
             finger = Finger('')
-            number = list(map(Number, []))
+            number = NumberPhrase(list(map(Number, [])))
         return cls(finger=finger, number=number)
 
     @property
     def char(self):
         if len(self.number) == 0:
             return self.finger.char
-        return self.finger.char * reduce(IDS.__add__, (n.char for n in self.number))
+        return self.finger.char * self.number.char
     
     @property
     def kage(self):
-        raise NotImplementedError
+        a = self.finger is not None
+        b = self.number != []
+        match a,b:
+            case True, False:
+                return self.finger.kage
+            case True, True:
+                return Kage.finger_phrase(self.finger.kage, self.number.kage)
 
     def draw(self):
         self.char.draw()
