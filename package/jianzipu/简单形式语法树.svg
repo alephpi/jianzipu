@@ -1,0 +1,153 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1212.3999999999996" height="613.25" viewBox="-16.8, 0, 1229.1999999999996, 624.5"
+  version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerUnits="userSpaceOnUse" viewBox="0 0 10 10" refX="10" refY="5"
+      markerWidth="16.8" markerHeight="16.8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10" fill="#CC79A7" />
+    </marker>
+    <marker id="arrowBackward" markerUnits="userSpaceOnUse" viewBox="0 0 10 10" refX="5" refY="5"
+      markerWidth="16.8" markerHeight="16.8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#CC79A7" />
+    </marker>
+    <marker id="arrowForward" markerUnits="userSpaceOnUse" viewBox="0 0 10 10" refX="5" refY="5"
+      markerWidth="16.8" markerHeight="16.8" orient="auto">
+      <path d="M 10 0 L 0 5 L 10 10 z" fill="#CC79A7" />
+    </marker>
+    <marker id="arrowBothways" markerUnits="userSpaceOnUse" viewBox="0 0 30 10" refX="15" refY="5"
+      markerWidth="50.400000000000006" markerHeight="16.8" orient="auto">
+      <path d="M 0 5 L 10 0 L 10 5 L 20 5 L 20 0 L 30 5 L 20 10 L 20 5 L 10 5 L 10 10 z"
+        fill="#CC79A7" />
+    </marker>
+    <pattern id="hatchBlack" x="10" y="10" width="10" height="10" patternUnits="userSpaceOnUse"
+      patternTransform="rotate(45)">
+      <line x1="0" y="0" x2="0" y2="10" stroke="black" stroke-width="4"></line>
+    </pattern>
+    <pattern id="hatchForNode" x="10" y="10" width="10" height="10" patternUnits="userSpaceOnUse"
+      patternTransform="rotate(45)">
+      <line x1="0" y="0" x2="0" y2="10" stroke="#0072B2" stroke-width="4"></line>
+    </pattern>
+    <pattern id="hatchForLeaf" x="10" y="10" width="10" height="10" patternUnits="userSpaceOnUse"
+      patternTransform="rotate(45)">
+      <line x1="0" y="0" x2="0" y2="10" stroke="#009E73" stroke-width="4"></line>
+    </pattern>
+  </defs>
+<rect
+    x="-16.8" y="0" width="1229.1999999999996" height="624.5" stroke="none" fill="white" />" <text
+    white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='517.7999999999998' y='67.5'>
+    <tspan x='517.7999999999998' y='67.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  简单形式</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='59.39999999999998' y='240.5'>
+    <tspan x='59.39999999999998' y='240.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  徽位指法短语</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='16.80000000000001' y='413.5'>
+    <tspan x='16.80000000000001' y='413.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  指法</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #009E73; storoke-width: 0; font-size: 32px;' x='16.80000000000001' y='586.5'>
+    <tspan x='16.80000000000001' y='586.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  大指</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='197.99999999999994' y='413.5'>
+    <tspan x='197.99999999999994' y='413.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  数字短语</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #009E73; storoke-width: 0; font-size: 32px;' x='188.99999999999994' y='586.5'>
+    <tspan x='188.99999999999994' y='586.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  七徽<tspan style='fill:none;'>￭</tspan>六分</tspan>
+  </text>
+<text white-space='pre'
+    alignment-baseline='text-top' style='fill: #0072B2; storoke-width: 0; font-size: 32px;'
+    x='517.7999999999998' y='240.5'>
+    <tspan x='517.7999999999998' y='240.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  特殊指法</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #009E73; storoke-width: 0; font-size: 32px;' x='565.7999999999998' y='413.5'>
+    <tspan x='565.7999999999998' y='413.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  注</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='912.1999999999998' y='240.5'>
+    <tspan x='912.1999999999998' y='240.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  弦位指法短语</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='869.5999999999997' y='413.5'>
+    <tspan x='869.5999999999997' y='413.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  指法</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #009E73; storoke-width: 0; font-size: 32px;' x='885.5999999999997' y='586.5'>
+    <tspan x='885.5999999999997' y='586.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  勾</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #0072B2; storoke-width: 0; font-size: 32px;' x='1050.7999999999997' y='413.5'>
+    <tspan x='1050.7999999999997' y='413.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  数字短语</tspan>
+  </text>
+<text white-space='pre' alignment-baseline='text-top'
+    style='fill: #009E73; storoke-width: 0; font-size: 32px;' x='1082.7999999999997' y='586.5'>
+    <tspan x='1082.7999999999997' y='586.5' style="" text-decoration=""
+      font-family="'Noto Serif', 'Noto Serif JP', OpenMoji, 'OpenMoji Color', 'OpenMoji Black', serif">
+  三弦</tspan>
+  </text>
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='155.39999999999998' y1='184.25' x2='581.7999999999998' y2='95.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='581.7999999999998' y1='184.25' x2='581.7999999999998' y2='95.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='1008.1999999999998' y1='184.25' x2='581.7999999999998' y2='95.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='48.80000000000001' y1='357.25' x2='155.39999999999998' y2='268.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='261.99999999999994' y1='357.25' x2='155.39999999999998' y2='268.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='48.80000000000001' y1='530.25' x2='48.80000000000001' y2='441.625' />
+<polygon
+    style='fill: none; stroke: black; stroke-width:2; stroke-linejoin:round;stroke-linecap:round;'
+    points='188.99999999999994 530.25 334.99999999999994 530.25 261.99999999999994 441.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='581.7999999999998' y1='357.25' x2='581.7999999999998' y2='268.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='901.5999999999997' y1='357.25' x2='1008.1999999999998' y2='268.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='1114.7999999999997' y1='357.25' x2='1008.1999999999998' y2='268.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='901.5999999999997' y1='530.25' x2='901.5999999999997' y2='441.625' />
+<line
+    style='fill: none; stroke:black; stroke-width:2; stroke-linejoin:round; stroke-linecap:round;'
+    x1='1114.7999999999997' y1='530.25' x2='1114.7999999999997' y2='441.625' />
+</svg>
