@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from functools import reduce
 
 from .constant import JIANZI
@@ -29,7 +29,7 @@ class Symbol(Element):
     id: str = ''
     def __post_init__(self) -> None:
         self.char = IDS(JIANZI.get(self.id, ''))
-        # self.kage = Kage.primitive(self.id)
+        self.kage = Kage.primitive(self.id)
 
     def __str__(self) -> str:
         if self.id is None:
@@ -37,7 +37,8 @@ class Symbol(Element):
         return self.id
     
     def draw(self):
-        self.char.draw()
+        # self.char.draw()
+        return self.kage.draw()
 
 @dataclass
 class Finger(Symbol):
@@ -51,7 +52,7 @@ class Number(Symbol):
     def __post_init__(self) -> None:
         key = self.id.replace('弦','').replace('徽','').replace('分','')
         self.char = IDS(JIANZI[key])
-        # self.kage = Kage.primitive(key)
+        self.kage = Kage.primitive(key)
 
 @dataclass
 class Modifier(Symbol):
@@ -76,13 +77,12 @@ class Marker(Symbol):
 #             return ''
 #         return ''.join(str(token) for token in self.tokens)
 
-class NumberPhrase(list):
+class NumberPhrase(list[Number]):
     def __init__(self, args: list[Number]):
         if isinstance(args, list) & all(isinstance(arg, Number) for arg in args):
             super().__init__(args)
         else:
             raise TypeError("Number phrase should be a list of Number")
-
 
     def __str__(self) -> str:
         return ''.join(str(n) for n in self)
@@ -96,10 +96,18 @@ class NumberPhrase(list):
     
     @property
     def kage(self) -> IDS:
-        return NotImplementedError
+        if len(self) == 0:
+            return Kage()
+        elif len(self) == 1:
+            return self[0].kage
+        elif len(self) == 2:
+            return Kage.top_bottom(top=self[0].kage, bottom=self[1].kage, kind='number')
+        else:
+            raise Exception(f"Number phrase should have at most 2 elements, got {len(self)}")
 
     def draw(self):
-        return self.char.draw()
+        # return self.char.draw()
+        return self.kage.draw()
     
 
 # class ModifierPhrase(Phrase):
@@ -144,7 +152,8 @@ class FingerPhrase(Element):
                 return Kage.finger_phrase(self.finger.kage, self.number.kage)
 
     def draw(self):
-        self.char.draw()
+        # self.char.draw()
+        return self.kage.draw()
 
     def __str__(self) -> str:
         return str(self.finger) + ''.join(str(n) for n in self.number)
@@ -176,7 +185,8 @@ class Note(Element):
         raise NotImplementedError
 
     def draw(self):
-        return self.char.draw()
+        # return self.char.draw()
+        return self.kage.draw()
     # @property
     # def pitch(self, p=None):
     #     if p is None:
@@ -217,18 +227,8 @@ class SimpleForm(Note):
 
     @property
     def kage(self):
-        a = self.hui_finger_phrase is not None
-        b = self.xian_finger_phrase is not None
-        c = self.special_finger is not None
-        match a,b,c:
-            case True, True, True:
-                return Kage.top_bottom(self.hui_finger_phrase.kage, Kage.left_right(self.special_finger.kage, self.xian_finger_phrase.kage))
-            case True, True, False:
-                return Kage.top_bottom(self.hui_finger_phrase.kage, self.xian_finger_phrase.kage)
-            case False, True, True:
-                return Kage.left_right(self.special_finger.kage, self.xian_finger_phrase.kage)
-            case False, True, False:
-                return self.xian_finger_phrase.kage
+        return Kage.simple_form(self.hui_finger_phrase.kage, self.xian_finger_phrase.kage, self.special_finger.kage)
+
     def __str__(self) -> str:
         return str(self.hui_finger_phrase) + str(self.special_finger) + str(self.xian_finger_phrase)
 

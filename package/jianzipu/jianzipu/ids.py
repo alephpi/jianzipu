@@ -60,7 +60,7 @@ class IDS(str):
           case _:
               raise ValueError(f'Unsupported by={by}')
 
-    def _draw_by_zitool(self, api=''):
+    def _draw_by_zitool(self):
         import requests
         from IPython import get_ipython
         from IPython.display import SVG, display
