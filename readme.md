@@ -62,6 +62,13 @@ git clone git@github.com:alephpi/jianzipu.git
 - `showcase.ipynb` 用于展示 api
 - `pytest test.py`进行单元测试
 
+# TODO
+
+- [ ] 网页应用
+- [ ] 古书印刷
+- [ ] RIME 输入法
+- [ ] 繁体支持
+
 # 参考文献
 
 减字编码相关：
