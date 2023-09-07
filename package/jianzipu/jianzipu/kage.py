@@ -84,7 +84,7 @@ class Kage:
             case '剔':
                 data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:36:88:162:176:{number.key}:0:0:0'
             case '抹':
-                data = f'99:0:0:0:0:200:248:{finger.key}:0:0:0$99:0:0:0:105:200:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:248:{finger.key}:0:0:0$99:0:0:0:105:200:200:{number.key}:0:0:0'
             case '挑':
                 data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:37:21:181:172:{number.key}:0:0:0'
             case '托':
@@ -135,25 +135,12 @@ class Kage:
             canvas = kage_engine.make_glyph(self.key)
             return canvas
         elif font == 'serif':
-            import requests
-            from IPython import get_ipython
-            from IPython.display import SVG, display
-            url = "http://127.0.0.1:5501/package/jianzipu/test.html?kage={}"
+        # only for test purpose
+            import webbrowser
+            url = "http://localhost:5501/package/jianzipu/test.html?kage={}"
             for k, v in self.CACHE.items():
                 kage_engine.components.push(k, v)
             data = kage_engine.components.search(self.key)
             stroke_list = kage_engine.get_each_strokes(data)
             query_kage = '$'.join(str(stroke) for stroke in stroke_list)
-            print(query_kage)
-            response_svg = requests(url.format(query_kage))
-            if response_svg.status_code == 200:
-                svg = response_svg.content
-                print(svg)
-                if get_ipython():
-                    display(SVG(svg))
-                else:
-                    with open('./zi.svg', 'w') as f:
-                        f.write(svg)
-                    print('rendered svg saved to zi.svg')
-            else:
-                print('native server error')
+            webbrowser.open(url.format(query_kage))

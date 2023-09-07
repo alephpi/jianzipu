@@ -16,7 +16,7 @@ class Element(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def draw(self):
+    def draw(self, font='serif'):
         raise NotImplementedError
 @dataclass
 class Symbol(Element):
@@ -29,16 +29,19 @@ class Symbol(Element):
     id: str = ''
     def __post_init__(self) -> None:
         self.char = IDS(JIANZI.get(self.id, ''))
-        self.kage = Kage.primitive(self.id)
 
     def __str__(self) -> str:
         if self.id is None:
             return ''
         return self.id
     
-    def draw(self):
+    @property
+    def kage(self) -> Kage:
+        return Kage.primitive(self.id)
+    
+    def draw(self, font='serif'):
         # self.char.draw()
-        return self.kage.draw()
+        return self.kage.draw(font=font)
 
 @dataclass
 class Finger(Symbol):
@@ -50,10 +53,12 @@ class Number(Symbol):
     """数字符号
     """
     def __post_init__(self) -> None:
-        key = self.id.replace('弦','').replace('徽','').replace('分','')
-        self.char = IDS(JIANZI[key])
-        self.kage = Kage.primitive(key)
+        self._key = self.id.replace('弦','').replace('徽','').replace('分','')
+        self.char = IDS(JIANZI[self._key])
 
+    @property
+    def kage(self):
+        return Kage.primitive(self._key)
 @dataclass
 class Modifier(Symbol):
     """修饰符号
@@ -95,7 +100,7 @@ class NumberPhrase(list[Number]):
         return reduce(IDS.__add__, (n.char for n in self))
     
     @property
-    def kage(self) -> IDS:
+    def kage(self) -> Kage:
         if len(self) == 0:
             return Kage()
         elif len(self) == 1:
@@ -105,9 +110,9 @@ class NumberPhrase(list[Number]):
         else:
             raise Exception(f"Number phrase should have at most 2 elements, got {len(self)}")
 
-    def draw(self):
+    def draw(self, font='serif'):
         # return self.char.draw()
-        return self.kage.draw()
+        return self.kage.draw(font=font)
     
 
 # class ModifierPhrase(Phrase):
@@ -151,9 +156,9 @@ class FingerPhrase(Element):
             case True, True:
                 return Kage.finger_phrase(self.finger.kage, self.number.kage)
 
-    def draw(self):
+    def draw(self, font='serif'):
         # self.char.draw()
-        return self.kage.draw()
+        return self.kage.draw(font=font)
 
     def __str__(self) -> str:
         return str(self.finger) + ''.join(str(n) for n in self.number)
@@ -184,9 +189,9 @@ class Note(Element):
     def kage(self):
         raise NotImplementedError
 
-    def draw(self):
+    def draw(self, font='serif'):
         # return self.char.draw()
-        return self.kage.draw()
+        return self.kage.draw(font=font)
     # @property
     # def pitch(self, p=None):
     #     if p is None:
@@ -257,8 +262,8 @@ class ComplexForm(Note):
         # TODO
         return IDS('⿱⿰正在⿰施工')
     
-    def draw(self):
-        self.char.draw()
+    def draw(self, font='serif'):
+        self.char.draw(font=font)
 
     def __str__(self) -> str:
         return str(self.complex_finger) + str(self.left_sub_phrase) + str(self.right_sub_phrase)
@@ -287,8 +292,8 @@ class AsideForm(Note):
     def char(self):
         return self.modifier.char + self.special_finger.char * self.move_finger_phrase.char
     
-    def draw(self):
-        self.char.draw()
+    def draw(self, font='serif'):
+        self.char.draw(font=font)
 
     def __str__(self) -> str:
         return str(self.modifier) + str(self.special_finger) + str(self.move_finger_phrase)
