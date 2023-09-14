@@ -99,9 +99,22 @@ class Kage:
                 data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:35:108:162:176:{number.key}:0:0:0'
             case '抹挑':
                 data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:45:100:174:168:{number.key}:0:0:0'
-            case _:
-                # raise NotImplementedError
+            case '历':
+                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:40:30:188:187:{number.key}:0:0:0'
+            case '蠲':
+                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:45:100:174:168:{number.key}:0:0:0'
+            case '轮':
+                pass
+            case '半轮':
+                pass
+            case '琐':
+                pass
+            case '长琐':
+                pass
+            case '大指' | '食指' | '中指' | '名指' | '跪指' :
                 return Kage.left_right(finger, number, kind='hui')
+            case '散音':
+                return Kage.top_bottom(finger, number, kind='finger')
         return cls(key, data)
 
     @classmethod
