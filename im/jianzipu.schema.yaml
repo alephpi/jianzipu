@@ -36,9 +36,10 @@ engine:
 speller:
   alphabet: zyxwvutsrqponmlkjihgfedcba
   delimiter: " '"
+  auto_select: true
 
 punctuator:
-  full_shape:
+  full_shape: &symtable
     ',' : { commit: ， }
     '.' : { commit: 。 }
     # '<' : [ 《, 〈, «, ‹ ]
@@ -79,48 +80,7 @@ punctuator:
     '{' : 『
     # '}' : [ 』, 〗, ｝ ]
     '}' :  』
-
-  half_shape:
-    ',' : { commit: ， }
-    '.' : { commit: 。 }
-    # '<' : [ 《, 〈, «, ‹ ]
-    # '>' : [ 》, 〉, », › ]
-    '<' : { commit: 《 }
-    '>' : { commit: 》 }
-    # '/' : [ ／, ÷ ]
-    # '?' : { commit: ？ }
-    ';' : { commit: ； }
-    ':' : { commit: ： }
-    '''' : { pair: [ '‘', '’' ] }
-    '"' : { pair: [ '“', '”' ] }
-    # '\' : [ 、, ＼ ]
-    '\' : { commit: 、}
-    # '|' : [ ·, ｜, '§', '¦' ]
-    '|' : { commit: · }
-    '`' : { commit: '`' }
-    '~' : ～
-    '!' : { commit: ！ }
-    # '@' : [ ＠, ☯ ]
-    # '#' : [ ＃, ⌘ ]
-    # '%' : [ ％, '°', '℃' ]
-    # '$' : [ ￥, '$', '€', '£', '¥', '¢', '¤' ]
-    # '^' : { commit: …… }
-    # '&' : ＆
-    # '*' : [ ＊, ·, ・, ×, ※, ❂ ]
-    '(' : （
-    ')' : ）
-    '-' : －
-    '_' : ——
-    '+' : ＋
-    '=' : ＝
-    # '[' : [ 「, 【, 〔, ［ ]
-    '[' : 「
-    # ']' : [ 」, 】, 〕, ］ ]
-    ']' : 」
-    # '{' : [ 『, 〖, ｛ ]
-    '{' : 『
-    # '}' : [ 』, 〗, ｝ ]
-    '}' :  』
+  half_shape: *symtable
 
 translator:
   dictionary: jianzipu
