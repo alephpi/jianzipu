@@ -43,6 +43,10 @@ class A,A',A'',D,D',D'' clear;
 2. jianzipu 包：用于解析减字谱读法自然语言串
 3. 减字谱显示方案：[KAGE engine](https://github.com/kurgm/kage-engine)
 
+## RIME 减字谱输入方案：
+
+![](https://raw.githubusercontent.com/alephpi/jianzipu/e3908a6e23e577ad9f8e0fb1fb2a37c7bf5f33d6/im/%E5%8F%A4%E7%90%B4%E5%87%8F%E5%AD%97%E8%B0%B1%E9%94%AE%E7%9B%98%E6%96%B9%E6%A1%88.png)
+
 # 使用
 
 ```
@@ -66,7 +70,7 @@ git clone git@github.com:alephpi/jianzipu.git
 
 - [ ] 网页应用
 - [ ] 古书印刷
-- [ ] RIME 输入法
+- [x] RIME 输入法
 - [ ] 繁体支持
 
 # 参考文献
