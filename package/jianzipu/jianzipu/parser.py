@@ -19,7 +19,7 @@ XIAN = ['一弦','二弦','三弦','四弦','五弦','六弦','七弦']
 HUI = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
 FEN = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
 
-# white space is formidden inside a note (but as a seperator between them)
+# white space is forbidden inside a note (but as a seperator between them)
 ParserElement.set_default_whitespace_chars('')
 # Define individual components
 hui = (ZeroOrMore((oneOf(HUI) + Opt(oneOf(FEN))) | '徽外')).set_results_name('number')
@@ -87,3 +87,44 @@ def parse(s: str) -> Note:
 # def parse_modifier(s: str, p=re.compile(r'(注|绰|吟|猱|上|下|急|缓|紧|慢)')) -> list[str]:
 #   if s:
 #     return p.findall(s)
+
+def transcribe(s: str) -> str:
+  """简写法转译为标准法
+  """
+  # 简单替换
+  d = {
+    '大': '大指',
+    '食': '食指',
+    '中': '中指',
+    '名': '名指',
+    '跪': '跪指',
+    '散': '散音',
+    '外': '徽外',
+  }
+
+  # 添加徽分弦
+  for finger in XIAN_FINGER:
+    i = s.find(finger)
+    if i != -1:
+      temp_hui, temp_xian = s[:i], s[i:]
+      temp_hui_finger, temp_hui_number = temp_hui[0], temp_hui[1:] 
+      temp_xian_finger, temp_xian_number = temp_xian[0], temp_xian[1:]
+      if len(temp_hui_number) == 1:
+        temp_hui_number = temp_hui_number + '徽'
+      elif len(temp_hui_number) == 2:
+        if temp_hui_number[0:2] in ['十一', '十二', '十三']:
+          temp_hui_number += '徽'
+        else:
+          temp_hui_number = temp_hui_number[0] + '徽' + temp_hui_number[1] + '分'
+      elif len(temp_hui_number) == 3:
+        temp_hui_number = temp_hui_number[0:2] + '徽' + temp_hui_number[2] + '分'
+      else:
+        pass
+      temp_xian_number = ''.join(n+'弦' for n in temp_xian_number)
+      temp_hui_finger = d[temp_hui_finger]
+      t = temp_hui_finger + temp_hui_number + temp_xian_finger + temp_xian_number
+      break
+  
+  print(t)
+
+  
