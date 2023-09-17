@@ -21,46 +21,48 @@ FEN = ['一分','二分','三分','四分','五分','六分','七分','八分','
 
 # white space is forbidden inside a note (but as a seperator between them)
 ParserElement.set_default_whitespace_chars('')
-# Define individual components
-hui = (ZeroOrMore((oneOf(HUI) + Opt(oneOf(FEN))) | '徽外')).set_results_name('number')
-xian = (ZeroOrMore(oneOf(XIAN))).set_results_name('number')
-hui_finger = oneOf(HUI_FINGER).set_results_name('finger')
-xian_finger = oneOf(XIAN_FINGER).set_results_name('finger')
-move_finger = oneOf(MOVE_FINGER).set_results_name('finger')
-special_finger = oneOf(SPECIAL_FINGER).set_results_name('special_finger')
-modifier = oneOf(MODIFIER).set_results_name('modifier')
-both_finger = oneOf(BOTH_FINGER).set_results_name('both_finger')
-complex_finger = oneOf(COMPLEX_FINGER).set_results_name('complex_finger')
-marker = oneOf(MARKER).set_results_name('marker')
 
-# Define phrase patterns
-hui_finger_phrase = Group(hui_finger + hui).set_results_name('hui_finger_phrase')
-xian_finger_phrase = Group(xian_finger + xian).set_results_name('xian_finger_phrase')
+class ParseVar:
+  # Define individual components
+  hui = (ZeroOrMore((oneOf(HUI) + Opt(oneOf(FEN))) | '徽外')).set_results_name('number')
+  xian = (ZeroOrMore(oneOf(XIAN))).set_results_name('number')
+  hui_finger = oneOf(HUI_FINGER).set_results_name('finger')
+  xian_finger = oneOf(XIAN_FINGER).set_results_name('finger')
+  move_finger = oneOf(MOVE_FINGER).set_results_name('finger')
+  special_finger = oneOf(SPECIAL_FINGER).set_results_name('special_finger')
+  modifier = oneOf(MODIFIER).set_results_name('modifier')
+  both_finger = oneOf(BOTH_FINGER).set_results_name('both_finger')
+  complex_finger = oneOf(COMPLEX_FINGER).set_results_name('complex_finger')
+  marker = oneOf(MARKER).set_results_name('marker')
 
-# reduced_xian_finger phrase, which is a simplified version of xian_finger_phrase
-# only used in complex from
-# since the complex_finger is actually the xian_finger 
-reduced_xian_finger_phrase = Group(xian).set_results_name('xian_finger_phrase')
-left_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('left_sub_phrase')
-right_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('right_sub_phrase')
+  # Define phrase patterns
+  hui_finger_phrase = Group(hui_finger + hui).set_results_name('hui_finger_phrase')
+  xian_finger_phrase = Group(xian_finger + xian).set_results_name('xian_finger_phrase')
 
-# move_finger_phrase is a similar to hui_finger_phrase, used in aside form
-move_finger_phrase = Group(move_finger + hui).set_results_name('move_finger_phrase')
+  # reduced_xian_finger phrase, which is a simplified version of xian_finger_phrase
+  # only used in complex from
+  # since the complex_finger is actually the xian_finger 
+  reduced_xian_finger_phrase = Group(xian).set_results_name('xian_finger_phrase')
+  left_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('left_sub_phrase')
+  right_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('right_sub_phrase')
+
+  # move_finger_phrase is a similar to hui_finger_phrase, used in aside form
+  move_finger_phrase = Group(move_finger + hui).set_results_name('move_finger_phrase')
 
 
-# Define form pattern
-# simple form must have xian_finger_phrase, while hui_finger_phrase is optional
-simple_form = Group(Opt(hui_finger_phrase) + Opt(special_finger) + xian_finger_phrase).set_results_name('simple_form')
-# complex form must have all
-complex_form = Group(complex_finger + left_sub_phrase + right_sub_phrase).set_results_name('complex_form')
-# similar for aside_form
-aside_form = Group(Opt(modifier) + Opt(special_finger) + move_finger_phrase).set_results_name('aside_form')
+  # Define form pattern
+  # simple form must have xian_finger_phrase, while hui_finger_phrase is optional
+  simple_form = Group(Opt(hui_finger_phrase) + Opt(special_finger) + xian_finger_phrase).set_results_name('simple_form')
+  # complex form must have all
+  complex_form = Group(complex_finger + left_sub_phrase + right_sub_phrase).set_results_name('complex_form')
+  # similar for aside_form
+  aside_form = Group(Opt(modifier) + Opt(special_finger) + move_finger_phrase).set_results_name('aside_form')
 
-# 谱字, lazy matching, order is important
-PUZI = complex_form | marker | both_finger | aside_form | simple_form
+  # 谱字, lazy matching, order is important
+  PUZI = complex_form | marker | both_finger | aside_form | simple_form
 
 def parse(s: str) -> Note:
-  d = PUZI.parse_string(s).as_dict()
+  d = ParseVar.PUZI.parse_string(s).as_dict()
 
   # # linting
   # match xian_finger:
@@ -106,25 +108,38 @@ def transcribe(s: str) -> str:
   for finger in XIAN_FINGER:
     i = s.find(finger)
     if i != -1:
-      temp_hui, temp_xian = s[:i], s[i:]
-      temp_hui_finger, temp_hui_number = temp_hui[0], temp_hui[1:] 
-      temp_xian_finger, temp_xian_number = temp_xian[0], temp_xian[1:]
-      if len(temp_hui_number) == 1:
-        temp_hui_number = temp_hui_number + '徽'
-      elif len(temp_hui_number) == 2:
-        if temp_hui_number[0:2] in ['十一', '十二', '十三']:
-          temp_hui_number += '徽'
+      hui, xian = s[:i], s[i:]
+      xian_finger, xian_number = xian[0:len(finger)], xian[len(finger):]
+      if hui != '':
+        if hui[-1] in ['绰','注']:
+          special_finger = hui[-1]
+          hui = hui[:-1]
         else:
-          temp_hui_number = temp_hui_number[0] + '徽' + temp_hui_number[1] + '分'
-      elif len(temp_hui_number) == 3:
-        temp_hui_number = temp_hui_number[0:2] + '徽' + temp_hui_number[2] + '分'
+          special_finger = ''
+        hui_finger, hui_number = hui[0], hui[1:]
+        hui_finger = d[hui_finger]
+        if len(hui_number) == 1:
+          if hui_number == '外':
+            hui_number = '徽' + hui_number
+          else:
+            hui_number = hui_number + '徽'
+        elif len(hui_number) == 2:
+          if hui_number[0:2] in ['十一', '十二', '十三']:
+            hui_number += '徽'
+          else:
+            hui_number = hui_number[0] + '徽' + hui_number[1] + '分'
+        elif len(hui_number) == 3:
+          hui_number = hui_number[0:2] + '徽' + hui_number[2] + '分'
+        else:
+          pass
       else:
-        pass
-      temp_xian_number = ''.join(n+'弦' for n in temp_xian_number)
-      temp_hui_finger = d[temp_hui_finger]
-      t = temp_hui_finger + temp_hui_number + temp_xian_finger + temp_xian_number
+        hui_finger = ''
+        hui_number = ''
+        special_finger = ''
+      xian_number = ''.join(n+'弦' for n in xian_number)
+      t = hui_finger + hui_number + special_finger + xian_finger + xian_number
       break
   
-  print(t)
+  return t
 
   
