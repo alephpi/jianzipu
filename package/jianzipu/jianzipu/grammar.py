@@ -22,6 +22,8 @@ class Element(ABC):
 class Empty(Element):
     def __str__(self) -> str:
         return ''
+    def __repr__(self)-> str:
+        return 'Null'
     @property
     def char(self) -> str:
         return ''
@@ -117,7 +119,7 @@ class NumberPhrase(list[Number]):
     @property
     def kage(self) -> Kage:
         if len(self) == 0:
-            return Kage()
+            return None
         elif len(self) == 1:
             return self[0].kage
         elif len(self) == 2:
@@ -149,7 +151,10 @@ class FingerPhrase(Element):
     def from_dict(cls, d) -> None:
         if isinstance(d, dict):
             finger = Finger(d.get('finger',''))
-            number = NumberPhrase(list(map(Number, d.get('number',[]))))
+            if d.get('number', []) == []:
+                number = Null
+            else:
+                number = NumberPhrase(list(map(Number, d.get('number',[]))))
         else:
             finger = Null
             number = Null
@@ -163,15 +168,7 @@ class FingerPhrase(Element):
     
     @property
     def kage(self):
-        a = self.finger is not Null
-        b = self.number is not Null
-        match a,b:
-            case True, False:
-                return self.finger.kage
-            case False, True:
-                return self.number.kage
-            case True, True:
-                return Kage.finger_phrase(self.finger.kage, self.number.kage)
+        return Kage.finger_phrase(self.finger.kage, self.number.kage)
 
     def draw(self, font='serif'):
         # self.char.draw()
