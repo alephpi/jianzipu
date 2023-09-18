@@ -17,10 +17,10 @@ def test_simple_form_parse_and_str():
       '散音历二弦三弦',
       '大指七徽六分掩',
       '名指七徽六分搯起',
-      # '打圆',
-      # '不动',
-      # '推出',
-      # '滚拂',
+      '打圆',
+      '不动',
+      '推出',
+      '滚拂',
       ]
   for i in l:
     assert str(parse(i, form='ortho')) == i
@@ -44,10 +44,10 @@ def test_abbr_simple_form_parse_and_str():
       '名七六搯起',
       '名十二搯起',
       '名十二三搯起',
-      # '打圆',
-      # '不动',
-      # '推出',
-      # '滚拂',
+      '打圆',
+      '不动',
+      '推出',
+      '滚拂',
       ]
 
   for i in l:

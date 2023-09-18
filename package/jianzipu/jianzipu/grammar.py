@@ -18,6 +18,21 @@ class Element(ABC):
     @abstractmethod
     def draw(self, font='serif'):
         raise NotImplementedError
+
+class Empty(Element):
+    def __str__(self) -> str:
+        return ''
+    @property
+    def char(self) -> str:
+        return ''
+    @property
+    def kage(self):
+        return None
+    def draw(self, font='serif'):
+        pass
+
+Null = Empty()
+
 @dataclass
 class Symbol(Element):
     """减字符号
@@ -127,8 +142,8 @@ class FingerPhrase(Element):
         number (list[Number]): 数字符号列表
 
     """
-    finger: Finger = None 
-    number: NumberPhrase = None
+    finger: Finger = Null 
+    number: NumberPhrase = Null
 
     @classmethod
     def from_dict(cls, d) -> None:
@@ -136,8 +151,8 @@ class FingerPhrase(Element):
             finger = Finger(d.get('finger',''))
             number = NumberPhrase(list(map(Number, d.get('number',[]))))
         else:
-            finger = Finger('')
-            number = NumberPhrase(list(map(Number, [])))
+            finger = Null
+            number = Null
         return cls(finger=finger, number=number)
 
     @property
@@ -148,11 +163,13 @@ class FingerPhrase(Element):
     
     @property
     def kage(self):
-        a = self.finger is not None
-        b = self.number != []
+        a = self.finger is not Null
+        b = self.number is not Null
         match a,b:
             case True, False:
                 return self.finger.kage
+            case False, True:
+                return self.number.kage
             case True, True:
                 return Kage.finger_phrase(self.finger.kage, self.number.kage)
 
@@ -161,7 +178,7 @@ class FingerPhrase(Element):
         return self.kage.draw(font=font)
 
     def __str__(self) -> str:
-        return str(self.finger) + ''.join(str(n) for n in self.number)
+        return str(self.finger) + str(self.number)
 
 class Note(Element):
     """谱字
@@ -215,9 +232,9 @@ class SimpleForm(Note):
         special_finger (Finger): 特殊指法
 
     """
-    hui_finger_phrase: FingerPhrase = None
-    xian_finger_phrase: FingerPhrase = None
-    special_finger: Finger = None
+    hui_finger_phrase: FingerPhrase = Null
+    xian_finger_phrase: FingerPhrase = Null
+    special_finger: Finger = Null
 
     @classmethod
     def from_dict(cls, d) -> None:
@@ -232,7 +249,10 @@ class SimpleForm(Note):
 
     @property
     def kage(self):
-        return Kage.simple_form(self.hui_finger_phrase.kage, self.xian_finger_phrase.kage, self.special_finger.kage)
+        hui_finger_phrase_kage = self.hui_finger_phrase.kage
+        xian_finger_phrase_kage = self.xian_finger_phrase.kage
+        special_finger_kage = self.special_finger.kage
+        return Kage.simple_form(hui_finger_phrase_kage, xian_finger_phrase_kage, special_finger_kage)
 
     def __str__(self) -> str:
         return str(self.hui_finger_phrase) + str(self.special_finger) + str(self.xian_finger_phrase)
@@ -246,9 +266,9 @@ class ComplexForm(Note):
         left_sub_phrase (SimpleForm): 左侧指法短语
         right_sub_phrase (SimpleForm): 右侧指法短语
     """
-    complex_finger: Finger = None
-    left_sub_phrase: SimpleForm = None
-    right_sub_phrase: SimpleForm = None
+    complex_finger: Finger = Null
+    left_sub_phrase: SimpleForm = Null
+    right_sub_phrase: SimpleForm = Null
 
     @classmethod
     def from_dict(cls, d) -> None:
@@ -277,9 +297,9 @@ class AsideForm(Note):
         special_finger (Finger): 特殊指法
         move_finger_phrase (FingerPhrase): 走位指法短语
     """
-    modifier: Modifier = None
-    special_finger: Finger = None
-    move_finger_phrase: FingerPhrase = None
+    modifier: Modifier = Null
+    special_finger: Finger = Null
+    move_finger_phrase: FingerPhrase = Null
 
     @classmethod
     def from_dict(cls, d) -> None:
