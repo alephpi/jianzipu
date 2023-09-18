@@ -140,3 +140,4 @@ ui-tests/.pnp.*
 *bib
 *.code-workspace
 *.ipynb
+*test*

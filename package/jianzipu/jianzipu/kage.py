@@ -76,33 +76,33 @@ class Kage:
         return cls(key, data)
 
     @classmethod
-    def finger_phrase(cls, finger: Self, number: Self):
-        key = f'({finger.key}&{number.key})'
-        match finger.key:
+    def finger_phrase(cls, finger_kage: Self, number_kage: Self):
+        key = f'({finger_kage.key}&{number_kage.key})'
+        match finger_kage.key:
             case '勾':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:44:50:158:167:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:44:50:158:167:{number_kage.key}:0:0:0'
             case '剔':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:36:88:162:176:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:36:88:162:176:{number_kage.key}:0:0:0'
             case '抹':
-                data = f'99:0:0:0:0:200:248:{finger.key}:0:0:0$99:0:0:0:105:200:200:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:248:{finger_kage.key}:0:0:0$99:0:0:0:105:200:200:{number_kage.key}:0:0:0'
             case '挑':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:30:21:180:167:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:30:21:180:167:{number_kage.key}:0:0:0'
             case '托':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:69:42:186:142:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:69:42:186:142:{number_kage.key}:0:0:0'
             case '擘':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:34:78:190:193:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:34:78:190:193:{number_kage.key}:0:0:0'
             case '打':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:16:52:150:150:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:16:52:150:150:{number_kage.key}:0:0:0'
             case '摘':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:20:80:166:177:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:20:80:166:177:{number_kage.key}:0:0:0'
             case '勾剔':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:35:108:162:176:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:35:108:162:176:{number_kage.key}:0:0:0'
             case '抹挑':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:45:100:174:168:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:45:100:174:168:{number_kage.key}:0:0:0'
             case '历':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:40:30:188:187:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:40:30:188:187:{number_kage.key}:0:0:0'
             case '蠲':
-                data = f'99:0:0:0:0:200:200:{finger.key}:0:0:0$99:0:0:45:100:174:168:{number.key}:0:0:0'
+                data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:45:100:174:168:{number_kage.key}:0:0:0'
             case '轮':
                 pass
             case '半轮':
@@ -111,31 +111,31 @@ class Kage:
                 pass
             case '长琐':
                 pass
-            case '大指' | '食指' | '中指' | '名指' | '跪指' :
-                return Kage.left_right(finger, number, kind='hui')
-            case '散音':
-                return Kage.top_bottom(finger, number, kind='finger')
+            case '大指' | '食指' | '中指' | '名指' | '跪指' | '大' | '食' | '中' | '名' | '跪':
+                return Kage.left_right(finger_kage, number_kage, kind='hui')
+            case '散音' | '散':
+                return Kage.top_bottom(finger_kage, number_kage, kind='finger')
         return cls(key, data)
 
     @classmethod
-    def simple_form(cls, hui_finger_phrase: Self, xian_finger_phrase: Self, special_finger: Self):
-        a = hui_finger_phrase is not None
-        b = xian_finger_phrase is not None
-        c = special_finger is not None
+    def simple_form(cls, hui_finger_phrase_kage: Self, xian_finger_phrase_kage: Self, special_finger_kage: Self):
+        a = hui_finger_phrase_kage is not None
+        b = xian_finger_phrase_kage is not None
+        c = special_finger_kage is not None
         match a,b,c:
             case True, True, True:
-                key = f'({hui_finger_phrase.key}&{special_finger.key}&{xian_finger_phrase.key})'
-                top_box = f'99:0:0:0:0:{DPI}:{DPI*0.4}:{hui_finger_phrase.key}:0:0:0'
-                bottom_left_box = f'99:0:0:0:66:168:200:{special_finger.key}:0:0:0'
-                bottom_right_box = f'99:0:0:60:66:200:200:{xian_finger_phrase.key}:0:0:0'
+                key = f'({hui_finger_phrase_kage.key}&{special_finger_kage.key}&{xian_finger_phrase_kage.key})'
+                top_box = f'99:0:0:0:0:{DPI}:{DPI*0.4}:{hui_finger_phrase_kage.key}:0:0:0'
+                bottom_left_box = f'99:0:0:0:66:168:200:{special_finger_kage.key}:0:0:0'
+                bottom_right_box = f'99:0:0:60:66:200:200:{xian_finger_phrase_kage.key}:0:0:0'
                 data = f'{top_box}${bottom_left_box}${bottom_right_box}'
                 return cls(key, data)
             case True, True, False:
-                return Kage.top_bottom(hui_finger_phrase, xian_finger_phrase, kind='finger')
+                return Kage.top_bottom(hui_finger_phrase_kage, xian_finger_phrase_kage, kind='finger')
             case False, True, True:
-                return Kage.left_right(special_finger, xian_finger_phrase, kind='xian')
+                return Kage.left_right(special_finger_kage, xian_finger_phrase_kage, kind='xian')
             case False, True, False:
-                return xian_finger_phrase
+                return xian_finger_phrase_kage
     
     def draw(self, font:Literal['serif','sans']='serif'):
         from kage import Kage as KageEngine

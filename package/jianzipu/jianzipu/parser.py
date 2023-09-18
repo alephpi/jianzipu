@@ -125,32 +125,12 @@ def parse(s: str, form = Literal['abbr','ortho']) -> Note:
       d = OrthoParseVar.PUZI.parse_string(s).as_dict()
     case _:
       raise ValueError(f"form must be either 'abbr'or 'ortho'")
-  pp.pprint(d)
-  # # linting
-  # match xian_finger:
-  #   case '历':
-  #     assert len(xian) in [2,3], f'指法历的价位与弦序个数{len(xian)}不匹配'
-  #   case _:
-  #     assert VALENCE.get(xian_finger, 0) == len(xian), f'指法{xian_finger}的价位与弦序个数{len(xian)}不匹配'
+  # pp.pprint(d)
 
   return Note.from_dict(d)
 
-# def parse_xian(s: str, p=re.compile(r'(一弦|二弦|三弦|四弦|五弦|六弦|七弦)')) -> list[str]:
-#   if s:
-#     return p.findall(s)
-
-# def parse_hui(s: str) -> list[str]:
-#   if not s:
-#     return
-#   if s == '徽外':
-#     return [s]
-#   else:
-#     index = s.index('徽')
-#     return [s[:index+1], s[index+1:]]
-
-# def parse_modifier(s: str, p=re.compile(r'(注|绰|吟|猱|上|下|急|缓|紧|慢)')) -> list[str]:
-#   if s:
-#     return p.findall(s)
+def lint(s: str) -> bool:
+  return NotImplementedError
 
 def transcribe(s: str) -> str:
   """简写法转译为标准法
