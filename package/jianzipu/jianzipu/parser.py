@@ -1,8 +1,10 @@
 from typing import Literal
 from pyparsing import Group, Opt, ParserElement, ZeroOrMore, oneOf
+import pprint as pp
 
 from .grammar import Note
 from .constant import d 
+
 
 # fingers, modifiers and markers are open, so we import from outside
 # 保证字符长的在前（如防止勾剔只匹配了勾）
@@ -111,11 +113,19 @@ def parse(s: str, form = Literal['abbr','ortho']) -> Note:
   match form:
     case 'abbr':
       d = AbbrParseVar.PUZI.parse_string(s).as_dict()
+      # patch
+      if 'complex_form' in d:
+        # pop the miss matched number from hui_finger_phrase to xian_finger_phrase
+        if d['complex_form']['left_sub_phrase']['xian_finger_phrase']['number'] == []:
+          d['complex_form']['left_sub_phrase']['xian_finger_phrase']['number'].append(d['complex_form']['left_sub_phrase']['hui_finger_phrase']['number'].pop(-1))
+        if d['complex_form']['right_sub_phrase']['xian_finger_phrase']['number'] == []:
+          d['complex_form']['right_sub_phrase']['xian_finger_phrase']['number'].append(d['complex_form']['right_sub_phrase']['hui_finger_phrase']['number'].pop(-1))
+
     case 'ortho':
       d = OrthoParseVar.PUZI.parse_string(s).as_dict()
     case _:
       raise ValueError(f"form must be either 'abbr'or 'ortho'")
-  print(d)
+  pp.pprint(d)
   # # linting
   # match xian_finger:
   #   case '历':
