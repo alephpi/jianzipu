@@ -28,9 +28,11 @@ C' -->D'[矢量图]
 
 A''[大指二徽三分注勾一弦]-->B''[python jianzipu 包]
 B'' -->|KAGE数据*|C''[KAGE引擎]
-C'' -->D''[<img src='./example.svg' width=40, height=40>]
+C'' -->D''[<img src='https://raw.githubusercontent.com/alephpi/jianzipu/master/example.svg' width=100, height=100>]
 class A,A',A'',D,D',D'' clear;
 ```
+
+<img src='https://raw.githubusercontent.com/alephpi/jianzipu/master/example.svg' width=100, height=100>
 
 <details>
 <summary>*:具体渲染数据为：</summary>
