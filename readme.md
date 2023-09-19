@@ -47,6 +47,10 @@ class A,A',A'',D,D',D'' clear;
 
 ![](https://raw.githubusercontent.com/alephpi/jianzipu/e3908a6e23e577ad9f8e0fb1fb2a37c7bf5f33d6/im/%E5%8F%A4%E7%90%B4%E5%87%8F%E5%AD%97%E8%B0%B1%E9%94%AE%E7%9B%98%E6%96%B9%E6%A1%88.png)
 
+## 本方案规定的减字谱读法规范
+
+详见[此处](https://github.com/alephpi/jianzipu/blob/master/package/jianzipu/README.md)
+
 # 使用
 
 ```
