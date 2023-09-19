@@ -150,7 +150,10 @@ class FingerPhrase(Element):
     @classmethod
     def from_dict(cls, d) -> None:
         if isinstance(d, dict):
-            finger = Finger(d.get('finger',''))
+            if d.get('finger', '') == '':
+                finger = Null
+            else:
+                finger = Finger(d.get('finger',''))
             if d.get('number', []) == []:
                 number = Null
             else:
@@ -279,8 +282,12 @@ class ComplexForm(Note):
         # TODO
         return IDS('⿱⿰正在⿰施工')
     
-    def draw(self, font='serif'):
-        self.char.draw(font=font)
+    @property
+    def kage(self):
+        complex_finger_kage = self.complex_finger.kage
+        left_sub_phrase_kage = self.left_sub_phrase.kage
+        right_sub_phrase_kage = self.right_sub_phrase.kage
+        return Kage.complex_form(complex_finger_kage, left_sub_phrase_kage, right_sub_phrase_kage)
 
     def __str__(self) -> str:
         return str(self.complex_finger) + str(self.left_sub_phrase) + str(self.right_sub_phrase)

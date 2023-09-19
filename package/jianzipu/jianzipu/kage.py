@@ -151,6 +151,16 @@ class Kage:
             case False, True, False:
                 return xian_finger_phrase_kage
     
+    @classmethod
+    def complex_form(cls, complex_finger_kage: Self, left_sub_phrase_kage: Self, right_sub_phrase_kage: Self):
+        match complex_finger_kage.key:
+            case '撮':
+                key = f'({complex_finger_kage.key}&{left_sub_phrase_kage.key}&{right_sub_phrase_kage.key})'
+                data = f'99:0:0:0:0:200:200:{complex_finger_kage.key}:0:0:0$99:0:0:14:78:94:184:{left_sub_phrase_kage.key}:0:0:0$99:0:0:105:78:187:180:{right_sub_phrase_kage.key}:0:0:0'
+            case _:
+                return NotImplementedError
+        return cls(key, data)
+
     def draw(self, font:Literal['serif','sans']='serif'):
         from kage import Kage as KageEngine
         kage_engine = KageEngine(ignore_component_version=True)
