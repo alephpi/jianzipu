@@ -1,3 +1,5 @@
+> 本项目暂时处于搁置状态，等待上游依赖 HowardZorn/kage-engine 对宋体字渲染的完善
+
 # 减字谱电子化方案
 
 在[discord](https://discord.gg/UBPK6hnUJD)上加入讨论！
@@ -99,6 +101,8 @@ git clone git@github.com:alephpi/jianzipu.git
 
 1. [KAGE engine](https://github.com/kurgm/kage-engine)
 2. [字统网](https://zi.tools/)
+3. [Python KAGE engine](https://github.com/HowardZorn/kage-engine)
+4. [GlyphWiki](http://en.glyphwiki.org/wiki/Group:mpsuzuki2_%e5%8f%a4%e7%90%b4%e6%b8%9b%e5%ad%97%e8%ad%9c)
 
 # 致敬
 
