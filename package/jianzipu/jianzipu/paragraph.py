@@ -12,3 +12,4 @@ def parse_file(file_path):
           paragraph.extend(line.split(' '))
     pp.pprint(song_info)
     pp.pprint(paragraph)
+    return song_info, paragraph

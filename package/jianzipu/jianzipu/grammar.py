@@ -315,7 +315,11 @@ class AsideForm(Note):
     @property
     def char(self):
         return self.modifier.char + self.special_finger.char * self.move_finger_phrase.char
-    
+
+    @property
+    def kage(self):
+        return NotImplementedError
+
     def draw(self, font='serif'):
         self.char.draw(font=font)
 
