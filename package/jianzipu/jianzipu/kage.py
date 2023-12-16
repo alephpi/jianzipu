@@ -27,6 +27,10 @@ with open(full_path, 'r', encoding='utf-8') as f:
 
 DPI = 200
 
+# workaround for non publishing kage-python package
+import sys
+sys.path.append('/home/mao/workspace/kage-engine')
+
 @dataclass
 class Kage:
     CACHE: ClassVar[dict[str, str]] = CLOSURE
@@ -118,6 +122,10 @@ class Kage:
                         data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:35:108:162:176:{number_kage.key}:0:0:0'
                     case '抹挑':
                         data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:45:100:174:168:{number_kage.key}:0:0:0'
+                    case '托擘':
+                        data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:86:75:190:153:{number_kage.key}:0:0:0'
+                    case '打摘':
+                        data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:23:99:165:176:{number_kage.key}:0:0:0'
                     case '历':
                         data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:40:30:188:187:{number_kage.key}:0:0:0'
                     case '蠲':
@@ -164,20 +172,7 @@ class Kage:
     def draw(self, font:Literal['serif','sans']='serif'):
         from kage import Kage as KageEngine
         kage_engine = KageEngine(ignore_component_version=True)
-        if font == 'sans':
-            from kage.font import Sans
-            kage_engine.font = Sans()
-            for k, v in self.CACHE.items():
-                kage_engine.components.push(k, v)
-            canvas = kage_engine.make_glyph(self.key)
-            return canvas
-        elif font == 'serif':
-        # only for test purpose
-            import webbrowser
-            url = "http://localhost:5501/package/jianzipu/test.html?kage={}"
-            for k, v in self.CACHE.items():
-                kage_engine.components.push(k, v)
-            data = kage_engine.components.search(self.key)
-            stroke_list = kage_engine.get_each_strokes(data)
-            query_kage = '$'.join(str(stroke) for stroke in stroke_list)
-            webbrowser.open(url.format(query_kage))
+        for k, v in self.CACHE.items():
+            kage_engine.components.push(k, v)
+        canvas = kage_engine.make_glyph(self.key)
+        return canvas

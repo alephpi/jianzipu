@@ -8,7 +8,7 @@ import yaml
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the full path to the file
-relative_file_path = "ids.yaml"
+relative_file_path = "kage.yaml"
 full_path = os.path.join(current_directory, relative_file_path)
 
 with open(full_path, 'r', encoding='utf-8') as f:
