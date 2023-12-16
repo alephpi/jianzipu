@@ -141,3 +141,4 @@ ui-tests/.pnp.*
 *.code-workspace
 *.ipynb
 *test*
+!dev.ipynb
