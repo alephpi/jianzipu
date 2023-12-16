@@ -1,11 +1,9 @@
-> 本项目暂时处于搁置状态，等待上游依赖 HowardZorn/kage-engine 对宋体字渲染的完善
-
 # 天书：减字谱电子化方案
 
 > “妹妹近日越发长进了，竟看起天书来了！”
 > “好个念书的人，连个琴谱都没有见过。”
 
-在[discord](https://discord.gg/UBPK6hnUJD)上加入讨论！
+在 [discord](https://discord.gg/UBPK6hnUJD) 上加入讨论！
 
 以往的各种减字谱电子化方案，全都基于字面符号。然而在减字谱被正式编码以前，这些符号要么没有编码（单纯的以图片格式输入），要么编码不统一。
 
@@ -30,11 +28,11 @@ B -->|中间表示|C[显示方案]
 C -->D[输出]
 
 A'[减字谱读法]-->B'[python jianzipu 包]
-B' -->|KAGE数据格式|C'[KAGE引擎]
+B' -->|KAGE 数据格式|C'[KAGE 引擎]
 C' -->D'[矢量图]
 
 A''[大指二徽三分注勾一弦]-->B''[python jianzipu 包]
-B'' -->|KAGE数据*|C''[KAGE引擎]
+B'' -->|KAGE 数据*|C''[KAGE 引擎]
 C'' -->D''[<img src='https://raw.githubusercontent.com/alephpi/jianzipu/master/example.svg' width=100, height=100>]
 class A,A',A'',D,D',D'' clear;
 ```
@@ -42,7 +40,7 @@ class A,A',A'',D,D',D'' clear;
 <img src='https://raw.githubusercontent.com/alephpi/jianzipu/master/example.svg' width=100, height=100>
 
 <details>
-<summary>*:具体渲染数据为：</summary>
+<summary>*: 具体渲染数据为：</summary>
 1:0:0:11.2:28.0:77.6:28.0:nan:nan:nan:nan$2:0:7:41.6:5.6:44.0:54.8:11.2:75.2:nan:nan$2:7:8:40.0:32.4:60.0:44.8:69.6:63.2:nan:nan$1:0:0:99.2:9.6:180.8:9.6:nan:nan:nan:nan$1:0:0:88.4:30.8:191.6:30.8:nan:nan:nan:nan$1:0:0:95.0:47.8:185.0:47.8:nan:nan:nan:nan$1:0:0:105.2:59.8:174.8:59.8:nan:nan:nan:nan$1:0:0:88.4:72.6:191.6:72.6:nan:nan:nan:nan$2:7:8:26.04:79.4:47.04:84.09:56.28:93.47:nan:nan$2:7:8:10.08:110.22:32.76:114.91:41.16:124.28999999999999:nan:nan$2:7:8:11.76:155.11:41.16:161.14:37.8:189.28:nan:nan$2:32:7:33.6:166.5:36.96:158.45999999999998:72.24:110.89:nan:nan$2:0:7:101.3:77.39:94.3:112.9:71.2:140.37:nan:nan$1:0:2:95.0:98.16:181.8:98.16:nan:nan:nan:nan$2:22:4:181.8:98.16:177.6:167.17000000000002:162.9:187.94:nan:nan$1:0:0:96.386:139.08695:165.01399999999998:139.08695:nan:nan:nan:nan
 
 </details>
@@ -58,7 +56,7 @@ class A,A',A'',D,D',D'' clear;
 
 ## 本方案规定的减字谱读法规范
 
-详见[此处](https://github.com/alephpi/jianzipu/blob/master/package/jianzipu/README.md)
+详见 [此处](https://github.com/alephpi/jianzipu/blob/master/package/jianzipu/README.md)
 
 # 使用
 
