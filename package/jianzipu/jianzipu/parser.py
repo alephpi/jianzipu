@@ -116,10 +116,26 @@ def parse(s: str, form = Literal['abbr','ortho']) -> Note:
       # patch
       if 'complex_form' in d:
         # pop the miss matched number from hui_finger_phrase to xian_finger_phrase
-        if d['complex_form']['left_sub_phrase']['xian_finger_phrase']['number'] == []:
-          d['complex_form']['left_sub_phrase']['xian_finger_phrase']['number'].append(d['complex_form']['left_sub_phrase']['hui_finger_phrase']['number'].pop(-1))
-        if d['complex_form']['right_sub_phrase']['xian_finger_phrase']['number'] == []:
-          d['complex_form']['right_sub_phrase']['xian_finger_phrase']['number'].append(d['complex_form']['right_sub_phrase']['hui_finger_phrase']['number'].pop(-1))
+        left_xian_number = d['complex_form']['left_sub_phrase']['xian_finger_phrase']['number']
+        left_hui_number = d['complex_form']['left_sub_phrase']['hui_finger_phrase']['number']
+        right_xian_number = d['complex_form']['right_sub_phrase']['xian_finger_phrase']['number']
+        right_hui_number = d['complex_form']['right_sub_phrase']['hui_finger_phrase']['number']
+        if len(left_xian_number) == 0:
+          # case 1: mismatch e.g. ['十一'] instead of ['十'],['一']
+          if (len(left_hui_number)) == 1 & (len(left_hui_number[0]) == 2):
+            left_xian_number.append(left_hui_number[0][-1])
+            left_hui_number[0] = left_hui_number[0][:-1]
+          # case 2: mismatch e.g. ['十一','七'] instead of ['十一'],['七']
+          else:
+            left_xian_number.append(left_hui_number.pop(-1))
+        if len(right_xian_number) == 0:
+          # case 1: mismatch e.g. ['十一'] instead of ['十'],['一']
+          if (len(right_hui_number)) == 1 & (len(right_hui_number[0])) == 2:
+            right_xian_number.append(right_hui_number[0][-1])
+            right_hui_number[0] = right_hui_number[0][:-1]
+          # case 2: mismatch e.g. ['十一','七'] instead of ['十一'],['七']
+          else:
+            right_xian_number.append(right_hui_number.pop(-1))
 
     case 'ortho':
       d = OrthoParseVar.PUZI.parse_string(s).as_dict()
