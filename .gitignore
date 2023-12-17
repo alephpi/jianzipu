@@ -143,3 +143,4 @@ ui-tests/.pnp.*
 *test*
 !dev.ipynb
 package/jianzipu/dev/dump_newest_only.txt
+*.svg
