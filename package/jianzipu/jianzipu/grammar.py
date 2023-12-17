@@ -318,10 +318,13 @@ class AsideForm(Note):
 
     @property
     def kage(self):
-        return NotImplementedError
+        modifier_kage = self.modifier.kage
+        special_finger_kage = self.special_finger.kage
+        move_finger_phrase_kage = self.move_finger_phrase.kage
+        return Kage.aside_form(modifier_kage, special_finger_kage, move_finger_phrase_kage)
 
-    def draw(self, font='serif'):
-        self.char.draw(font=font)
+    # def draw(self, font='serif'):
+    #     self.char.draw(font=font)
 
     def __str__(self) -> str:
         return str(self.modifier) + str(self.special_finger) + str(self.move_finger_phrase)

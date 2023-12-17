@@ -142,6 +142,10 @@ class Kage:
                         return Kage.left_right(finger_kage, number_kage, kind='hui')
                     case '散音' | '散':
                         return Kage.top_bottom(finger_kage, number_kage, kind='finger')
+                    case '上'|'下':
+                        return Kage.top_bottom(finger_kage, number_kage, kind='finger')
+                    case _:
+                        raise NotImplementedError
                 return cls(key, data)
 
     @classmethod
@@ -168,6 +172,21 @@ class Kage:
             case _:
                 return NotImplementedError
         return cls(key, data)
+    
+    @classmethod
+    def aside_form(cls, modifier_kage: Self, special_finger_kage: Self, move_finger_phrase: Self):
+        a = modifier_kage is not None
+        b = special_finger_kage is not None
+        c = move_finger_phrase is not None
+        match a,b,c:
+            case True, True, True:
+                return Kage.top_left_right(modifier_kage, special_finger_kage, move_finger_phrase)
+            case True, False, True:
+                return Kage.top_bottom(modifier_kage, move_finger_phrase)
+            case False, True, True:
+                return Kage.left_right(special_finger_kage, move_finger_phrase)
+            case False, False, True:
+                return move_finger_phrase
 
     def draw(self, font:Literal['serif','sans']='serif'):
         from kage import Kage as KageEngine
