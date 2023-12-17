@@ -16,7 +16,7 @@ class Element(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def draw(self, font='serif'):
+    def draw(self):
         raise NotImplementedError
 
 class Empty(Element):
@@ -28,9 +28,9 @@ class Empty(Element):
     def char(self) -> str:
         return ''
     @property
-    def kage(self):
+    def kage(self) -> Kage:
         return None
-    def draw(self, font='serif'):
+    def draw(self):
         pass
 
 Null = Empty()
@@ -56,9 +56,9 @@ class Symbol(Element):
     def kage(self) -> Kage:
         return Kage.primitive(self.id)
     
-    def draw(self, font='serif'):
+    def draw(self):
         # self.char.draw()
-        return self.kage.draw(font=font)
+        return self.kage.draw()
 
 @dataclass
 class Finger(Symbol):
@@ -203,12 +203,12 @@ class Note(Element):
         raise NotImplementedError
     
     @property
-    def kage(self):
+    def kage(self) -> Kage:
         raise NotImplementedError
 
-    def draw(self, font='serif'):
+    def draw(self):
         # return self.char.draw()
-        return self.kage.draw(font=font)
+        return self.kage.draw()
     # @property
     # def pitch(self, p=None):
     #     if p is None:
@@ -322,9 +322,6 @@ class AsideForm(Note):
         special_finger_kage = self.special_finger.kage
         move_finger_phrase_kage = self.move_finger_phrase.kage
         return Kage.aside_form(modifier_kage, special_finger_kage, move_finger_phrase_kage)
-
-    # def draw(self, font='serif'):
-    #     self.char.draw(font=font)
 
     def __str__(self) -> str:
         return str(self.modifier) + str(self.special_finger) + str(self.move_finger_phrase)

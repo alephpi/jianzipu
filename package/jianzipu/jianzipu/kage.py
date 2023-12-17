@@ -27,7 +27,7 @@ with open(full_path, 'r', encoding='utf-8') as f:
 
 DPI = 200
 
-# workaround for non publishing kage-python package
+# workaround for non published kage-python package
 import sys
 sys.path.append('/home/mao/workspace/kage-engine')
 
@@ -194,7 +194,7 @@ class Kage:
             case False, False, True:
                 return move_finger_phrase
 
-    def draw(self, font:Literal['serif','sans']='serif'):
+    def draw(self):
         from kage import Kage as KageEngine
         kage_engine = KageEngine(ignore_component_version=True)
         for k, v in self.CACHE.items():
