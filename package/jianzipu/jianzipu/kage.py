@@ -138,12 +138,18 @@ class Kage:
                         pass
                     case '长琐':
                         pass
+                    case '滚'|'拂':
+                        data = f'99:0:0:0:0:200:100:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
+                    case '至':
+                        data = f'99:0:0:0:-7:200:193:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
+                    # hui finger
                     case '大指' | '食指' | '中指' | '名指' | '跪指' | '大' | '食' | '中' | '名' | '跪':
                         return Kage.left_right(finger_kage, number_kage, kind='hui')
                     case '散音' | '散':
                         return Kage.top_bottom(finger_kage, number_kage, kind='finger')
+                    # moving finger
                     case '上'|'下':
-                        return Kage.top_bottom(finger_kage, number_kage, kind='finger')
+                        data = f'99:0:0:40:0:160:100:{finger_kage.key}:0:0:0$99:0:0:40:100:160:200:{number_kage.key}:0:0:0'
                     case _:
                         raise NotImplementedError
                 return cls(key, data)
