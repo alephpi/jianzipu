@@ -131,13 +131,13 @@ class Kage:
                     case '蠲':
                         data = f'99:0:0:0:0:200:200:{finger_kage.key}:0:0:0$99:0:0:45:100:174:168:{number_kage.key}:0:0:0'
                     case '轮':
-                        pass
+                        data = f'99:0:0:0:0:200:100:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
                     case '半轮':
-                        pass
+                        data = f'99:0:0:0:0:200:100:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
                     case '琐':
-                        pass
+                        data = f'99:0:0:0:0:200:100:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
                     case '长琐':
-                        pass
+                        data = f'99:0:0:0:0:200:100:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
                     case '滚'|'拂':
                         data = f'99:0:0:0:0:200:100:{finger_kage.key}:0:0:0$99:0:0:0:100:200:200:{number_kage.key}:0:0:0'
                     case '至':
