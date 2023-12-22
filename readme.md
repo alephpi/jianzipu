@@ -9,6 +9,7 @@
 
 在 [discord](https://discord.gg/UBPK6hnUJD) 上加入讨论！
 
+# 介绍
 以往的各种减字谱电子化方案，全都基于字面符号。然而在减字谱被正式编码以前，这些符号要么没有编码（单纯的以图片格式输入），要么编码不统一。
 
 本方案的旨在以减字谱的读法为输入形式，并通过解析器将其转化为 python 类作为中间表示形式，方便后续连接不同的显示方案实现。
@@ -50,9 +51,9 @@ class A,A',A'',D,D',D'' clear;
 </details>
 本仓库是 monorepo 包括：
 
-1. RIME 减字谱读法输入方案，或者简称为 RIME 减字谱输入方案：这是为了方便快速输入用于解析的减字谱读法。
+1. RIME 减字谱读法输入方案，或者简称为 RIME 减字谱输入方案：这是为了方便快速输入用于解析的减字谱读法
 2. jianzipu 包：用于解析减字谱读法自然语言串
-3. 减字谱显示方案：[KAGE engine](https://github.com/kurgm/kage-engine)
+3. 减字谱显示方案
 
 ## RIME 减字谱输入方案：
 
@@ -63,11 +64,34 @@ class A,A',A'',D,D',D'' clear;
 详见 [此处](https://github.com/alephpi/jianzipu/blob/master/package/jianzipu/README.md)
 
 # 使用
+## 安装
 
-```
+```sh
 pip install jianzipu
 ```
-
+## 单字渲染
+```py
+from jianzipu.parser import parse
+note = parse('名五剔一','abbr')
+note.draw()
+```
+## 篇章渲染
+```py
+from jianzipu.paragraph import parse_file
+_, paragraph = parse_file('./曲谱/酒狂_简写.txt')
+canvases = []
+for token in paragraph:
+    try:
+        note = parse(token, form='abbr')
+        canvas = note.draw()
+        canvas.attribs['width'] = 100
+        canvas.attribs['height'] = 100
+        canvas.attribs['viewBox'] = "0 0 200 200"
+        canvases.append(canvas)
+        display(canvas)
+    except:
+        print(token)
+```
 # 开发
 
 ## 克隆、安装依赖
