@@ -69,6 +69,7 @@ class A,A',A'',D,D',D'' clear;
 ```sh
 pip install jianzipu
 ```
+~~（装是可以装，但[Python KAGE engine](https://github.com/HowardZorn/kage-engine)还没发包，装了也白装）~~
 ## 单字渲染
 ```py
 from jianzipu.parser import parse
