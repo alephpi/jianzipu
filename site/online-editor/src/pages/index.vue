@@ -25,14 +25,14 @@ function go() {
     </p>
 
     <div py-4 />
-
-    <TheInput
-      v-model="name"
-      placeholder="What's your name?"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
-
+    <Suspense>
+      <TheInput
+        v-model="name"
+        placeholder="What's your name?"
+        autocomplete="false"
+        @keydown.enter="go"
+      />
+    </Suspense>
     <div>
       <button
         class="m-3 text-sm btn"
