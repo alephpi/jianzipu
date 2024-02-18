@@ -1,4 +1,4 @@
-import { Prolog, load, toJSON } from 'trealla'
+import { Prolog, load } from 'trealla'
 
 await load()
 const pl = new Prolog()
@@ -19,11 +19,9 @@ catch (err) {
 }
 
 export default async function parse(tokens: string[]) {
-//   console.log(`parser(Tree, ${tokens}, [])`)
-  const result = await pl.queryOnce(`parser(Tree, [${tokens}], [])`, { program: 'prolog' })
+  const result = await pl.queryOnce(`parser(Tree, [${tokens}], []).`, { format: 'json', encode: { atoms: 'string' } })
   if (result.status === 'success')
-    return result.answer.Tree.toString()
-    // return JSON.parse(result.answer.Tree.toString())
+    return result.answer.Tree
   else
     return null
 }

@@ -1,4 +1,3 @@
-% we make use of Definite Clause Grammar to do the parsing, brackets{} is hold pure-prolog that escapes the DCG parser.
 % abbr: 
 % hp, xp, np: HuiPhrase, XianPhrase, NumberPhrase
 % axp, rxp: annotatedXianPhrase, reducedXianPhrase
@@ -31,10 +30,6 @@ l_MARKER(['从「再作', '从头再作', '少息', '大息', '入拍', '入慢'
 
 % helper function
 in(X, List) :- call(List,L), member(X, L).
-% nested_functor_to_list(Term, List) :-
-%     Term =.. [Functor|Args],
-%     maplist(nested_functor_to_list, Args, NestedLists),
-%     List = [Functor|NestedLists]. 
 
 parser([]) --> [].
 parser(Tree) --> complex(Tree).
@@ -44,50 +39,49 @@ parser(Tree) --> aside(Tree).
 parser(Tree) --> simple(Tree).
 
 % form
-simple({simple_form: {HP, SF, XP}}) --> hp(HP), sf(SF), xp(XP).
-complex({complex_form: {CF, LSP, RSP}}) --> cf(CF), lsp(LSP), rsp(RSP).
-aside({aside_form: {M,SF,MF}}) --> modifier(M), sf(SF), mf(MF).
+simple(simple_form(HP, SF, XP)) --> hp(HP), sf(SF), xp(XP).
+complex(complex_form(CF,left_sub_phrase(LSP), right_sub_phrase(RSP))) --> cf(CF), sp(LSP), sp(RSP).
+aside(aside_form(M,SF,MF)) --> modifier(M), sf(SF), mf(MF).
 
 
 
 % finger_phrase
-hp(hui_finger_phrase: {HF, NP}) --> hf(HF), hnp(NP).
-% axp([SF, XP]) --> sf(SF), xp(XP).
-xp(xian_finger_phrase: {XF, NP}) --> xf(XF), xnp(NP).
-rxp(xian_finger_phrase: {finger: '', number: [N]}) --> [N],{in(N, l_XIAN)}.
+hp(hui_finger_phrase(HF, NP)) --> hf(HF), hnp(NP).
+xp(xian_finger_phrase(XF, NP)) --> xf(XF), xnp(NP).
+% trealla-prolog is different from swi-prolog, it doesn't support `pred()` syntax
+% here we have to put a placeholder null for the functor. 
+rxp(xian_finger_phrase(finger({null}), number(N))) --> [N],{in(N, l_XIAN)}.
 
-lsp(left_sub_phrase: {HP, SF, RXP}) --> hp(HP), sf(SF), rxp(RXP).
-rsp(right_sub_phrase: {HP, SF, RXP}) --> hp(HP), sf(SF), rxp(RXP).
+sp((HP, SF, RXP)) --> hp(HP), sf(SF), rxp(RXP).
 
 
 % atoms
 
-%% finger
-hf(finger: F) --> [F], { in(F, l_HUI_FINGER) }.
-xf(finger: F) --> [F], { in(F, l_XIAN_FINGER) }.
-mf(move_finger: F) --> [F], { in(F, l_MOVE_FINGER) }.
+%% finger is an atom
+hf(finger({null})) --> [].
+hf(finger(F)) --> [F], { in(F, l_HUI_FINGER) }.
+xf(finger({null})) --> [].
+xf(finger(F)) --> [F], { in(F, l_XIAN_FINGER) }.
+mf(move_finger(F)) --> [F], { in(F, l_MOVE_FINGER) }.
 
-sf(special_finger: '') --> [].
-sf(special_finger: F) --> [F], { in(F, l_SPECIAL_FINGER) }.
+sf(special_finger({null})) --> [].
+sf(special_finger(F)) --> [F], { in(F, l_SPECIAL_FINGER) }.
 
-bf(both_finger: F) --> [F], { in(F, l_BOTH_FINGER) }.
-cf(complex_finger: F) --> [F], { in(F, l_COMPLEX_FINGER) }.
-modifier(modifier: M) --> [M], { in(M, l_MODIFIER) }.
-marker(marker: M) --> [M], { in(M, l_MARKER) }.
+bf(both_finger(F)) --> [F], { in(F, l_BOTH_FINGER) }.
+cf(complex_finger(F)) --> [F], { in(F, l_COMPLEX_FINGER) }.
+modifier(modifier(M)) --> [M], { in(M, l_MODIFIER) }.
+marker(marker(M)) --> [M], { in(M, l_MARKER) }.
 
 
-%% number
-hnp(number: []) --> [].
-% hnp([N]) --> [N], {N = '徽外'; N = '外'}.
-hnp(number: [N]) --> hn(N).
-hnp(number: [N1,N2]) --> hn(N1), fn(N2).
+%% number is an array of atoms
+hnp(number({null})) --> [].
+hnp(number(N)) --> hn(N).
+hnp(number(N1,N2)) --> hn(N1), fn(N2).
 
-hn([]) --> [].
 hn(N) --> [N], { in(N, l_HUI) }.
-fn([]) --> [].
 fn(N) --> [N], { in(N, l_FEN) }.
 
-xnp(number: []) --> [].
-xnp(number: [N]) --> xn(N).
-xnp(number: [N1,N2]) --> xn(N1), xn(N2).
+xnp(number({null})) --> [].
+xnp(number(N)) --> xn(N).
+xnp(number(N1,N2)) --> xn(N1), xn(N2).
 xn(N) --> [N], { in(N, l_XIAN) }.
