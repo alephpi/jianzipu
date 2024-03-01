@@ -18,7 +18,7 @@ catch (err) {
   throw err
 }
 
-export default async function parse(tokens: string[]) {
+export async function parse(tokens: string[]) {
   const result = await pl.queryOnce(`parser(Tree, [${tokens}], []).`, { format: 'json', encode: { atoms: 'string' } })
   if (result.status === 'success')
     return result.answer.Tree

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import parser from '../composables/prolog'
+import { ALL, parse } from '../composables'
 
+console.log(ALL)
 const modelValue = defineModel()
-const a = await parser(['散', '勾', '三'])
+const a = await parse(['散', '勾', '三'])
 console.log(a)
 </script>
 
