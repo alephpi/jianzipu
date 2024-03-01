@@ -3,12 +3,16 @@ defineOptions({
   name: 'IndexPage',
 })
 
-const name = ref('')
+const text = ref('')
 
-const router = useRouter()
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
+async function go() {
+  if (text.value) {
+    const s = tokenize_paragraph(text.value)
+    const res = await Promise.all(s.map(async (item) => {
+      return await parse(item)
+    }))
+    console.log(res)
+  }
 }
 </script>
 
@@ -27,8 +31,8 @@ function go() {
     <div py-4 />
     <Suspense>
       <TheInput
-        v-model="name"
-        placeholder="What's your name?"
+        v-model="text"
+        placeholder="请输入减字谱"
         autocomplete="false"
         @keydown.enter="go"
       />
@@ -36,7 +40,7 @@ function go() {
     <div>
       <button
         class="m-3 text-sm btn"
-        :disabled="!name"
+        :disabled="!text"
         @click="go"
       >
         Go

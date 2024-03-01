@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.7.2",
+    "js-yaml": "^4.1.0",
     "trealla": "^0.17.35",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.6.3",
     "@iconify-json/carbon": "^1.1.28",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.11.5",
     "@unocss/eslint-config": "^0.58.3",
     "@unocss/eslint-plugin": "^0.58.3",

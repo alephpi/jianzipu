@@ -141,7 +141,7 @@ def parse(s: str, form = Literal['abbr','ortho']) -> Note:
       d = OrthoParseVar.PUZI.parse_string(s).as_dict()
     case _:
       raise ValueError(f"form must be either 'abbr'or 'ortho'")
-  # pp.pprint(d)
+  pp.pprint(d)
 
   return Note.from_dict(d)
 
