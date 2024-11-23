@@ -1,8 +1,17 @@
 import json
+from tkinter import N
 from typing import TypedDict
 
 import font
 
+HUI_FINGER_WIDTH = 360
+HUI_FINGER_HEIGHT = 435
+NUMBER_WIDTH = 360
+NUMBER_HEIGHT = 435
+XIAN_FINGER_WIDTH = 720
+XIAN_FINGER_HEIGHT = 515
+N_PLACEHOLDER_WIDTH = 305
+N_PLACEHOLDER_HEIGHT = 370
 
 def parse_number_layout(file="./layouts/number.txt") -> list[font.Component]:
     with open(file, "r", encoding="utf-8") as f:
@@ -24,8 +33,8 @@ def parse_number_layout(file="./layouts/number.txt") -> list[font.Component]:
             component = font.Component(
                 name=name,
                 svg_path=f"./components/{name}.svg",
-                width=kwargs["width"],
-                height=kwargs["height"],
+                width=NUMBER_WIDTH,
+                height=NUMBER_HEIGHT,
                 relative=font.Position(x=kwargs["left"], y=kwargs["top"]),
             )
             components.append(component)
@@ -53,8 +62,8 @@ def parse_hui_finger_layout(file="./layouts/hui_finger.txt") -> list[font.Compon
             component = font.Component(
                 name=name,
                 svg_path=f"./components/{name[2:]}.svg",
-                width=kwargs["width"],
-                height=kwargs["height"],
+                width=HUI_FINGER_WIDTH,
+                height=HUI_FINGER_HEIGHT,
                 relative=font.Position(x=kwargs["left"], y=kwargs["top"]),
             )
             components.append(component)
@@ -84,6 +93,7 @@ def parse_xian_finger_layout(file="./layouts/xian_finger.txt") -> list[font.Fram
                 width=kwargs["width"],
                 height=kwargs["height"],
             )
+            layouts.append(layout)
 
         elif name.startswith("c_x"):
             kwargs = {}
@@ -96,8 +106,8 @@ def parse_xian_finger_layout(file="./layouts/xian_finger.txt") -> list[font.Fram
             component = font.Component(
                 name=name,
                 svg_path=f"./components/{name[2:]}.svg",
-                width=kwargs["width"],
-                height=kwargs["height"],
+                width=XIAN_FINGER_WIDTH,
+                height=XIAN_FINGER_HEIGHT,
                 relative=font.Position(x=kwargs["left"], y=kwargs["top"]),
             )
             layout.children.append(component)
@@ -109,17 +119,15 @@ def parse_xian_finger_layout(file="./layouts/xian_finger.txt") -> list[font.Fram
                     if value.endswith("px"):
                         value = float(value[:-2])
                     kwargs[key] = value
-            component = font.Placeholder(
+            placeholder = font.Placeholder(
                 name=name,
-                width=kwargs["width"],
-                height=kwargs["height"],
+                width=N_PLACEHOLDER_WIDTH,
+                height=N_PLACEHOLDER_HEIGHT,
                 relative=font.Position(x=kwargs["left"], y=kwargs["top"]),
             )
-            layout.placeholders.append(component)
+            layout.placeholders.append(placeholder)
         else:
             raise ValueError(f"Unknown name: {name}")
-        layouts.append(layout)
-
 
     return layouts
 
@@ -132,6 +140,23 @@ def main():
     with open("./jsons/number.json", "w", encoding="utf-8") as f:
         json.dump(
             [component.model_dump() for component in components],
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
+    components = parse_hui_finger_layout()
+    with open("./jsons/hui_finger.json", "w", encoding="utf-8") as f:
+        json.dump(
+            [component.model_dump() for component in components],
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
+
+    layouts = parse_xian_finger_layout()
+    with open("./jsons/xian_finger.json", "w", encoding="utf-8") as f:
+        json.dump(
+            [layout.model_dump() for layout in layouts],
             f,
             ensure_ascii=False,
             indent=2,

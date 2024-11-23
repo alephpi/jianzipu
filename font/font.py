@@ -12,6 +12,16 @@ class Position(BaseModel):
     
     def __add__(self, other: "Position") -> "Position":
         return self.add(other)
+    
+    def scale(self, other: tuple[float, float]) -> "Position":
+        return Position(x=self.x * other[0], y=self.y * other[1])
+    
+    def __mul__(self, other: tuple[float, float]) -> "Position":
+        return self.scale(other)
+    
+    def __rmul__(self, other: tuple[float, float]) -> "Position":
+        return self.scale(other)
+
 
 class Component(BaseModel):
     name: str
@@ -55,7 +65,8 @@ class Frame(BaseModel):
     
     def fill_placeholder(self, component: Component, idx: int) -> None:
         assert idx < len(self.placeholders)
-        component.relative += self.placeholders[idx].relative # put component at the position of placeholder, i.e. from relative to the placeholder to relative to the frame
+        scale = component.width / self.placeholders[idx].width, component.height / self.placeholders[idx].height
+        component.relative = scale * component.relative + self.placeholders[idx].relative # put component at the position of placeholder, i.e. from relative to the placeholder to relative to the frame
         self.children.append(component)
 
     model_config = {
