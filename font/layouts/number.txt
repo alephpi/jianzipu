@@ -1,0 +1,358 @@
+/* l_n5 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 3439px;
+right: 13912px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n5 */
+
+position: absolute;
+width: 416px;
+height: 329px;
+left: -28px;
+top: 59px;
+
+background: #000000;
+
+
+/* l_n6 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 4147px;
+right: 13204px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n6 */
+
+position: absolute;
+width: 413px;
+height: 372px;
+left: -25px;
+top: 23px;
+
+background: #000000;
+
+
+/* l_n4 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 2703px;
+right: 14648px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n4 */
+
+position: absolute;
+width: 381px;
+height: 340px;
+left: -12px;
+top: 69px;
+
+background: #000000;
+
+
+/* l_n3 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 2010px;
+right: 15341px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n3 */
+
+position: absolute;
+width: 385.69px;
+height: 287.4px;
+left: -13px;
+top: 73px;
+
+background: #000000;
+
+
+/* l_n2 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 1317px;
+right: 16034px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n2 */
+
+position: absolute;
+width: 409.29px;
+height: 242.93px;
+left: -24px;
+top: 103px;
+
+background: #000000;
+
+
+/* l_n1 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 624px;
+right: 16727px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n1 */
+
+position: absolute;
+width: 416.88px;
+height: 87.58px;
+left: -26px;
+top: 175px;
+
+background: #000000;
+
+
+/* l_n7 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 4949px;
+right: 12402px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n7 */
+
+position: absolute;
+width: 388px;
+height: 359px;
+left: -15px;
+top: 23px;
+
+background: #000000;
+
+
+/* l_nBan */
+
+box-sizing: border-box;
+
+position: relative;
+left: 8383px;
+right: 8968px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* nBan */
+
+position: absolute;
+width: 396.5px;
+height: 435px;
+left: -14.5px;
+top: 0px;
+
+background: #000000;
+
+
+/* l_n11 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 9138px;
+right: 8213px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n11 */
+
+position: absolute;
+width: 395px;
+height: 433px;
+left: -18px;
+top: 1px;
+
+background: #000000;
+
+
+/* l_n13 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 10606px;
+right: 6745px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n13 */
+
+position: absolute;
+width: 395px;
+height: 433px;
+left: -18px;
+top: 1px;
+
+background: #000000;
+
+
+/* l_n14 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 7722px;
+right: 9629px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n14 */
+
+position: absolute;
+width: 246.45px;
+height: 439.26px;
+left: 114px;
+top: 0px;
+
+background: #000000;
+
+
+/* l_n10 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 7028px;
+right: 10323px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n10 */
+
+position: absolute;
+width: 382px;
+height: 435px;
+left: -11px;
+top: 0px;
+
+background: #000000;
+
+
+/* l_n9 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 6335px;
+right: 11016px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n9 */
+
+position: absolute;
+width: 430px;
+height: 426px;
+left: -38px;
+top: 0px;
+
+background: #000000;
+
+
+/* l_n8 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 5642px;
+right: 11709px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n8 */
+
+position: absolute;
+width: 410.87px;
+height: 224.93px;
+left: -15px;
+top: 104px;
+
+background: #000000;
+
+
+/* l_n12 */
+
+box-sizing: border-box;
+
+position: relative;
+left: 9893px;
+right: 7458px;
+top: 5775px;
+bottom: 719px;
+
+border: 1px solid #000000;
+
+
+/* n12 */
+
+position: absolute;
+width: 396px;
+height: 433px;
+left: -9px;
+top: 1px;
+
+background: #000000;
