@@ -1,0 +1,57 @@
+[
+  {
+    "name": "c_h_Da",
+    "svg_path": "./components/h_Da.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -5.0,
+      "y": -7.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "c_h_Gui",
+    "svg_path": "./components/h_Gui.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": 1.0,
+      "y": 0.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "c_h_Ming",
+    "svg_path": "./components/h_Ming.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": 0.0,
+      "y": -16.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "c_h_Shi",
+    "svg_path": "./components/h_Shi.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": 0.0,
+      "y": -17.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "c_h_Zhong",
+    "svg_path": "./components/h_Zhong.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -12.0,
+      "y": -21.0
+    },
+    "absolute": null
+  }
+]

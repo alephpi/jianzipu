@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -45,6 +45,11 @@ class Frame(BaseModel):
     absolute: Optional[Position] = None
     children: List[Union["Frame", Component]] = Field(default_factory=list)
     placeholders: List[Placeholder] = Field(default_factory=list)
+    filled: List[Component] = Field(default_factory=list)
+    components: List[Component] = Field(default_factory=list)
+
+    def model_post_init(self, __context: Any) -> None:
+        self.filled = [None] * len(self.placeholders)
 
     def posit(self, reference: Position = Position()) -> None:
         for child in self.children:
@@ -53,7 +58,10 @@ class Frame(BaseModel):
             else:
                 child.absolute = reference + child.relative
                 child.posit(child.absolute)
-    
+        for filled in self.filled:
+            filled.absolute = reference + filled.relative
+
+    # return all the components in the frame, flattened
     def flatten(self) -> List[Component]:
         components: List[Component] = []
         for child in self.children:
@@ -61,13 +69,17 @@ class Frame(BaseModel):
                 components.append(child)
             else:
                 components.extend(child.flatten())
+        components.extend(self.filled)
         return components
     
     def fill_placeholder(self, component: Component, idx: int) -> None:
         assert idx < len(self.placeholders)
-        scale = component.width / self.placeholders[idx].width, component.height / self.placeholders[idx].height
-        component.relative = scale * component.relative + self.placeholders[idx].relative # put component at the position of placeholder, i.e. from relative to the placeholder to relative to the frame
-        self.children.append(component)
+        component_copy = component.model_copy(deep=True)
+        scale = self.placeholders[idx].width / component_copy.width, self.placeholders[idx].height/ component_copy.height
+        component_copy.relative = scale * component_copy.relative + self.placeholders[idx].relative # put component at the position of placeholder, i.e. from relative to the placeholder to relative to the frame
+        component_copy.relative.x = round(component_copy.relative.x, 2)
+        component_copy.relative.y = round(component_copy.relative.y, 2)
+        self.filled[idx] = component_copy
 
     model_config = {
         "arbitrary_types_allowed": True

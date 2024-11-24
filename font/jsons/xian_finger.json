@@ -1,0 +1,422 @@
+[
+  {
+    "name": "l_xTuo",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xTuo",
+        "svg_path": "./components/xTuo.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 13.0,
+          "y": -29.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 330.0,
+          "y": 40.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xPi",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xPi",
+        "svg_path": "./components/xPi.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 0.0,
+          "y": -17.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 296.0,
+          "y": 200.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xGou",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xGou",
+        "svg_path": "./components/xGou.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 78.0,
+          "y": -69.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 207.0,
+          "y": 50.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xTi",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xTi",
+        "svg_path": "./components/xTi.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 78.0,
+          "y": -54.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 207.0,
+          "y": 120.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xTiao",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xTiao",
+        "svg_path": "./components/xTiao.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 105.0,
+          "y": 85.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 241.0,
+          "y": 28.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xMo",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xMo",
+        "svg_path": "./components/xMo.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 17.0,
+          "y": -81.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 207.0,
+          "y": 160.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xDa",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xDa",
+        "svg_path": "./components/xDa.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 36.0,
+          "y": -20.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 147.0,
+          "y": 42.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xZhai",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xZhai",
+        "svg_path": "./components/xZhai.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 56.0,
+          "y": -84.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 208.0,
+          "y": 145.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xMoTiao",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xMoTiao",
+        "svg_path": "./components/xMoTiao.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 35.0,
+          "y": -90.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 270.0,
+          "y": 177.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xGouTi",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xGouTi",
+        "svg_path": "./components/xGouTi.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 29.0,
+          "y": -43.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 221.0,
+          "y": 239.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xTuoPi",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xTuoPi",
+        "svg_path": "./components/xTuoPi.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": -18.0,
+          "y": -76.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 385.0,
+          "y": 167.0
+        }
+      }
+    ],
+    "filled": []
+  },
+  {
+    "name": "l_xDaZhai",
+    "width": 720.0,
+    "height": 515.0,
+    "relative": {
+      "x": 0.0,
+      "y": 0.0
+    },
+    "absolute": null,
+    "children": [
+      {
+        "name": "c_xDaZhai",
+        "svg_path": "./components/xDaZhai.svg",
+        "width": 720.0,
+        "height": 515.0,
+        "relative": {
+          "x": 70.0,
+          "y": -58.0
+        },
+        "absolute": null
+      }
+    ],
+    "placeholders": [
+      {
+        "name": "n_placeholder",
+        "width": 305.0,
+        "height": 370.0,
+        "relative": {
+          "x": 179.0,
+          "y": 211.0
+        }
+      }
+    ],
+    "filled": []
+  }
+]

@@ -1,0 +1,167 @@
+[
+  {
+    "name": "n1",
+    "svg_path": "./components/n1.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -26.0,
+      "y": 175.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n10",
+    "svg_path": "./components/n10.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -11.0,
+      "y": 0.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n11",
+    "svg_path": "./components/n11.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -18.0,
+      "y": 1.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n12",
+    "svg_path": "./components/n12.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -9.0,
+      "y": 1.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n13",
+    "svg_path": "./components/n13.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -18.0,
+      "y": 1.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n14",
+    "svg_path": "./components/n14.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": 114.0,
+      "y": 0.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n2",
+    "svg_path": "./components/n2.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -24.0,
+      "y": 103.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n3",
+    "svg_path": "./components/n3.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -13.0,
+      "y": 73.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n4",
+    "svg_path": "./components/n4.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -12.0,
+      "y": 69.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n5",
+    "svg_path": "./components/n5.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -28.0,
+      "y": 59.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n6",
+    "svg_path": "./components/n6.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -25.0,
+      "y": 23.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n7",
+    "svg_path": "./components/n7.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -15.0,
+      "y": 23.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n8",
+    "svg_path": "./components/n8.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -15.0,
+      "y": 104.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "n9",
+    "svg_path": "./components/n9.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -38.0,
+      "y": 0.0
+    },
+    "absolute": null
+  },
+  {
+    "name": "nBan",
+    "svg_path": "./components/nBan.svg",
+    "width": 360.0,
+    "height": 435.0,
+    "relative": {
+      "x": -14.5,
+      "y": 0.0
+    },
+    "absolute": null
+  }
+]

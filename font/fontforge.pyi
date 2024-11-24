@@ -4,7 +4,7 @@ from typing import Iterator, Optional
 
 __version__: str
 
-def activeFont() -> Optional[Font]:
+def activeFont() -> Optional[font]:
     """
     Returns the currently open font, or None if no font is open.
     This is useful for working with a font without knowing its name or location.
@@ -14,7 +14,7 @@ def activeFont() -> Optional[Font]:
     """
     ...
 
-def open(path: str) -> Font:
+def open(path: str) -> font:
     """
     Opens a font file at the specified path and returns a Font object representing the font.
     
@@ -47,7 +47,7 @@ def version() -> str:
     """
     ...
 
-class Font:
+class font:
     """
     Represents a font, allowing access to its glyphs and various font properties.
 
@@ -76,7 +76,7 @@ class Font:
     Note that in a CID keyed font this will be the name of the current subfont. Use cidfontname for the name of the font as a whole.
     """
 
-    def createChar(self, unicode: int, name: Optional[str] = None) -> "Glyph":
+    def createChar(self, unicode: int, name: Optional[str] = None) -> "glyph":
         """
         Create (and return) a character at the specified unicode codepoint in this font and optionally name it. If you wish to create a glyph with no unicode codepoint, set the first argument to -1 and specify a name.
 
@@ -91,12 +91,14 @@ class Font:
             Glyph: The created Glyph object.
         """
         ...
-    def glyphs(self) -> Iterator[Glyph]:
+    def glyphs(self) -> Iterator[glyph]:
         """
         Returns an iterator which will return the glyphs in the font. By default they will be returned in “GID” order, but if type is specified as “encoding” they will be returned in encoding order. If returned in encoding order it is possible that a glyph will be returned more than once if there are multiple encoding slots which reference it.
         """
 
-class Glyph:
+class layer:
+    ...
+class glyph:
     """
     Represents a single glyph in a font, including properties such as width and name,
     and methods for transforming and editing the glyph.
@@ -114,6 +116,7 @@ class Glyph:
     """
     The name of the glyph.
     """
+    layers: dict[str, layer]
 
     # @overload
     # def addPosSub(
