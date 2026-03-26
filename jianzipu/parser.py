@@ -1,10 +1,10 @@
-from typing import Literal
-from pyparsing import Group, Opt, ParserElement, ZeroOrMore, oneOf
 import pprint as pp
+from typing import Literal
 
+from pyparsing import Group, Opt, ParserElement, ZeroOrMore, one_of
+
+from .constant import d
 from .grammar import Note
-from .constant import d 
-
 
 # fingers, modifiers and markers are open, so we import from outside
 # 保证字符长的在前（如防止勾剔只匹配了勾）
@@ -27,16 +27,16 @@ class OrthoParseVar:
   HUI = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
   FEN = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
   # Define individual components
-  hui = (ZeroOrMore((oneOf(HUI) + Opt(oneOf(FEN))) | '徽外')).set_results_name('number')
-  xian = (ZeroOrMore(oneOf(XIAN))).set_results_name('number')
-  hui_finger = oneOf(HUI_FINGER).set_results_name('finger')
-  xian_finger = oneOf(XIAN_FINGER).set_results_name('finger')
-  move_finger = oneOf(MOVE_FINGER).set_results_name('finger')
-  special_finger = oneOf(SPECIAL_FINGER).set_results_name('special_finger')
-  modifier = oneOf(MODIFIER).set_results_name('modifier')
-  both_finger = oneOf(BOTH_FINGER).set_results_name('both_finger')
-  complex_finger = oneOf(COMPLEX_FINGER).set_results_name('complex_finger')
-  marker = oneOf(MARKER).set_results_name('marker')
+  hui = (ZeroOrMore((one_of(HUI) + Opt(one_of(FEN))) | '徽外')).set_results_name('number')
+  xian = (ZeroOrMore(one_of(XIAN))).set_results_name('number')
+  hui_finger = one_of(HUI_FINGER).set_results_name('finger')
+  xian_finger = one_of(XIAN_FINGER).set_results_name('finger')
+  move_finger = one_of(MOVE_FINGER).set_results_name('finger')
+  special_finger = one_of(SPECIAL_FINGER).set_results_name('special_finger')
+  modifier = one_of(MODIFIER).set_results_name('modifier')
+  both_finger = one_of(BOTH_FINGER).set_results_name('both_finger')
+  complex_finger = one_of(COMPLEX_FINGER).set_results_name('complex_finger')
+  marker = one_of(MARKER).set_results_name('marker')
 
   # Define phrase patterns
   hui_finger_phrase = Group(hui_finger + hui).set_results_name('hui_finger_phrase')
@@ -71,16 +71,16 @@ class AbbrParseVar:
   FEN = ['一','二','三','四','五','六','七','八','九','半']
   HUI_FINGER = ['大','食','中','名','跪','散']
   # Define individual components
-  hui = (ZeroOrMore((oneOf(HUI) + Opt(oneOf(FEN))) | '外')).set_results_name('number')
-  xian = (ZeroOrMore(oneOf(XIAN))).set_results_name('number')
-  hui_finger = oneOf(HUI_FINGER).set_results_name('finger')
-  xian_finger = oneOf(XIAN_FINGER).set_results_name('finger')
-  move_finger = oneOf(MOVE_FINGER).set_results_name('finger')
-  special_finger = oneOf(SPECIAL_FINGER).set_results_name('special_finger')
-  modifier = oneOf(MODIFIER).set_results_name('modifier')
-  both_finger = oneOf(BOTH_FINGER).set_results_name('both_finger')
-  complex_finger = oneOf(COMPLEX_FINGER).set_results_name('complex_finger')
-  marker = oneOf(MARKER).set_results_name('marker')
+  hui = (ZeroOrMore((one_of(HUI) + Opt(one_of(FEN))) | '外')).set_results_name('number')
+  xian = (ZeroOrMore(one_of(XIAN))).set_results_name('number')
+  hui_finger = one_of(HUI_FINGER).set_results_name('finger')
+  xian_finger = one_of(XIAN_FINGER).set_results_name('finger')
+  move_finger = one_of(MOVE_FINGER).set_results_name('finger')
+  special_finger = one_of(SPECIAL_FINGER).set_results_name('special_finger')
+  modifier = one_of(MODIFIER).set_results_name('modifier')
+  both_finger = one_of(BOTH_FINGER).set_results_name('both_finger')
+  complex_finger = one_of(COMPLEX_FINGER).set_results_name('complex_finger')
+  marker = one_of(MARKER).set_results_name('marker')
 
   # Define phrase patterns
   hui_finger_phrase = Group(hui_finger + hui).set_results_name('hui_finger_phrase')
