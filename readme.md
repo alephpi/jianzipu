@@ -11,7 +11,7 @@
 
 酒狂减字谱的渲染效果（只是单纯罗列了单个减字，没有添加任何修饰）
 
-![]（酒狂。png)
+![](酒狂.png)
 
 在 [discord](https://discord.gg/UBPK6hnUJD) 上加入讨论！
 
@@ -48,7 +48,7 @@ C'' -->D''[<img src='https://raw.githubusercontent.com/alephpi/jianzipu/master/e
 class A,A',A'',D,D',D'' clear;
 ```
 
-<img src='https://raw.githubusercontent.com/alephpi/jianzipu/master/example.svg' width=100, height=100>
+<img src='https://raw.githubusercontent.com/alephpi/jianzipu/legacy/example.svg' width=100, height=100>
 
 <details>
 <summary>*: 具体渲染数据为：</summary>
