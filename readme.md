@@ -1,3 +1,6 @@
+舍不得丢弃，建立这个 legacy 分支用以纪念我早期的试验性方案。
+---
+
 # 天书：减字谱电子化方案
 
 > “妹妹近日越发长进了，竟看起天书来了！”
@@ -8,7 +11,7 @@
 
 酒狂减字谱的渲染效果（只是单纯罗列了单个减字，没有添加任何修饰）
 
-![](酒狂.png)
+![]（酒狂。png)
 
 在 [discord](https://discord.gg/UBPK6hnUJD) 上加入讨论！
 
@@ -72,7 +75,7 @@ class A,A',A'',D,D',D'' clear;
 ```sh
 pip install jianzipu
 ```
-~~（装是可以装，但[Python KAGE engine](https://github.com/HowardZorn/kage-engine)还没发包，装了也白装）~~
+~~（装是可以装，但 [Python KAGE engine](https://github.com/HowardZorn/kage-engine) 还没发包，装了也白装）~~
 ## 单字渲染
 ```py
 from jianzipu.parser import parse
@@ -82,7 +85,7 @@ note.draw()
 ## 篇章渲染
 ```py
 from jianzipu.paragraph import parse_file
-_, paragraph = parse_file('./曲谱/酒狂_简写.txt')
+_, paragraph = parse_file('./曲谱/酒狂_简写。txt')
 canvases = []
 for token in paragraph:
     try:
