@@ -147,3 +147,4 @@ package/jianzipu/dev/dump_newest_only.txt
 *.png
 *font
 !assets/**
+!scripts/test.py
