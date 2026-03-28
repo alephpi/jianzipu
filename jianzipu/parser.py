@@ -3,39 +3,40 @@ from typing import List, Literal
 
 from pyparsing import Group, Opt, ParserElement, ZeroOrMore, one_of
 
-from .constant import d
-
-# fingers, modifiers and markers are open, so we import from outside
-# 保证字符长的在前（如防止勾剔只匹配了勾）
-HUI_FINGER = sorted(d['徽位指法'].keys(), key=len, reverse=True)
-XIAN_FINGER = sorted(d['弦序指法'].keys(), key=len, reverse=True)
-MOVE_FINGER = sorted(d['走位指法'].keys(), key=len, reverse=True)
-SPECIAL_FINGER = sorted(d['特殊指法'].keys(), key=len, reverse=True)
-MODIFIER = sorted(d['修饰'].keys(), key=len, reverse=True)
-BOTH_FINGER = sorted(d['联袂指法'].keys(), key=len, reverse=True)
-COMPLEX_FINGER = sorted(d['复式指法'].keys(), key=len, reverse=True)
-MARKER = sorted(d['记号'].keys(), key=len, reverse=True)
+from .constants import (
+  COMPLEX_FINGER,
+  FEN_NUMBER_ABBR,
+  FEN_NUMBER_ORTHO,
+  HUI_FINGER,
+  HUI_FINGER_ORTHO,
+  HUI_NUMBER_ABBR,
+  HUI_NUMBER_ORTHO,
+  JOINT_FINGER,
+  MARKER,
+  MODIFIER,
+  MOVE_FINGER,
+  SPECIAL_FINGER,
+  XIAN_FINGER,
+  XIAN_NUMBER_ABBR,
+  XIAN_NUMBER_ORTHO,
+)
 
 # white space is forbidden inside a note (but as a seperator between them)
 ParserElement.set_default_whitespace_chars('')
 
 class OrthoParseVar:
-  # numbers are closed, so we list here
-  XIAN_NUMBER = ['一弦','二弦','三弦','四弦','五弦','六弦','七弦']
-  HUI_NUMBER = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
-  FEN_NUMBER = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
   # Define individual components
-  hui_number = (ZeroOrMore((one_of(HUI_NUMBER) + Opt(one_of(FEN_NUMBER))) | '徽外')).set_results_name('hn')
-  xian_number = (ZeroOrMore(one_of(XIAN_NUMBER))).set_results_name('xn')
-  hui_finger = one_of(HUI_FINGER).set_results_name('hf')
+  hui_number = (ZeroOrMore((one_of(HUI_NUMBER_ORTHO) + Opt(one_of(FEN_NUMBER_ORTHO))) | '徽外')).set_results_name('hn')
+  xian_number = (ZeroOrMore(one_of(XIAN_NUMBER_ORTHO))).set_results_name('xn')
+  hui_finger = one_of(HUI_FINGER_ORTHO).set_results_name('hf')
   xian_finger = one_of(XIAN_FINGER).set_results_name('xf')
   move_finger = one_of(MOVE_FINGER).set_results_name('mf')
   special_finger = one_of(SPECIAL_FINGER).set_results_name('sf')
-  modifier = one_of(MODIFIER).set_results_name('mod')
+  modifier = one_of(MODIFIER).set_results_name('mo')
   complex_finger = one_of(COMPLEX_FINGER).set_results_name('cf')
-  # TODO: should merge both_finger and marker into one sTandalone Form called 'TF'
-  both_finger = one_of(BOTH_FINGER).set_results_name('bf')
-  marker = one_of(MARKER).set_results_name('marker')
+  # TODO: should merge joint_finger and marker into one sTandalone Form called 'TF'
+  joint_finger = one_of(JOINT_FINGER).set_results_name('jf')
+  marker = one_of(MARKER).set_results_name('ma')
 
   # Define phrase patterns
   hui_finger_phrase = Group(hui_finger + hui_number).set_results_name('hfp')
@@ -62,26 +63,21 @@ class OrthoParseVar:
 
 
   # 谱字, lazy matching, order is important
-  PUZI = complex_form | marker | both_finger | aside_form | simple_form
+  PUZI = complex_form | marker | joint_finger | aside_form | simple_form
 
 class AbbrParseVar:
-  # numbers are closed, so we list here
-  XIAN_NUMBER = ['一','二','三','四','五','六','七']
-  HUI_NUMBER = ['十一','十二','十三','一','二','三','四','五','六','七','八','九','十']
-  FEN_NUMBER = ['一','二','三','四','五','六','七','八','九','半']
-  HUI_FINGER = ['大','食','中','名','跪','散']
   # Define individual components
-  hui_number = (ZeroOrMore((one_of(HUI_NUMBER) + Opt(one_of(FEN_NUMBER))) | '外')).set_results_name('hn')
-  xian_number = (ZeroOrMore(one_of(XIAN_NUMBER))).set_results_name('xn')
+  hui_number = (ZeroOrMore((one_of(HUI_NUMBER_ABBR) + Opt(one_of(FEN_NUMBER_ABBR))) | '外')).set_results_name('hn')
+  xian_number = (ZeroOrMore(one_of(XIAN_NUMBER_ABBR))).set_results_name('xn')
   hui_finger = one_of(HUI_FINGER).set_results_name('hf')
   xian_finger = one_of(XIAN_FINGER).set_results_name('xf')
   move_finger = one_of(MOVE_FINGER).set_results_name('mf')
   special_finger = one_of(SPECIAL_FINGER).set_results_name('sf')
-  modifier = one_of(MODIFIER).set_results_name('mod')
+  modifier = one_of(MODIFIER).set_results_name('mo')
   complex_finger = one_of(COMPLEX_FINGER).set_results_name('cf')
-  # TODO: should merge both_finger and marker into one sTandalone Form called 'TF'
-  both_finger = one_of(BOTH_FINGER).set_results_name('bf')
-  marker = one_of(MARKER).set_results_name('marker')
+  # TODO: should merge joint_finger and marker into one sTandalone Form called 'TF'
+  joint_finger = one_of(JOINT_FINGER).set_results_name('jf')
+  marker = one_of(MARKER).set_results_name('ma')
 
   # Define phrase patterns
   hui_finger_phrase = Group(hui_finger + hui_number).set_results_name('hfp')
@@ -107,7 +103,7 @@ class AbbrParseVar:
   aside_form = Group(Opt(modifier) + Opt(special_finger) + move_finger_phrase).set_results_name('AF')
 
   # 谱字, lazy matching, order is important
-  PUZI = complex_form | marker | both_finger | aside_form | simple_form
+  PUZI = complex_form | marker | joint_finger | aside_form | simple_form
 
 
 def parse(s: str, form : Literal['abbr','ortho'] = 'abbr'):

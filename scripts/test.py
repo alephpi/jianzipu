@@ -126,11 +126,14 @@ def test_marker_form_parse_and_str():
       '大息',
       '入拍',
       '入慢',
-      '。',
+      '泛起',
+      '泛止',
+      '间',
       '再作',
       '从头再作',
       '曲终',
       '操终',
+      # '。',
       ]
   for i in l:
     assert parse(i, form='ortho').to_string('ortho') == i

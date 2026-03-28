@@ -11,6 +11,7 @@ dependencies = [
     "pyparsing>=3.1.1",
     "numpy>=1.25.2",
     "pyyaml>=6.0.3",
+    "pandas>=3.0.1",
 ]
 classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",

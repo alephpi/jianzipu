@@ -2,7 +2,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 
-from .constant import TAG, t_JIANZI, t_TAG
+from .constants import PATH_TO_FIGMA, TAG, t_JIANZI, t_TAG
 
 
 @dataclass(frozen=True, slots=True)
@@ -12,22 +12,20 @@ class Area:
     width: float
     height: float
 
-_EMPTY_AREA = Area(0, 0, 0, 0)
-
 @dataclass(frozen=True, slots=True)
-class LayoutItem:
+class Layout:
     tags: list[t_TAG]
     values: list[t_JIANZI]
     areas: list[Area]
 
+LayoutDict = dict[t_TAG, list[Layout]]
 @dataclass(frozen=True, slots=True)
 class Component:
     name: str
     area: Area
     container_tag: t_TAG
 
-
-Layout = dict[t_TAG, list[LayoutItem]]
+ComponentDict = dict[str, Component]
 
 
 # t_TAGS = tuple[t_TAG, ...]
@@ -52,9 +50,8 @@ Layout = dict[t_TAG, list[LayoutItem]]
 
 def parse_figma_to_layout(file: Path | str):
     with open(file, "r", encoding="utf-8") as f:
-            content = f.read()
+        content = f.read()
 
-    # layouts: list[Layout] = []
     items = []
     for css_block in content.split("\n\n\n"):
         css_block = css_block.strip()
@@ -70,20 +67,20 @@ def parse_figma_to_layout(file: Path | str):
         items.append((name, kwargs))
     # return items
 
-    layout: Layout = defaultdict(list)
-    components: dict[str, Component] = {}
+    layout_dict: LayoutDict = defaultdict(list)
+    component_dict: dict[str, Component] = {}
     for i, item in enumerate(items):
         name: str = item[0]
         area: dict = item[1]
         if name.startswith("l_"):
             key = name[2:]
-            layout_item: LayoutItem = LayoutItem(tags=[], values=[], areas=[])
-            layout[key].append(layout_item)
+            layout: Layout = Layout(tags=[], values=[], areas=[])
+            layout_dict[key].append(layout)
         elif name in TAG:
-            if layout_item:
-                layout_item.tags.append(name)
-                layout_item.values.append("")
-                layout_item.areas.append(
+            if layout:
+                layout.tags.append(name)
+                layout.values.append("")
+                layout.areas.append(
                     Area(
                         x=area["left"],
                         y=area["top"],
@@ -95,8 +92,8 @@ def parse_figma_to_layout(file: Path | str):
             # use temp key to not break the key for l_
             # store the component to the previous item
             component_name = name[2:]
-            layout_item.values[-1] = component_name
-            components[component_name] = Component(
+            layout.values[-1] = component_name
+            component_dict[component_name] = Component(
                 name=component_name,
                 area=Area(
                     x=area["left"],
@@ -106,7 +103,9 @@ def parse_figma_to_layout(file: Path | str):
                 ),
                 container_tag=items[i - 1],
             )
-    return layout, components
+    return layout_dict, component_dict
+
+LAYOUT_DICT, COMPONENT_DICT = parse_figma_to_layout(PATH_TO_FIGMA)
 
     # def insert_child(self, child: "ParseNode", index: Optional[int] = None) -> None:
     #     if index is None:
