@@ -1,8 +1,30 @@
-from functools import reduce
 import operator
 import os
-from typing import Dict
+from functools import reduce
+from typing import Dict, Literal
+
 import yaml
+
+TAG = (
+    'SF','CF','AF','TF',
+    'hfp', 'xfp', 'lsp', 'rsp', 'mfp',
+    'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2','sf','cf','bf','mod','marker'
+    )
+
+# define syntax tag
+t_TAG = Literal[
+    'SF','CF','AF','TF',
+    'hfp', 'xfp', 'lsp', 'rsp', 'mfp',
+    'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2','sf','cf','bf','mod','marker'
+    ]
+
+
+# TODO
+t_JIANZI = str
+
+
+
+
 
 # Get the current directory of the script
 current_directory = os.path.dirname(os.path.abspath(__file__))

@@ -21,56 +21,12 @@ ParserElement.set_default_whitespace_chars('')
 
 class OrthoParseVar:
   # numbers are closed, so we list here
-  XIAN = ['一弦','二弦','三弦','四弦','五弦','六弦','七弦']
-  HUI = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
-  FEN = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
+  XIAN_NUMBER = ['一弦','二弦','三弦','四弦','五弦','六弦','七弦']
+  HUI_NUMBER = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
+  FEN_NUMBER = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
   # Define individual components
-  hui = (ZeroOrMore((one_of(HUI) + Opt(one_of(FEN))) | '徽外')).set_results_name('hn')
-  xian = (ZeroOrMore(one_of(XIAN))).set_results_name('xn')
-  hui_finger = one_of(HUI_FINGER).set_results_name('hf')
-  xian_finger = one_of(XIAN_FINGER).set_results_name('xf')
-  move_finger = one_of(MOVE_FINGER).set_results_name('mf')
-  special_finger = one_of(SPECIAL_FINGER).set_results_name('sf')
-  modifier = one_of(MODIFIER).set_results_name('mod')
-  complex_finger = one_of(COMPLEX_FINGER).set_results_name('cf')
-  both_finger = one_of(BOTH_FINGER).set_results_name('bf')
-  marker = one_of(MARKER).set_results_name('marker')
-
-  # Define phrase patterns
-  hui_finger_phrase = Group(hui_finger + hui).set_results_name('hfp')
-  xian_finger_phrase = Group(xian_finger + xian).set_results_name('xfp')
-
-  # reduced_xian_finger phrase, which is a simplified version of xian_finger_phrase
-  # only used in complex form
-  # since the complex_finger is actually the xian_finger 
-  reduced_xian_finger_phrase = Group(xian).set_results_name('xfp')
-  left_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('lsp')
-  right_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('rsp')
-
-  # move_finger_phrase is a similar to hui_finger_phrase, used in aside form
-  move_finger_phrase = Group(move_finger + hui).set_results_name('mfp')
-
-
-  # Define form pattern
-  # simple form must have xian_finger_phrase, while hui_finger_phrase is optional
-  simple_form = Group(Opt(hui_finger_phrase) + Opt(special_finger) + xian_finger_phrase).set_results_name('SF')
-  # complex form must have all
-  complex_form = Group(complex_finger + left_sub_phrase + right_sub_phrase).set_results_name('CF')
-  # similar for aside_form
-  aside_form = Group(Opt(modifier) + Opt(special_finger) + move_finger_phrase).set_results_name('AF')
-
-  # 谱字, lazy matching, order is important
-  PUZI = complex_form | marker | both_finger | aside_form | simple_form
-
-class AbbrParseVar:
-  # numbers are closed, so we list here
-  XIAN = ['一','二','三','四','五','六','七']
-  HUI = ['十一','十二','十三','一','二','三','四','五','六','七','八','九','十']
-  FEN = ['一','二','三','四','五','六','七','八','九','半']
-  HUI_FINGER = ['大','食','中','名','跪','散']
-  # Define individual components
-  hui = (ZeroOrMore((one_of(HUI) + Opt(one_of(FEN))) | '外')).set_results_name('hn')
-  xian = (ZeroOrMore(one_of(XIAN))).set_results_name('xn')
+  hui_number = (ZeroOrMore((one_of(HUI_NUMBER) + Opt(one_of(FEN_NUMBER))) | '徽外')).set_results_name('hn')
+  xian_number = (ZeroOrMore(one_of(XIAN_NUMBER))).set_results_name('xn')
   hui_finger = one_of(HUI_FINGER).set_results_name('hf')
   xian_finger = one_of(XIAN_FINGER).set_results_name('xf')
   move_finger = one_of(MOVE_FINGER).set_results_name('mf')
@@ -82,18 +38,64 @@ class AbbrParseVar:
   marker = one_of(MARKER).set_results_name('marker')
 
   # Define phrase patterns
-  hui_finger_phrase = Group(hui_finger + hui).set_results_name('hfp')
-  xian_finger_phrase = Group(xian_finger + xian).set_results_name('xfp')
+  hui_finger_phrase = Group(hui_finger + hui_number).set_results_name('hfp')
+  xian_finger_phrase = Group(xian_finger + xian_number).set_results_name('xfp')
 
   # reduced_xian_finger phrase, which is a simplified version of xian_finger_phrase
-  # only used in complex from
+  # only used in complex form
   # since the complex_finger is actually the xian_finger 
-  reduced_xian_finger_phrase = Group(xian).set_results_name('xfp')
+  reduced_xian_finger_phrase = Group(xian_number).set_results_name('xfp')
   left_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('lsp')
   right_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('rsp')
 
   # move_finger_phrase is a similar to hui_finger_phrase, used in aside form
-  move_finger_phrase = Group(move_finger + hui).set_results_name('mfp')
+  move_finger_phrase = Group(move_finger + hui_number).set_results_name('mfp')
+
+
+  # Define form pattern
+  # simple form must have xian_finger_phrase, while hui_finger_phrase is optional
+  simple_form = Group(Opt(hui_finger_phrase) + Opt(special_finger) + xian_finger_phrase).set_results_name('SF')
+  # complex form must have all
+  complex_form = Group(complex_finger + left_sub_phrase + right_sub_phrase).set_results_name('CF')
+  # similar for aside_form
+  aside_form = Group(Opt(modifier) + Opt(special_finger) + move_finger_phrase).set_results_name('AF')
+
+
+  # 谱字, lazy matching, order is important
+  PUZI = complex_form | marker | both_finger | aside_form | simple_form
+
+class AbbrParseVar:
+  # numbers are closed, so we list here
+  XIAN_NUMBER = ['一','二','三','四','五','六','七']
+  HUI_NUMBER = ['十一','十二','十三','一','二','三','四','五','六','七','八','九','十']
+  FEN_NUMBER = ['一','二','三','四','五','六','七','八','九','半']
+  HUI_FINGER = ['大','食','中','名','跪','散']
+  # Define individual components
+  hui_number = (ZeroOrMore((one_of(HUI_NUMBER) + Opt(one_of(FEN_NUMBER))) | '外')).set_results_name('hn')
+  xian_number = (ZeroOrMore(one_of(XIAN_NUMBER))).set_results_name('xn')
+  hui_finger = one_of(HUI_FINGER).set_results_name('hf')
+  xian_finger = one_of(XIAN_FINGER).set_results_name('xf')
+  move_finger = one_of(MOVE_FINGER).set_results_name('mf')
+  special_finger = one_of(SPECIAL_FINGER).set_results_name('sf')
+  modifier = one_of(MODIFIER).set_results_name('mod')
+  complex_finger = one_of(COMPLEX_FINGER).set_results_name('cf')
+  # TODO: should merge both_finger and marker into one sTandalone Form called 'TF'
+  both_finger = one_of(BOTH_FINGER).set_results_name('bf')
+  marker = one_of(MARKER).set_results_name('marker')
+
+  # Define phrase patterns
+  hui_finger_phrase = Group(hui_finger + hui_number).set_results_name('hfp')
+  xian_finger_phrase = Group(xian_finger + xian_number).set_results_name('xfp')
+
+  # reduced_xian_finger phrase, which is a simplified version of xian_finger_phrase
+  # only used in complex from
+  # since the complex_finger is actually the xian_finger 
+  reduced_xian_finger_phrase = Group(xian_number).set_results_name('xfp')
+  left_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('lsp')
+  right_sub_phrase = Group(hui_finger_phrase + Opt(special_finger) + reduced_xian_finger_phrase).set_results_name('rsp')
+
+  # move_finger_phrase is a similar to hui_finger_phrase, used in aside form
+  move_finger_phrase = Group(move_finger + hui_number).set_results_name('mfp')
 
 
   # Define form pattern
