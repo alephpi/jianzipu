@@ -12,6 +12,8 @@ TAG = (
     'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2','sf','cf','jf','mo','ma'
     )
 
+FORMS = ("SF", "CF", "AF", "TF")
+
 # define syntax tag
 t_TAG = Literal[
     'SF','CF','AF','TF',
