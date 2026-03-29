@@ -52,6 +52,9 @@ uv sync
 ```
 详见 [开发指南](./dev_guide.md)
 
+# 使用
+目前正在开发阶段，可以参考 [`scripts/layout.ipynb`](./scripts/layout.ipynb) 与 [`scripts/parse.ipynb`](./scripts/parse.ipynb) 与开发指南了解用法。
+
 # TODO
 
 - [ ] 网页应用
