@@ -1,6 +1,3 @@
-import operator
-import os
-from functools import reduce
 from pathlib import Path
 from typing import Dict, Literal
 
@@ -21,6 +18,14 @@ t_TAG = Literal[
     'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2','sf','cf','jf','mo','ma'
     ]
 
+t_FORM = Literal['SF', 'CF', 'AF', 'TF']
+
+CHILDREN_TAGS_ORDER_INDEX = {
+    "SF": {"hfp": 0, "mf": 1, "xfp": 2},
+    "CF": {"cf": 0, "lsp": 1, "rsp": 2},
+    "hfp": {"hf": 0, "hn1": 1, "hn2": 2},
+    "xfp": {"xf": 0, "xn1": 1, "xn2": 2},
+}
 
 # TODO
 t_JIANZI = str

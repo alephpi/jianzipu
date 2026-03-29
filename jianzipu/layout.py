@@ -1,13 +1,17 @@
 from collections import defaultdict
+from copy import deepcopy
 from dataclasses import dataclass, field
+from itertools import product
 from pathlib import Path
 
 from .constants import (
+    CHILDREN_TAGS_ORDER_INDEX,
     FORMS,
     PATH_TO_FIGMA,
     TAG,
     CN_from_EN,
     EN_from_CN,
+    t_FORM,
     t_JIANZI,
     t_TAG,
 )
@@ -46,17 +50,51 @@ class LayoutNode:
     def is_leaf(self) -> bool:
         return not self.children
 
-    def get_child(self, tag: t_TAG) -> "LayoutNode":
+    def get_children_tags(self):
+        return self.children.keys()
+
+    def get_child_of_tag(self, tag: t_TAG) -> "LayoutNode":
         return self.children[tag]
 
-    def insert_child(self, child: "LayoutNode", tag: t_TAG) -> None:
-        child_container = self.get_child(tag)
-        child_container.children[child.tag] = child
+    def _sort_children(self) -> None:
+        """reorder children according to the order defined in CHILDREN_TAGS_ORDER_INDEX, 
+        so that the flattened tree preserves the syntax order.
+        """
+        order_index = CHILDREN_TAGS_ORDER_INDEX.get(self.tag)
+        if not order_index:
+            return
+        self.children = dict(
+            sorted(self.children.items(), key=lambda item: order_index[item[0]])
+        )
 
-    def flatten(self) -> list["LayoutNode"]:
+    def set_child(self, child: "LayoutNode") -> None:
+        order_index = CHILDREN_TAGS_ORDER_INDEX.get(self.tag)
+        if order_index is not None and child.tag not in order_index:
+            raise ValueError(f"Invalid child tag {child.tag} for parent {self.tag}")
+        self.children[child.tag] = child
+        self._sort_children()
+
+    # def insert_child(self, child: "LayoutNode", tag: t_TAG) -> None:
+    #     child_container = self.get_child_of_tag(tag)
+    #     order_index = CHILDREN_TAGS_ORDER_INDEX.get(child_container.tag)
+    #     if order_index is not None and child.tag not in order_index:
+    #         raise ValueError(
+    #             f"Invalid child tag {child.tag} for parent {child_container.tag}"
+    #         )
+    #     child_container.children[child.tag] = child
+    #     child_container._sort_children()
+
+    def flatten(self) -> "LayoutNode":
+        """return a new LayoutNode with the same leaves but flattened structure"""
         leaves: list["LayoutNode"] = []
         self._collect_leaves(offset_x=0, offset_y=0, leaves=leaves)
-        return leaves
+        flattened = LayoutNode(
+                        tag=self.tag,
+                        name=self.name,
+                        area=self.area,
+                        children={leave.tag: leave for leave in leaves}
+                        )
+        return flattened
 
     def _collect_leaves(self, offset_x: float, offset_y: float, leaves: list["LayoutNode"]) -> None:
         for child in self.children.values():
@@ -76,7 +114,6 @@ class LayoutNode:
     # def from_layout(cls, layout: Layout) -> "LayoutNode":
     #     return
 
-LayoutDict = dict[t_TAG, list[LayoutNode]]
 @dataclass(frozen=True, slots=True)
 class Component:
     name: t_JIANZI
@@ -84,9 +121,10 @@ class Component:
     container_area: Area
     container_tag: t_TAG
 
-ComponentDict = dict[t_JIANZI, Component]
-
-def parse_figma(file: Path | str=PATH_TO_FIGMA):
+def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[LayoutNode]], dict[t_TAG, list[LayoutNode]], dict[t_JIANZI, Component]]:
+    """
+    Parse the figma.css file to get the form_templates, layout templates and component dict.
+    """
     with open(file, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -106,7 +144,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA):
     # debug
     # return items
 
-    layout_dict: LayoutDict = defaultdict(list)
+    layout_templates: dict[t_TAG, list[LayoutNode]] = defaultdict(list)
     component_dict: dict[t_JIANZI, Component] = {}
     for i, item in enumerate(items):
         tag: t_TAG = item[0]
@@ -114,7 +152,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA):
         if tag.startswith("l_"):
             key = tag[2:]
             layout: LayoutNode = LayoutNode(tag=key, name="", area=_EMPTY_AREA)
-            layout_dict[key].append(layout)
+            layout_templates[key].append(layout)
         elif tag in TAG:
             sublayout = LayoutNode(
                     tag=tag, name="", 
@@ -125,13 +163,13 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA):
                     height=area["height"],
                 )
             )
-            layout.children[tag]=sublayout
+            layout.set_child(sublayout)
         elif tag.startswith("c_"):
             # use temp key to not break the key for l_
             # store the component to the previous item
             component_name = tag[2:-3]
             last_tag: t_TAG = items[i-1][0]
-            last_sublayout = layout.get_child(last_tag)
+            last_sublayout = layout.get_child_of_tag(last_tag)
             last_sublayout.set_name(component_name)
             component_dict[component_name] = Component(
                 name=component_name,
@@ -144,5 +182,20 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA):
                 container_area=last_sublayout.area,
                 container_tag=last_tag,
             )
-    form_dict = {k: layout_dict.pop(k) for k in FORMS if k in layout_dict}
-    return form_dict, layout_dict, component_dict
+    form_templates: dict[t_FORM, list[LayoutNode]] = {k: layout_templates.pop(k) for k in FORMS if k in layout_templates}
+    return form_templates, layout_templates, component_dict
+
+def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], flatten: bool) -> list[LayoutNode]:
+    """Get all possible layouts by injecting layout templates into form templates
+    """
+    all_layouts: list[LayoutNode] = []
+    for form_layouts in form_templates.values():
+        for form_layout in form_layouts:
+            tags: list[t_TAG] = [tag for tag in form_layout.get_children_tags() if tag in layout_templates]
+            layout_options = [layout_templates[tag] for tag in tags]
+            for layouts in product(*layout_options):
+                combined = deepcopy(form_layout)
+                for layout in layouts:
+                    combined.set_child(deepcopy(layout))
+                all_layouts.append(combined.flatten() if flatten else combined)
+    return all_layouts
