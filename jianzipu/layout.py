@@ -1,8 +1,16 @@
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
-from .constants import FORMS, PATH_TO_FIGMA, TAG, t_JIANZI, t_TAG
+from .constants import (
+    FORMS,
+    PATH_TO_FIGMA,
+    TAG,
+    CN_from_EN,
+    EN_from_CN,
+    t_JIANZI,
+    t_TAG,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -15,7 +23,7 @@ class Area:
 @dataclass(frozen=True, slots=True)
 class Layout:
     tags: list[t_TAG]
-    values: list[t_JIANZI]
+    names: list[t_JIANZI]
     areas: list[Area]
 
 LayoutDict = dict[t_TAG, list[Layout]]
@@ -49,7 +57,7 @@ ComponentDict = dict[str, Component]
 #     }
 # }
 
-def parse_figma_to_layout(file: Path | str):
+def parse_figma(file: Path | str=PATH_TO_FIGMA):
     with open(file, "r", encoding="utf-8") as f:
         content = f.read()
 
@@ -66,6 +74,7 @@ def parse_figma_to_layout(file: Path | str):
                     value_ = float(value[:-2])
                     kwargs[key] = value_
         items.append((name, kwargs))
+    # debug
     # return items
 
     layout_dict: LayoutDict = defaultdict(list)
@@ -75,12 +84,12 @@ def parse_figma_to_layout(file: Path | str):
         area: dict = item[1]
         if tag.startswith("l_"):
             key = tag[2:]
-            layout: Layout = Layout(tags=[], values=[], areas=[])
+            layout: Layout = Layout(tags=[], names=[], areas=[])
             layout_dict[key].append(layout)
         elif tag in TAG:
             if layout:
                 layout.tags.append(tag)
-                layout.values.append("")
+                layout.names.append("")
                 layout.areas.append(
                     Area(
                         x=area["left"],
@@ -92,8 +101,8 @@ def parse_figma_to_layout(file: Path | str):
         elif tag.startswith("c_"):
             # use temp key to not break the key for l_
             # store the component to the previous item
-            component_name = tag[2:]
-            layout.values[-1] = component_name
+            component_name = tag[2:-3]
+            layout.names[-1] = component_name
             component_dict[component_name] = Component(
                 name=component_name,
                 area=Area(
@@ -108,25 +117,53 @@ def parse_figma_to_layout(file: Path | str):
     form_dict = {k: layout_dict.pop(k) for k in FORMS if k in layout_dict}
     return form_dict, layout_dict, component_dict
 
-FORM_DICT, LAYOUT_DICT, COMPONENT_DICT = parse_figma_to_layout(PATH_TO_FIGMA)
+# FORM_DICT, LAYOUT_DICT, COMPONENT_DICT = parse_figma_to_layout(PATH_TO_FIGMA)
 
-    # def insert_child(self, child: "ParseNode", index: Optional[int] = None) -> None:
-    #     if index is None:
-    #         self.children.append(child)
-    #     else:
-    #         self.children.insert(index, child)
 
-    # def flatten(self) -> None:
-    #     leaves: List["ParseNode"] = []
-    #     self._collect_leaves(offset_x=0, offset_y=0, leaves=leaves)
-    #     self.children = leaves
+@dataclass
+class LayoutNode:
+    tag: str
+    name: str
+    area: Area
+    children: dict[str, "LayoutNode"] = field(default_factory=dict)
 
-    # def _collect_leaves(self, offset_x: float, offset_y: float, leaves: List["ParseNode"]) -> None:
-    #     for child in self.children:
-    #         abs_x = offset_x + child.area.x
-    #         abs_y = offset_y + child.area.y
-    #         if child.is_leaf():
-    #             child.area = Area(abs_x, abs_y, child.area.width, child.area.height)
-    #             leaves.append(child)
-    #         else:
-    #             child._collect_leaves(abs_x, abs_y, leaves)
+    def __post_init__(self) -> None:
+        if self.name in CN_from_EN:
+            self.name = CN_from_EN[self.name]
+
+    @property
+    def name_en(self) -> str:
+        return EN_from_CN[self.name]
+
+    def is_leaf(self) -> bool:
+        return not self.children
+
+    def get_child(self, tag: str) -> "LayoutNode":
+        return self.children[tag]
+
+    def insert_child(self, child: "LayoutNode", tag: str) -> None:
+        child_container = self.get_child(tag)
+        child_container.children[child.tag] = child
+
+    def flatten(self) -> list["LayoutNode"]:
+        leaves: list["LayoutNode"] = []
+        self._collect_leaves(offset_x=0, offset_y=0, leaves=leaves)
+        return leaves
+
+    def _collect_leaves(self, offset_x: float, offset_y: float, leaves: list["LayoutNode"]) -> None:
+        for child in self.children.values():
+            abs_x = offset_x + child.area.x
+            abs_y = offset_y + child.area.y
+            if child.is_leaf():
+                child.area = Area(abs_x, abs_y, child.area.width, child.area.height)
+                leaves.append(child)
+            else:
+                child._collect_leaves(abs_x, abs_y, leaves)
+    
+    @classmethod
+    def from_dict(cls, d: dict) -> "LayoutNode":
+        return
+    
+    @classmethod
+    def from_layout(cls, layout: Layout) -> "LayoutNode":
+        return

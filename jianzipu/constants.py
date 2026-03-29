@@ -51,6 +51,10 @@ XIAN_NUMBER_ABBR = ['一','二','三','四','五','六','七']
 HUI_NUMBER_ABBR = ['十一','十二','十三','一','二','三','四','五','六','七','八','九','十']
 FEN_NUMBER_ABBR = ['一','二','三','四','五','六','七','八','九','半']
 
+JIANZI = GLYPHS.GlyphNameCN.tolist()
+EN_from_CN: Dict[str, str] = dict(zip(GLYPHS.GlyphNameCN, GLYPHS.GlyphName))
+CN_from_EN: Dict[str, str] = dict(zip(GLYPHS.GlyphName, GLYPHS.GlyphNameCN))
+
 # valence of fingers, for linting
 # VALENCE = {
 #           '散音':0,'大指':1,'食指':1,'中指':1,'名指':1,'跪指':1,

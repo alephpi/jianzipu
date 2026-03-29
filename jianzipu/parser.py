@@ -19,6 +19,10 @@ from .constants import (
   XIAN_FINGER,
   XIAN_NUMBER_ABBR,
   XIAN_NUMBER_ORTHO,
+  CN_from_EN,
+  EN_from_CN,
+  t_JIANZI,
+  t_TAG,
 )
 
 # white space is forbidden inside a note (but as a seperator between them)
@@ -139,6 +143,8 @@ def parse(s: str, form : Literal['abbr','ortho'] = 'abbr'):
 
     case _:
       raise ValueError(f"form must be either 'abbr'or 'ortho'")
+  # # debug
+  # return d
 
   def remove_chars_from_dict(d, chars):
     if isinstance(d, dict):
@@ -156,9 +162,20 @@ def parse(s: str, form : Literal['abbr','ortho'] = 'abbr'):
 
 @dataclass
 class ParseNode:
-    label: str
-    value: str
-    children: List["ParseNode"] = field(default_factory=list)
+    tag: t_TAG
+    name: t_JIANZI
+    children: dict[t_JIANZI, "ParseNode"] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.name in CN_from_EN:
+            self.name = CN_from_EN[self.name]
+
+    @property
+    def name_en(self) -> str:
+        return EN_from_CN[self.name]
+
+    def get_child(self, tag: t_TAG) -> "ParseNode":
+        return self.children[tag]
 
     def is_leaf(self) -> bool:
         return not self.children
@@ -168,51 +185,51 @@ class ParseNode:
     
         def traverse(node: "ParseNode") -> None:
             if node.is_leaf():
-                label = node.label
-                value = node.value
+                tag = node.tag
+                name = node.name
                 if form == 'ortho':
-                    if label == 'hf':
-                        if value in ['大', '食', '中', '名', '跪']:
-                            value = value + '指'
-                        elif value == '散':
-                            value = '散音'
-                    elif label == 'hn1':
-                        if value == '外':
-                            value = '徽外'
-                        elif value in ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三']:
-                            value = value + '徽'
-                    elif label == 'hn2':
-                        value = value + '分'
-                    elif label.startswith('xn'):
-                        value = value + '弦'
-                values.append(value)
-            for child in node.children:
+                    if tag == 'hf':
+                        if name in ['大', '食', '中', '名', '跪']:
+                            name = name + '指'
+                        elif name == '散':
+                            name = '散音'
+                    elif tag == 'hn1':
+                        if name == '外':
+                            name = '徽外'
+                        elif name in HUI_NUMBER_ABBR:
+                            name = name + '徽'
+                    elif tag == 'hn2':
+                        name = name + '分'
+                    elif tag.startswith('xn'):
+                        name = name + '弦'
+                values.append(name)
+            for child in node.children.values():
                 traverse(child)
-    
+
         traverse(self)
         return ''.join(values)
 
     @classmethod
     def from_dict(cls, d: dict) -> "ParseNode":
         assert len(d) == 1, "The dict should only have one key from 'SF', 'CF', 'AF', 'TF'"
-        label, content = next(iter(d.items()))
-        return cls._build_node(label, content)
+        tag, content = next(iter(d.items()))
+        return cls._build_node(tag, content)
 
     @classmethod
-    def _build_node(cls, label: str, content) -> "ParseNode":
+    def _build_node(cls, tag: t_TAG, content) -> "ParseNode":
         if isinstance(content, str):
-            return cls(label=label, value=content)
+            return cls(tag=tag, name=content)
         if isinstance(content, dict):
-            node = cls(label=label, value='')
+            node = cls(tag=tag, name='')
             for key, val in content.items():
                 if isinstance(val, list):
                     for i, item in enumerate(val, start=1):
                         child = cls(
-                            label=f"{key}{i}",
-                            value=item
+                            tag=f"{key}{i}",
+                            name=item
                         )
-                        node.children.append(child)
+                        node.children[child.tag] = child
                 else:
-                    node.children.append(cls._build_node(key, val))
+                        node.children[key] = cls._build_node(key, val)
             return node
         raise TypeError(f"Unsupported node content type: {type(content)}")
