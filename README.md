@@ -42,7 +42,7 @@ C' -->D'[字体]
 
 ## 本方案规定的减字谱读法规范
 
-详见 [此处](https://github.com/alephpi/jianzipu/blob/master/package/jianzipu/README.md)
+详见 [此处](https://github.com/alephpi/jianzipu/blob/master/dev_guide.md)
 
 # 开发
 

@@ -74,16 +74,6 @@ class LayoutNode:
         self.children[child.tag] = child
         self._sort_children()
 
-    # def insert_child(self, child: "LayoutNode", tag: t_TAG) -> None:
-    #     child_container = self.get_child_of_tag(tag)
-    #     order_index = CHILDREN_TAGS_ORDER_INDEX.get(child_container.tag)
-    #     if order_index is not None and child.tag not in order_index:
-    #         raise ValueError(
-    #             f"Invalid child tag {child.tag} for parent {child_container.tag}"
-    #         )
-    #     child_container.children[child.tag] = child
-    #     child_container._sort_children()
-
     def flatten(self) -> "LayoutNode":
         """return a new LayoutNode with the same leaves but flattened structure"""
         leaves: list["LayoutNode"] = []
@@ -105,14 +95,6 @@ class LayoutNode:
                 leaves.append(child)
             else:
                 child._collect_leaves(abs_x, abs_y, leaves)
-    
-    # @classmethod
-    # def from_dict(cls, d: dict) -> "LayoutNode":
-    #     return
-    
-    # @classmethod
-    # def from_layout(cls, layout: Layout) -> "LayoutNode":
-    #     return
 
 @dataclass(frozen=True, slots=True)
 class Component:
