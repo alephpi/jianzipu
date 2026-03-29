@@ -73,7 +73,18 @@ class LayoutNode:
             raise ValueError(f"Invalid child tag {child.tag} for parent {self.tag}")
         self.children[child.tag] = child
         self._sort_children()
-
+    
+    def fill_child(self, child: "LayoutNode") -> None:
+        order_index = CHILDREN_TAGS_ORDER_INDEX.get(self.tag)
+        if order_index is not None and child.tag not in order_index:
+            raise ValueError(f"Invalid child tag {child.tag} for parent {self.tag}")
+        old_child = self.children[child.tag]
+        # if not old_child:
+        #     raise ValueError(f"Tag {child.tag} not found in template {self}, check the figma.css file if you correctly output the layout templates")
+        child.area = old_child.area
+        self.children[child.tag] = child
+        self._sort_children()
+ 
     def flatten(self) -> "LayoutNode":
         """return a new LayoutNode with the same leaves but flattened structure"""
         leaves: list["LayoutNode"] = []
@@ -91,8 +102,13 @@ class LayoutNode:
             abs_x = offset_x + child.area.x
             abs_y = offset_y + child.area.y
             if child.is_leaf():
-                child.area = Area(abs_x, abs_y, child.area.width, child.area.height)
-                leaves.append(child)
+                leaf = LayoutNode(
+                    tag=child.tag,
+                    name=child.name,
+                    area=Area(abs_x, abs_y, child.area.width, child.area.height),
+                    children={},
+                )
+                leaves.append(leaf)
             else:
                 child._collect_leaves(abs_x, abs_y, leaves)
 
@@ -133,7 +149,12 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
         area: dict = item[1]
         if tag.startswith("l_"):
             key = tag[2:]
-            layout: LayoutNode = LayoutNode(tag=key, name="", area=_EMPTY_AREA)
+            # l_ 开头说明是布局或子布局的模板，若为布局（即form）则是根节点，area是(0,0,1000,1000)即标准字形框。而若为子布局，则area_filler为空，待填入其他布局的子节点时才会有具体的数值
+            if key in FORMS:
+                area_filler = Area(0, 0, 1000, 1000)
+            else:
+                area_filler = _EMPTY_AREA
+            layout: LayoutNode = LayoutNode(tag=key, name="", area=area_filler)
             layout_templates[key].append(layout)
         elif tag in TAG:
             sublayout = LayoutNode(
@@ -147,12 +168,13 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
             )
             layout.set_child(sublayout)
         elif tag.startswith("c_"):
-            # use temp key to not break the key for l_
-            # store the component to the previous item
-            component_name = tag[2:-3]
+            # component name format is c_{glyphName}.{variantName}, e.g. c_tuo1.sm, c_tuo1.md, c_tuo1.lg
+            component_name = tag[2:]
+            # store the component to the predecessor sublayout
             last_tag: t_TAG = items[i-1][0]
             last_sublayout = layout.get_child_of_tag(last_tag)
-            last_sublayout.set_name(component_name)
+            # use the component name without variant suffix in the sublayout
+            last_sublayout.set_name(component_name.split(".")[0])
             component_dict[component_name] = Component(
                 name=component_name,
                 area=Area(
@@ -178,6 +200,6 @@ def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templ
             for layouts in product(*layout_options):
                 combined = deepcopy(form_layout)
                 for layout in layouts:
-                    combined.set_child(deepcopy(layout))
+                    combined.fill_child(deepcopy(layout))
                 all_layouts.append(combined.flatten() if flatten else combined)
     return all_layouts
