@@ -4,26 +4,28 @@ from typing import List, Literal
 from pyparsing import Group, Opt, ParserElement, ZeroOrMore, one_of
 
 from .constants import (
-  COMPLEX_FINGER,
-  FEN_NUMBER_ABBR,
-  FEN_NUMBER_ORTHO,
-  HUI_FINGER,
-  HUI_FINGER_ORTHO,
-  HUI_NUMBER_ABBR,
-  HUI_NUMBER_ORTHO,
-  JOINT_FINGER,
-  MARKER,
-  MODIFIER,
-  MOVE_FINGER,
-  SPECIAL_FINGER,
-  XIAN_FINGER,
-  XIAN_NUMBER_ABBR,
-  XIAN_NUMBER_ORTHO,
+  GLYPHS,
   CN_from_EN,
   EN_from_CN,
   t_JIANZI,
   t_TAG,
 )
+
+HUI_FINGER = sorted(GLYPHS.query("GlyphTag == 'hf'").GlyphNameCN.tolist(), key=len, reverse=True)
+XIAN_FINGER = sorted(GLYPHS.query("GlyphTag == 'xf'").GlyphNameCN.tolist(), key=len, reverse=True)
+MOVE_FINGER = sorted(GLYPHS.query("GlyphTag == 'mf'").GlyphNameCN.tolist(), key=len, reverse=True)
+SPECIAL_FINGER = sorted(GLYPHS.query("GlyphTag == 'sf'").GlyphNameCN.tolist(), key=len, reverse=True)
+MODIFIER = sorted(GLYPHS.query("GlyphTag == 'mo'").GlyphNameCN.tolist(), key=len, reverse=True)
+JOINT_FINGER = sorted(GLYPHS.query("GlyphTag == 'jf'").GlyphNameCN.tolist(), key=len, reverse=True)
+COMPLEX_FINGER = sorted(GLYPHS.query("GlyphTag == 'cf'").GlyphNameCN.tolist(), key=len, reverse=True)
+MARKER = sorted(GLYPHS.query("GlyphTag == 'ma'").GlyphNameCN.tolist(), key=len, reverse=True)
+XIAN_NUMBER_ORTHO = ['一弦','二弦','三弦','四弦','五弦','六弦','七弦']
+HUI_NUMBER_ORTHO = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
+FEN_NUMBER_ORTHO = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
+HUI_FINGER_ORTHO = ['大指','食指','中指','名指','跪指','散音']
+XIAN_NUMBER_ABBR = ['一','二','三','四','五','六','七']
+HUI_NUMBER_ABBR = ['十一','十二','十三','一','二','三','四','五','六','七','八','九','十']
+FEN_NUMBER_ABBR = ['一','二','三','四','五','六','七','八','九','半']
 
 # white space is forbidden inside a note (but as a seperator between them)
 ParserElement.set_default_whitespace_chars('')
@@ -183,6 +185,9 @@ class ParseNode:
 
     def get_child(self, tag: t_TAG) -> "ParseNode":
         return self.children[tag]
+
+    def get_children_tags(self):
+        return self.children.keys()
 
     def is_leaf(self) -> bool:
         return not self.children

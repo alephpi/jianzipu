@@ -20,6 +20,7 @@ t_TAG = Literal[
 
 t_FORM = Literal['SF', 'CF', 'AF', 'TF']
 
+# rearragne children tags in layout node for flattening trees in syntax order
 CHILDREN_TAGS_ORDER_INDEX = {
     "SF": {"hfp": 0, "mf": 1, "xfp": 2},
     "CF": {"cf": 0, "lsp": 1, "rsp": 2},
@@ -36,26 +37,10 @@ current_directory = Path(__file__).resolve().parent
 # Construct the full path to the file
 PATH_TO_GLYPHS = current_directory / "data/glyphs.csv"
 PATH_TO_FIGMA = current_directory / "data/figma.css"
+PATH_TO_FEATURES = current_directory / "data/features.yaml"
 
 # with open(full_path, 'r', encoding='utf-8') as f:
 GLYPHS = pd.read_csv(PATH_TO_GLYPHS, index_col=None)
-
-HUI_FINGER = sorted(GLYPHS.query("GlyphTag == 'hf'").GlyphNameCN.tolist(), key=len, reverse=True)
-XIAN_FINGER = sorted(GLYPHS.query("GlyphTag == 'xf'").GlyphNameCN.tolist(), key=len, reverse=True)
-MOVE_FINGER = sorted(GLYPHS.query("GlyphTag == 'mf'").GlyphNameCN.tolist(), key=len, reverse=True)
-SPECIAL_FINGER = sorted(GLYPHS.query("GlyphTag == 'sf'").GlyphNameCN.tolist(), key=len, reverse=True)
-MODIFIER = sorted(GLYPHS.query("GlyphTag == 'mo'").GlyphNameCN.tolist(), key=len, reverse=True)
-JOINT_FINGER = sorted(GLYPHS.query("GlyphTag == 'jf'").GlyphNameCN.tolist(), key=len, reverse=True)
-COMPLEX_FINGER = sorted(GLYPHS.query("GlyphTag == 'cf'").GlyphNameCN.tolist(), key=len, reverse=True)
-MARKER = sorted(GLYPHS.query("GlyphTag == 'ma'").GlyphNameCN.tolist(), key=len, reverse=True)
-XIAN_NUMBER_ORTHO = ['一弦','二弦','三弦','四弦','五弦','六弦','七弦']
-HUI_NUMBER_ORTHO = ['十一徽','十二徽','十三徽','一徽','二徽','三徽','四徽','五徽','六徽','七徽','八徽','九徽','十徽']
-FEN_NUMBER_ORTHO = ['一分','二分','三分','四分','五分','六分','七分','八分','九分','半']
-HUI_FINGER_ORTHO = ['大指','食指','中指','名指','跪指','散音']
-XIAN_NUMBER_ABBR = ['一','二','三','四','五','六','七']
-HUI_NUMBER_ABBR = ['十一','十二','十三','一','二','三','四','五','六','七','八','九','十']
-FEN_NUMBER_ABBR = ['一','二','三','四','五','六','七','八','九','半']
-
 JIANZI = GLYPHS.GlyphNameCN.tolist()
 EN_from_CN: Dict[str, str] = dict(zip(GLYPHS.GlyphNameCN, GLYPHS.GlyphName))
 CN_from_EN: Dict[str, str] = dict(zip(GLYPHS.GlyphName, GLYPHS.GlyphNameCN))
