@@ -33,6 +33,15 @@ class LayoutNode:
     area: Area
     children: dict[t_TAG, "LayoutNode"] = field(default_factory=dict)
 
+    def __rich_repr__(self):
+        yield "tag", self.tag
+        if self.name:
+            yield "name", self.name
+        if self.area != _EMPTY_AREA:
+            yield "area", self.area
+        if self.children:
+            yield "children", self.children
+
     def __post_init__(self) -> None:
         if self.name in CN_from_EN:
             self.name = CN_from_EN[self.name]

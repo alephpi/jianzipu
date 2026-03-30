@@ -166,6 +166,13 @@ class ParseNode:
     name: t_JIANZI
     children: dict[t_JIANZI, "ParseNode"] = field(default_factory=dict)
 
+    def __rich_repr__(self):
+        yield "tag", self.tag
+        if self.name:
+            yield "name", self.name
+        if self.children:
+            yield "children", self.children
+
     def __post_init__(self) -> None:
         if self.name in CN_from_EN:
             self.name = CN_from_EN[self.name]
@@ -208,6 +215,24 @@ class ParseNode:
 
         traverse(self)
         return ''.join(values)
+
+    def flatten(self) -> "ParseNode":
+        """Return a new ParseNode with the same leaves but flattened structure."""
+        leaves: list["ParseNode"] = []
+        self._collect_leaves(leaves)
+        return ParseNode(
+            tag=self.tag,
+            name=self.name,
+            children={leaf.tag: leaf for leaf in leaves},
+        )
+
+    def _collect_leaves(self, leaves: list["ParseNode"]) -> None:
+        if self.is_leaf():
+            leaf = ParseNode(tag=self.tag, name=self.name)
+            leaves.append(leaf)
+            return
+        for child in self.children.values():
+            child._collect_leaves(leaves)
 
     @classmethod
     def from_dict(cls, d: dict) -> "ParseNode":
