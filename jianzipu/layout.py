@@ -162,7 +162,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
             if key in FORMS:
                 area_filler = Area(0, 0, 1000, 1000)
             else:
-                area_filler = _EMPTY_AREA
+                area_filler = Area(0, 0, area["width"], area["height"])
             layout: LayoutNode = LayoutNode(tag=key, name="", area=area_filler)
             layout_templates[key].append(layout)
         elif tag in TAG:
@@ -181,9 +181,13 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
             component_name = tag[2:]
             # store the component to the predecessor sublayout
             last_tag: t_TAG = items[i-1][0]
-            last_sublayout = layout.get_child_of_tag(last_tag)
-            # use the component name without variant suffix in the sublayout
-            last_sublayout.set_name(component_name.split(".")[0])
+            if last_tag.startswith("l_"):
+                last_layout = layout
+                last_tag = last_tag[2:]
+            else:
+                last_layout = layout.get_child_of_tag(last_tag)
+                # use the component name without variant suffix in the sublayout
+            last_layout.set_name(component_name.split(".")[0])
             component_dict[component_name] = Component(
                 name=component_name,
                 area=Area(
@@ -192,7 +196,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
                     width=area["width"],
                     height=area["height"],
                 ),
-                container_area=last_sublayout.area,
+                container_area=last_layout.area,
                 container_tag=last_tag,
             )
     form_templates: dict[t_FORM, list[LayoutNode]] = {k: layout_templates.pop(k) for k in FORMS if k in layout_templates}

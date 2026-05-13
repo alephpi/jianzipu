@@ -6,7 +6,8 @@ import pandas as pd
 TAG = (
     'SF','CF','AF','TF',
     'hfp', 'xfp', 'lsp', 'rsp', 'mfp',
-    'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2','sf','cf','jf','mo','ma'
+    'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2', 'n',
+    'sf','cf','jf','mo','ma'
     )
 
 FORMS = ("SF", "CF", "AF", "TF")
@@ -15,7 +16,8 @@ FORMS = ("SF", "CF", "AF", "TF")
 t_TAG = Literal[
     'SF','CF','AF','TF',
     'hfp', 'xfp', 'lsp', 'rsp', 'mfp',
-    'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2','sf','cf','jf','mo','ma'
+    'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2', 'n',
+    'sf','cf','jf','mo','ma'
     ]
 
 t_FORM = Literal['SF', 'CF', 'AF', 'TF']
