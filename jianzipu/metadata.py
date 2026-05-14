@@ -121,3 +121,8 @@ METADATA = FontMetaData(
     designer_url=designer_url,
     version=version
 )
+
+WIDTH = 1000
+HEIGHT = 1000
+ADVANCE_WIDTH = 1000
+ADVANCE_HEIGHT = 1000

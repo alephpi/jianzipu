@@ -16,7 +16,7 @@ from .constants import (
     CN_from_EN,
 )
 from .layout import parse_figma
-from .metadata import METADATA
+from .metadata import METADATA, WIDTH
 
 PATH_TO_UFO = PATH_TO_FONT / Path(METADATA.fontname).with_suffix('.ufo')
 PATH_TO_TTF = PATH_TO_FONT / Path(METADATA.fontname).with_suffix('.ttf')
@@ -46,7 +46,7 @@ def init(font: ufoLib2.Font):
     notdef.width = 0
 
     glyph = font.newGlyph("space")
-    glyph.width = 500
+    glyph.width = WIDTH
     glyph.unicode = 0x0020
 
     unicodes = ["U+0020"]
@@ -77,9 +77,10 @@ def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
         svg_path = PATH_TO_SVGS / f"c_{name}.svg"
         with open(svg_path, "r", encoding="utf-8") as f:
             svg_content = f.read()
-        x, y, w, h = component.xywh
-        # transform from svg coordinate system (y down) to font coordinate system (y up)
-        transform = Transform(1, 0, 0, -1, round(x), round(h + y))
+        x,y,w,h = component.xywh
+        # NOTE: transform from svg coordinate system (y down) to font coordinate system (y up)
+        dx, dy = x, h+y
+        transform = Transform(1, 0, 0, -1, dx, dy)
         # print(transform)
         # glif = svg2glif(svg_content, name, width=0, height=0, transform=transform)
         # if name in font:

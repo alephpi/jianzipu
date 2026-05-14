@@ -26,6 +26,10 @@ class Area:
     width: int
     height: int
 
+    @property
+    def xywh(self):
+        return self.x, self.y, self.width, self.height
+
 _EMPTY_AREA = Area(0, 0, 0, 0)
 
 @dataclass
@@ -132,7 +136,7 @@ class Component:
 
     @property
     def xywh(self):
-        return self.area.x, self.area.y, self.area.width, self.area.height
+        return self.area.xywh
 
 def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[LayoutNode]], dict[t_TAG, list[LayoutNode]], dict[t_JIANZI, Component]]:
     """

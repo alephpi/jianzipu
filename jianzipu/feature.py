@@ -2,6 +2,7 @@ import yaml
 
 from .constants import PATH_TO_FEA, PATH_TO_FEATURES
 from .layout import LayoutNode, get_all_layouts, parse_figma
+from .metadata import WIDTH
 from .parser import ParseNode
 
 
@@ -33,11 +34,13 @@ def write_pos_rule(layout: LayoutNode, rule_templates: dict[tuple[str, ...], str
     rule_template = rule_templates[tags]
     rule = []
     for node, term in zip(layout.children.values(), rule_template):
+        x,y,w,h = node.area.xywh
+        # NOTE: transform from layout coordinate system (y down) to glyph coordinate system (y up), remember the xywh here is relative to the design box, whose origin is the top-left corner (0,WIDTH) in glyph coordinate system 
+        dx,dy = x, WIDTH-(h+y)
         if node.name == "":
-            x, y = node.area.x, node.area.y
-            rule.append(f"{term}' <{x} {y} 0 0>")
+            rule.append(f"{term}' <{dx} {dy} 0 0>")
         else:
-            rule.append(f"{node.name_en}.{term[-2:]}' <{node.area.x} {node.area.y} 0 0>")
+            rule.append(f"{node.name_en}.{term[-2:]}' <{dx} {dy} 0 0>")
     return "pos " + " ".join(rule)
 
 def find_matching_layout(puzi: ParseNode, all_layouts: list[LayoutNode]):
