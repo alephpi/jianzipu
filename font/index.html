@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字体开发测试</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.prod.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <h1>字体开发测试</h1>
+            
+            <div class="input-area">
+                <label for="textInput">输入框（点击字符会自动添加到此处）：</label>
+                <input type="text" id="textInput" v-model="inputText" placeholder="点击下方字符添加...">
+                <button class="clear-btn" @click="clearInput">清空</button>
+            </div>
+        </div>
+        
+        <div v-if="error" class="error">{{ error }}</div>
+        
+        <div v-if="loading" class="loading">正在加载...</div>
+        
+        <div v-else-if="glyphs.length === 0" class="empty">
+            正在加载 encoding.csv...
+        </div>
+        
+        <div v-else class="grid-container">
+            <div class="grid">
+                <div 
+                    v-for="(glyph, index) in glyphs" 
+                    :key="index" 
+                    class="glyph-card"
+                    @click="insertUnicode(glyph.char)"
+                    :title="`点击插入 ${glyph.unicode}`"
+                >
+                    <div class="glyph-char" v-html="glyph.char"></div>
+                    <div class="glyph-name-cn">{{ glyph.nameCN }}</div>
+                    <div class="glyph-name">{{ glyph.name }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    glyphs: [],
+                    inputText: '',
+                    loading: false,
+                    error: ''
+                };
+            },
+            mounted() {
+                this.loadCSV();
+            },
+            methods: {
+                loadCSV() {
+                    this.loading = true;
+                    this.error = '';
+                    
+                    Papa.parse('../data/encoding.csv', {
+                        download: true,
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: (results) => {
+                            try {
+                                this.processCSV(results.data);
+                            } catch (e) {
+                                this.error = '处理CSV文件时出错: ' + e.message;
+                            }
+                            this.loading = false;
+                        },
+                        error: (error) => {
+                            this.error = '读取 encoding.csv 文件失败: ' + error.message + '。请确保 encoding.csv 文件与此HTML文件在同一目录下。';
+                            this.loading = false;
+                        }
+                    });
+                },
+                
+                processCSV(data) {
+                    this.glyphs = [];
+                    
+                    for (let row of data) {
+                        const name = row.GlyphName || row.glyphname || '';
+                        const nameCN = row.GlyphNameCN || row.glyphnamecn || '';
+                        const unicode = row.Unicode || row.unicode || '';
+                        
+                        if (unicode) {
+                            // 处理Unicode码点
+                            let codePoint = unicode.trim();
+                            
+                            // 移除可能的前缀
+                            codePoint = codePoint.replace(/^(U\+|0x|\\u)/i, '');
+                            
+                            // 转换为字符
+                            const char = this.unicodeToChar(codePoint);
+                            
+                            this.glyphs.push({
+                                name: name.trim(),
+                                nameCN: nameCN.trim(),
+                                unicode: unicode.trim(),
+                                char: char
+                            });
+                        }
+                    }
+                    
+                    if (this.glyphs.length === 0) {
+                        this.error = '未找到有效的数据。请确保CSV包含 GlyphNameCN 和 Unicode 列';
+                    }
+                    console.log(this.glyphs);
+                },
+                
+                unicodeToChar(codePoint) {
+                    try {
+                        // 移除所有非十六进制字符
+                        codePoint = codePoint.replace(/[^0-9A-Fa-f]/g, '');
+                        
+                        if (!codePoint) return '';
+                        
+                        const code = parseInt(codePoint, 16);
+                        
+                        if (isNaN(code)) return '';
+                        
+                        return `&#x${codePoint};`;
+                    } catch (e) {
+                        return '';
+                    }
+                },
+                
+                insertUnicode(unicode) {
+                    // 获取输入框元素
+                    const input = document.getElementById('textInput');
+                    const start = input.selectionStart;
+                    const end = input.selectionEnd;
+                    
+                    // 将unicode码点转换为实际字符
+                    let codePoint = unicode.trim().replace(/^(U\+|0x|\\u)/i, '').replace(/[^0-9A-Fa-f]/g, '');
+                    const code = parseInt(codePoint, 16);
+                    const actualChar = String.fromCodePoint(code);
+                    
+                    // 在光标位置插入实际字符
+                    const before = this.inputText.substring(0, start);
+                    const after = this.inputText.substring(end);
+                    
+                    this.inputText = before + actualChar + after;
+                    
+                    // 设置光标位置到插入内容之后
+                    this.$nextTick(() => {
+                        const newPos = start + actualChar.length;
+                        input.setSelectionRange(newPos, newPos);
+                        input.focus();
+                    });
+                },
+                
+                clearInput() {
+                    this.inputText = '';
+                    document.getElementById('textInput').focus();
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

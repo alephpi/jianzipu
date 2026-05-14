@@ -7,7 +7,14 @@ from fontTools.pens.pointPen import SegmentToPointPen
 from fontTools.pens.roundingPen import RoundingPointPen
 from fontTools.svgLib import SVGPath
 
-from .constants import GLYPH_ORDER, PATH_TO_FEA, PATH_TO_FONT, PATH_TO_SVGS
+from .constants import (
+    GLYPH_ORDER,
+    PATH_TO_FEA,
+    PATH_TO_FONT,
+    PATH_TO_SVGS,
+    PWD,
+    CN_from_EN,
+)
 from .layout import parse_figma
 from .metadata import METADATA
 
@@ -42,14 +49,27 @@ def init(font: ufoLib2.Font):
     glyph.width = 500
     glyph.unicode = 0x0020
 
+    unicodes = ["U+0020"]
+    glyphnames = ["space"]
+    glyphcnnames = ["空格"]
+    unicode = 0xF0000
     for glyph_name in GLYPH_ORDER.keys():
         if glyph_name in font:
             continue
         glyph = font.newGlyph(glyph_name)
         glyph.width = 0
-        glyph.unicode = None
+        glyph.unicode = unicode
+        unicode += 1
+
+        unicodes.append(f"U+{glyph.unicode:05X}")
+        glyphnames.append(glyph_name)
+        glyphcnnames.append(CN_from_EN[glyph_name[:-3]])
 
     font.glyphOrder = [".notdef", "space"] + list(GLYPH_ORDER.keys())
+    import pandas as pd
+    encodings = pd.DataFrame({"GlyphNameCN": glyphcnnames, "GlyphName": glyphnames, "Unicode": unicodes})
+    encodings.to_csv(f"{PWD}/data/encoding.csv", index=False)
+    return
 
 def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
     _, _, component_dict = parse_figma()
@@ -68,7 +88,6 @@ def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
         # else:
         #     glyph = font.newGlyph(name)
         glyph.width, glyph.height = 0, 0
-        glyph.unicode = None
         outline = SVGPath.fromstring(svg_content, transform=transform)
         point_pen = glyph.getPointPen()
         if rounding:
@@ -77,7 +96,6 @@ def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
             segment_pen = SegmentToPointPen(point_pen)
         outline.draw(segment_pen)
         # break
-
     return
 
 def write_features(font: ufoLib2.Font, fea_file=PATH_TO_FEA):

@@ -145,6 +145,8 @@ ui-tests/.pnp.*
 package/jianzipu/dev/dump_newest_only.txt
 *.svg
 *.png
-*font
 !assets/**
 !scripts/*.ipynb
+font/lxgw**
+*.ufo
+*.ttf
