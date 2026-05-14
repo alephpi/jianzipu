@@ -40,6 +40,7 @@ PWD = Path(__file__).resolve().parent.parent
 PATH_TO_GLYPHS = PWD / "data/glyphs.csv"
 PATH_TO_FIGMA = PWD / "data/figma.css"
 PATH_TO_FEATURES = PWD / "data/features.yaml"
+PATH_TO_FEA = PWD / "data/output.fea"
 PATH_TO_SVGS = PWD / "data/svgs"
 PATH_TO_FONT = PWD / "font"
 

@@ -1,11 +1,9 @@
 import yaml
 
-from jianzipu.constants import PATH_TO_FEATURES
-
+from .constants import PATH_TO_FEA, PATH_TO_FEATURES
 from .layout import LayoutNode
 from .parser import ParseNode
 
-OUTPUT_FEA_PATH = PATH_TO_FEATURES.parent / "output.fea"
 
 def import_features(file=PATH_TO_FEATURES):
     with open(file, "r") as f:
@@ -19,12 +17,14 @@ def import_features(file=PATH_TO_FEATURES):
                 rule_templates[tuple(k.split(" "))] = v
     return macros, rule_templates
 
-def write_macros(macros, fea_path=OUTPUT_FEA_PATH):
+def write_macros(macros):
     lines = []
     for key, value in macros.items():
-        line = f"{key}={value};"
+        if isinstance(value, list):
+            line = f"{key}=[{' '.join(value)}];"
+        else:
+            line = f"{key}={value};"
         lines.append(line)
-
     fea_text = "\n".join(lines)
     return fea_text
 
@@ -40,7 +40,7 @@ def write_rule_templates(layout: LayoutNode, rule_templates: dict[tuple[str, ...
             rule.append(f"{node.name_en}.{term[-2:]}' <{node.area.x} {node.area.y} 0 0>")
     return "pos " + " ".join(rule)
 
-def write_fea(macros, rule_templates, fea_path=OUTPUT_FEA_PATH):
+def write_fea(macros, rule_templates, fea_path=PATH_TO_FEA):
     with open(fea_path, "w") as f:
         f.write(write_macros(macros))
         # TODO write rule templates
@@ -75,3 +75,7 @@ def find_matching_layout(puzi: ParseNode, all_layouts: list[LayoutNode]):
         (layout for layout in matched_layouts if set(layout.get_children_tags()) == puzi_tag_set),
         matched_layouts[0],
     )
+
+if __name__ == "__main__":
+    macros, rule_templates = import_features()
+    write_fea(macros, rule_templates)
