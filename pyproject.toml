@@ -13,6 +13,8 @@ dependencies = [
     "pyyaml>=6.0.3",
     "pandas>=3.0.1",
     "fonttools>=4.62.1",
+    "ufo2ft>=3.7.2",
+    "ufolib2>=0.18.1",
 ]
 classifiers = [
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
