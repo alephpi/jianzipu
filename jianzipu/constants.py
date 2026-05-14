@@ -17,14 +17,14 @@ t_TAG = Literal[
     'SF','CF','AF','TF',
     'hfp', 'xfp', 'lsp', 'rsp', 'mfp',
     'hf', 'hn1', 'hn2', 'xf', 'xn1', 'xn2', 'n',
-    'sf','cf','jf','mo','ma'
+    'sf','cf','jf','mf','mo','ma'
     ]
 
 t_FORM = Literal['SF', 'CF', 'AF', 'TF']
 
 # rearragne children tags in layout node for flattening trees in syntax order
 CHILDREN_TAGS_ORDER_INDEX = {
-    "SF": {"hfp": 0, "mf": 1, "xfp": 2},
+    "SF": {"hfp": 0, "sf": 1, "xfp": 2},
     "CF": {"cf": 0, "lsp": 1, "rsp": 2},
     "hfp": {"hf": 0, "hn1": 1, "hn2": 2},
     "xfp": {"xf": 0, "xn1": 1, "xn2": 2},
@@ -40,12 +40,15 @@ current_directory = Path(__file__).resolve().parent
 PATH_TO_GLYPHS = current_directory / "data/glyphs.csv"
 PATH_TO_FIGMA = current_directory / "data/figma.css"
 PATH_TO_FEATURES = current_directory / "data/features.yaml"
+PATH_TO_SVGS = current_directory / "data/svgs"
 
 # with open(full_path, 'r', encoding='utf-8') as f:
 GLYPHS = pd.read_csv(PATH_TO_GLYPHS, index_col=None)
 JIANZI = GLYPHS.GlyphNameCN.tolist()
 EN_from_CN: Dict[str, str] = dict(zip(GLYPHS.GlyphNameCN, GLYPHS.GlyphName))
 CN_from_EN: Dict[str, str] = dict(zip(GLYPHS.GlyphName, GLYPHS.GlyphNameCN))
+
+
 
 # valence of fingers, for linting
 # VALENCE = {
