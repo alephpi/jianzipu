@@ -33,14 +33,15 @@ CHILDREN_TAGS_ORDER_INDEX = {
 # TODO
 t_JIANZI = str
 
-# Get the current directory of the script
-current_directory = Path(__file__).resolve().parent
+# PATHS
+# Get the working directory
+PWD = Path(__file__).resolve().parent.parent
 
-# Construct the full path to the file
-PATH_TO_GLYPHS = current_directory / "data/glyphs.csv"
-PATH_TO_FIGMA = current_directory / "data/figma.css"
-PATH_TO_FEATURES = current_directory / "data/features.yaml"
-PATH_TO_SVGS = current_directory / "data/svgs"
+PATH_TO_GLYPHS = PWD / "data/glyphs.csv"
+PATH_TO_FIGMA = PWD / "data/figma.css"
+PATH_TO_FEATURES = PWD / "data/features.yaml"
+PATH_TO_SVGS = PWD / "data/svgs"
+PATH_TO_FONT = PWD / "font"
 
 # with open(full_path, 'r', encoding='utf-8') as f:
 GLYPHS = pd.read_csv(PATH_TO_GLYPHS, index_col=None)
