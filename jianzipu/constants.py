@@ -50,7 +50,11 @@ JIANZI = GLYPHS.GlyphNameCN.tolist()
 EN_from_CN: Dict[str, str] = dict(zip(GLYPHS.GlyphNameCN, GLYPHS.GlyphName))
 CN_from_EN: Dict[str, str] = dict(zip(GLYPHS.GlyphName, GLYPHS.GlyphNameCN))
 
-
+GLYPH_ORDER = {}
+for i, (glyph, vars) in enumerate(zip(GLYPHS.GlyphName, GLYPHS.Variant)):
+    vars = vars.split(' ')
+    for var in vars:
+        GLYPH_ORDER[f"{glyph}.{var}"] = i
 
 # valence of fingers, for linting
 # VALENCE = {

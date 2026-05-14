@@ -1,7 +1,7 @@
 import yaml
 
 from .constants import PATH_TO_FEA, PATH_TO_FEATURES
-from .layout import LayoutNode
+from .layout import LayoutNode, get_all_layouts, parse_figma
 from .parser import ParseNode
 
 
@@ -28,7 +28,7 @@ def write_macros(macros):
     fea_text = "\n".join(lines)
     return fea_text
 
-def write_rule_templates(layout: LayoutNode, rule_templates: dict[tuple[str, ...], str]):
+def write_pos_rule(layout: LayoutNode, rule_templates: dict[tuple[str, ...], str]):
     tags = tuple(layout.get_children_tags())
     rule_template = rule_templates[tags]
     rule = []
@@ -39,11 +39,6 @@ def write_rule_templates(layout: LayoutNode, rule_templates: dict[tuple[str, ...
         else:
             rule.append(f"{node.name_en}.{term[-2:]}' <{node.area.x} {node.area.y} 0 0>")
     return "pos " + " ".join(rule)
-
-def write_fea(macros, rule_templates, fea_path=PATH_TO_FEA):
-    with open(fea_path, "w") as f:
-        f.write(write_macros(macros))
-        # TODO write rule templates
 
 def find_matching_layout(puzi: ParseNode, all_layouts: list[LayoutNode]):
     """Return all layouts matching a parse tree.
@@ -76,6 +71,28 @@ def find_matching_layout(puzi: ParseNode, all_layouts: list[LayoutNode]):
         matched_layouts[0],
     )
 
-if __name__ == "__main__":
+def main():
+    # write features.fea
     macros, rule_templates = import_features()
-    write_fea(macros, rule_templates)
+    form_templates, layout_templates, component_dict = parse_figma()
+    all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
+
+    with open(PATH_TO_FEA, "w") as f:
+        f.write(write_macros(macros) + "\n")
+        rules = ""
+        lookup_pos_name = "jzp_pos_rules"
+        for layout in all_layouts:
+            rule = write_pos_rule(layout, rule_templates)
+            rules += f"\t{rule};\n"
+        lookup_pos = f"lookup {lookup_pos_name} {{\n{rules}}} {lookup_pos_name};"
+        f.write('\n')
+        f.write(lookup_pos)
+        f.write('\n')
+
+        feature_kern = f"feature kern {{\n\tlookup {lookup_pos_name};\n}} kern;"
+        f.write('\n')
+        f.write(feature_kern)
+        f.write('\n')
+
+if __name__ == "__main__":
+    main()

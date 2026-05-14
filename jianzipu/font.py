@@ -7,7 +7,7 @@ from fontTools.pens.pointPen import SegmentToPointPen
 from fontTools.pens.roundingPen import RoundingPointPen
 from fontTools.svgLib import SVGPath
 
-from .constants import PATH_TO_FEA, PATH_TO_FONT, PATH_TO_SVGS
+from .constants import GLYPH_ORDER, PATH_TO_FEA, PATH_TO_FONT, PATH_TO_SVGS
 from .layout import parse_figma
 from .metadata import METADATA
 
@@ -15,36 +15,41 @@ PATH_TO_UFO = PATH_TO_FONT / Path(METADATA.fontname).with_suffix('.ufo')
 PATH_TO_TTF = PATH_TO_FONT / Path(METADATA.fontname).with_suffix('.ttf')
 
 def init(font: ufoLib2.Font):
+    # metadata
     info = font.info
 
-    # postscript 名（无空格）
     info.postscriptFontName = METADATA.fontname
 
-    # 版权 / 许可
     info.copyright = METADATA.copyright
     info.openTypeNameLicense = METADATA.license
     info.openTypeNameLicenseURL = METADATA.license_url
 
-    # 设计师
     info.openTypeNameDesigner = METADATA.designer
     info.openTypeNameDesignerURL = METADATA.designer_url
 
-    # 版本：拆成 major / minor（必须是 int）
     major, minor, _ = METADATA.version.split(".")
     info.versionMajor = int(major)
     info.versionMinor = int(minor)
 
-    # 顺带设置 family / style name
     info.familyName = METADATA.fontname
     info.styleName  = "Regular"
 
-    # .notdef
+    # glyphs
     notdef = font.newGlyph(".notdef")
     notdef.width = 0
 
     glyph = font.newGlyph("space")
     glyph.width = 500
     glyph.unicode = 0x0020
+
+    for glyph_name in GLYPH_ORDER.keys():
+        if glyph_name in font:
+            continue
+        glyph = font.newGlyph(glyph_name)
+        glyph.width = 0
+        glyph.unicode = None
+
+    font.glyphOrder = [".notdef", "space"] + list(GLYPH_ORDER.keys())
 
 def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
     _, _, component_dict = parse_figma()
@@ -57,11 +62,11 @@ def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
         transform = Transform(1, 0, 0, -1, round(x), round(h + y))
         # print(transform)
         # glif = svg2glif(svg_content, name, width=0, height=0, transform=transform)
-        if name in font:
-            glyph = font[name]
-            glyph.clear()
-        else:
-            glyph = font.newGlyph(name)
+        # if name in font:
+        glyph = font[name]
+        glyph.clear()
+        # else:
+        #     glyph = font.newGlyph(name)
         glyph.width, glyph.height = 0, 0
         glyph.unicode = None
         outline = SVGPath.fromstring(svg_content, transform=transform)
@@ -73,7 +78,6 @@ def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
         outline.draw(segment_pen)
         # break
 
-        font.glyphOrder = [".notdef", "space"] + list(component_dict.keys())
     return
 
 def write_features(font: ufoLib2.Font, fea_file=PATH_TO_FEA):

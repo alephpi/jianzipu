@@ -7,6 +7,7 @@ from pathlib import Path
 from .constants import (
     CHILDREN_TAGS_ORDER_INDEX,
     FORMS,
+    GLYPH_ORDER,
     GLYPHS,
     PATH_TO_FIGMA,
     TAG,
@@ -205,14 +206,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
                 container_tag=last_tag,
             )
     form_templates: dict[t_FORM, list[LayoutNode]] = {k: layout_templates.pop(k) for k in FORMS if k in layout_templates}
-
-    def key_fn(s,
-               order_glyph = {glyph: i for i, glyph in enumerate(GLYPHS.GlyphName)},
-               order_variant = {'lg': 0, 'md': 1, 'sm': 2, 'tn': 3}
-               ):
-        a, b = s.split(".",1)
-        return order_glyph.get(a, float('inf')), order_variant.get(b, float('inf'))
-    component_dict = dict(sorted(component_dict.items(), key=lambda item: key_fn(item[0])))
+    component_dict = dict(sorted(component_dict.items(), key=lambda item: GLYPH_ORDER.get(item[0], float('inf'))))
     return form_templates, layout_templates, component_dict
 
 def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], flatten: bool) -> list[LayoutNode]:

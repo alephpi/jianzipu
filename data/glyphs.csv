@@ -1,107 +1,107 @@
-GlyphTag,GlyphTagCN,GlyphNameCN,GlyphName,Unicode,ligature
-hf,徽位指法,散,san3,U+F0000,
-hf,徽位指法,大,da4,U+F0001,
-hf,徽位指法,食,shi2,U+F0002,
-hf,徽位指法,中,zhong1,U+F0003,
-hf,徽位指法,名,ming2,U+F0004,
-hf,徽位指法,跪,gui4,U+F0005,
-xf,弦序指法,托,tuo1,U+F0010,
-xf,弦序指法,擘,pi1,U+F0011,
-xf,弦序指法,抹,mo3,U+F0012,
-xf,弦序指法,挑,tiao3,U+F0013,
-xf,弦序指法,勾,gou1,U+F0014,
-xf,弦序指法,剔,ti1,U+F0015,
-xf,弦序指法,打,da3,U+F0016,
-xf,弦序指法,摘,zhai1,U+F0017,
-xf,弦序指法,托擘,tuo1pi1,U+F0018,"U+F0010,U+F0011"
-xf,弦序指法,抹挑,mo3tiao3,U+F0019,"U+F0012,U+F0013"
-xf,弦序指法,勾剔,gou1ti1,U+F0020,"U+F0014,U+F0015"
-xf,弦序指法,打摘,da3zhai1,U+F0021,"U+F0016,U+F0017"
-xf,弦序指法,历,li4,U+F0022,
-xf,弦序指法,蠲,juan1,U+F0023,
-xf,弦序指法,轮,lun2,U+F0024,
-xf,弦序指法,半轮,ban4lun2,U+F0025,
-xf,弦序指法,琐,suo3,U+F0026,
-xf,弦序指法,长琐,chang2suo3,U+F0027,
-xf,弦序指法,如一,ru2yi1,U+F0028,
-xf,弦序指法,伏,fu2,U+F0029,
-xf,弦序指法,如一声,ru2yi1sheng1,U+F0030,
-xf,弦序指法,滚,gun3,U+F0031,
-xf,弦序指法,拂,fo2,U+F0032,
-xf,弦序指法,至,zhi4,U+F0033,
-xf,弦序指法,滚拂,gun3fo2,U+F0034,
-xf,弦序指法,全扶,quan2fu2,U+F0035,
-cf,复式指法,拨,bo1,U+F0036,
-cf,复式指法,剌,la4,U+F0037,
-xf,弦序指法,剌伏,la4fu2,U+F0038,
-xf,弦序指法,打圆,da3yuan2,U+F0039,
-xf,弦序指法,搯起,tao1qi3,U+F0040,
-xf,弦序指法,抓起,zhua1qi3,U+F0041,
-xf,弦序指法,带起,dai4qi3,U+F0042,
-xf,弦序指法,掩,yan3,U+F0043,
-xf,弦序指法,虚掩,xu1yan3,U+F0044,
-xf,弦序指法,推出,tui1chu1,U+F0045,
-xf,弦序指法,不动,bu4dong4,U+F0046,
-mf,走位指法,上,shang4,U+F0100,
-mf,走位指法,下,xia4,U+F0101,
-mf,走位指法,进,jin4,U+F0102,
-mf,走位指法,退,tui4,U+F0103,
-mf,走位指法,复,fu4,U+F0104,
-mf,走位指法,进复,jin4fu4,U+F0105,"U+F0102,U+F0104"
-mf,走位指法,退复,tui4fu4,U+F0106,"U+F0103,U+F0104"
-mf,走位指法,往来,wang3lai2,U+F0107,
-mf,走位指法,撞,zhuang4,U+F0108,
-mf,走位指法,逗,dou4,U+F0109,
-mf,走位指法,唤,huan4,U+F0110,
-mf,走位指法,吟,yin2,U+F0111,
-mf,走位指法,猱,nao2,U+F0112,
-sf,特殊指法,注,zhu4,U+F0120,
-sf,特殊指法,绰,chuo4,U+F0121,
-mo,修饰,引,yin3,U+F0131,
-mo,修饰,淌,tang3,U+F0132,
-mo,修饰,急,ji2,U+F0133,
-mo,修饰,缓,huan3,U+F0134,
-mo,修饰,紧,jin3,U+F0135,
-mo,修饰,慢,man4,U+F0136,
-jf,联袂指法,分开,fen1kai1,U+F0160,
-jf,联袂指法,同声,tong2sheng1,U+F0161,
-jf,联袂指法,应合,ying4he2,U+F0162,
-jf,联袂指法,放合,fang4he2,U+F0163,
-jf,联袂指法,掐撮三声,qia1cuo1san1sheng1,U+F0164,
-cf,复式指法,撮,cuo1,U+F0170,
-cf,复式指法,掐撮,qia1cuo1,U+F0171,
-cf,复式指法,双弹,shuang1dan4,U+F0172,
-cf,复式指法,拨剌,bo1la4,U+F0173,
-cf,复式指法,齐撮,qi2cuo1,U+F0174,
-ma,记号,少息,shao3xi1,U+F0180,
-ma,记号,大息,da4xi1,U+F0181,
-ma,记号,入拍,ru4pai1,U+F0182,
-ma,记号,入慢,ru4man4,U+F0183,
-ma,记号,泛起,fan4qi3,U+F0184,
-ma,记号,泛止,fan4zhi3,U+F0185,
-ma,记号,间,jian1,U+F0186,
-ma,记号,再作,zai4zuo4,U+F0187,
-ma,记号,从头再作,cong2tou2zai4zuo4,U+F0188,
-ma,记号,曲终,qu1zhong1,U+F0189,
-ma,记号,操终,cao1zhong1,U+F0190,
-n,数字,一,yi1,U+F0200,
-n,数字,二,er4,U+F0201,
-n,数字,三,san1,U+F0202,
-n,数字,四,si4,U+F0203,
-n,数字,五,wu3,U+F0204,
-n,数字,六,liu4,U+F0205,
-n,数字,七,qi1,U+F0206,
-n,数字,八,ba1,U+F0207,
-n,数字,九,jiu3,U+F0208,
-n,数字,十,shii2,U+F0209,
-n,数字,十一,shi2yi1,U+F0210,"U+F0209,U+F0200"
-n,数字,十二,shi2er4,U+F0211,"U+F0209,U+F0201"
-n,数字,十三,shi2san1,U+F0212,"U+F0209,U+F0202"
-n,数字,外,wai4,U+F0213,
-n,数字,半,ban4,U+F0214,
-hf,其他,就,jiu4,U+F0215,
-o,其他,按,an4,U+F0216,
-o,其他,泛,fan4,U+F0217,
-o,其他,徽,hui1,U+F0218,
-o,其他,分,fen1,U+F0219,
-o,其他,弦,xian2,U+F0220,
+GlyphTag,GlyphTagCN,GlyphNameCN,GlyphName,Unicode,Ligature,Variant
+hf,徽位指法,散,san3,U+F0000,,md sm
+hf,徽位指法,大,da4,U+F0001,,md sm
+hf,徽位指法,食,shi2,U+F0002,,md sm
+hf,徽位指法,中,zhong1,U+F0003,,md sm
+hf,徽位指法,名,ming2,U+F0004,,md sm
+hf,徽位指法,跪,gui4,U+F0005,,md sm
+xf,弦序指法,托,tuo1,U+F0010,,md sm
+xf,弦序指法,擘,pi1,U+F0011,,md sm
+xf,弦序指法,抹,mo3,U+F0012,,md sm
+xf,弦序指法,挑,tiao3,U+F0013,,md sm
+xf,弦序指法,勾,gou1,U+F0014,,md sm
+xf,弦序指法,剔,ti1,U+F0015,,md sm
+xf,弦序指法,打,da3,U+F0016,,md sm
+xf,弦序指法,摘,zhai1,U+F0017,,md sm
+xf,弦序指法,托擘,tuo1pi1,U+F0018,U+F0010 U+F0011,md
+xf,弦序指法,抹挑,mo3tiao3,U+F0019,U+F0012 U+F0013,md
+xf,弦序指法,勾剔,gou1ti1,U+F0020,U+F0014 U+F0015,md
+xf,弦序指法,打摘,da3zhai1,U+F0021,U+F0016 U+F0017,md
+xf,弦序指法,历,li4,U+F0022,,md
+xf,弦序指法,蠲,juan1,U+F0023,,md
+xf,弦序指法,轮,lun2,U+F0024,,md
+xf,弦序指法,半轮,ban4lun2,U+F0025,,md
+xf,弦序指法,琐,suo3,U+F0026,,md
+xf,弦序指法,长琐,chang2suo3,U+F0027,,md
+xf,弦序指法,如一,ru2yi1,U+F0028,,md
+xf,弦序指法,伏,fu2,U+F0029,,md
+xf,弦序指法,如一声,ru2yi1sheng1,U+F0030,,md
+xf,弦序指法,滚,gun3,U+F0031,,md
+xf,弦序指法,拂,fo2,U+F0032,,md
+xf,弦序指法,至,zhi4,U+F0033,,md
+xf,弦序指法,滚拂,gun3fo2,U+F0034,,md
+xf,弦序指法,全扶,quan2fu2,U+F0035,,md
+cf,复式指法,拨,bo1,U+F0036,,md
+cf,复式指法,剌,la4,U+F0037,,md
+xf,弦序指法,剌伏,la4fu2,U+F0038,,md
+xf,弦序指法,打圆,da3yuan2,U+F0039,,md
+xf,弦序指法,搯起,tao1qi3,U+F0040,,md
+xf,弦序指法,抓起,zhua1qi3,U+F0041,,md
+xf,弦序指法,带起,dai4qi3,U+F0042,,md
+xf,弦序指法,掩,yan3,U+F0043,,md
+xf,弦序指法,虚掩,xu1yan3,U+F0044,,md
+xf,弦序指法,推出,tui1chu1,U+F0045,,md
+xf,弦序指法,不动,bu4dong4,U+F0046,,md
+mf,走位指法,上,shang4,U+F0100,,md
+mf,走位指法,下,xia4,U+F0101,,md
+mf,走位指法,进,jin4,U+F0102,,md
+mf,走位指法,退,tui4,U+F0103,,md
+mf,走位指法,复,fu4,U+F0104,,md
+mf,走位指法,进复,jin4fu4,U+F0105,U+F0102 U+F0104,md
+mf,走位指法,退复,tui4fu4,U+F0106,U+F0103 U+F0104,md
+mf,走位指法,往来,wang3lai2,U+F0107,,md
+mf,走位指法,撞,zhuang4,U+F0108,,md
+mf,走位指法,逗,dou4,U+F0109,,md
+mf,走位指法,唤,huan4,U+F0110,,md
+mf,走位指法,吟,yin2,U+F0111,,md
+mf,走位指法,猱,nao2,U+F0112,,md
+sf,特殊指法,注,zhu4,U+F0120,,md
+sf,特殊指法,绰,chuo4,U+F0121,,md
+mo,修饰,引,yin3,U+F0131,,md
+mo,修饰,淌,tang3,U+F0132,,md
+mo,修饰,急,ji2,U+F0133,,md
+mo,修饰,缓,huan3,U+F0134,,md
+mo,修饰,紧,jin3,U+F0135,,md
+mo,修饰,慢,man4,U+F0136,,md
+jf,联袂指法,分开,fen1kai1,U+F0160,,md
+jf,联袂指法,同声,tong2sheng1,U+F0161,,md
+jf,联袂指法,应合,ying4he2,U+F0162,,md
+jf,联袂指法,放合,fang4he2,U+F0163,,md
+jf,联袂指法,掐撮三声,qia1cuo1san1sheng1,U+F0164,,md
+cf,复式指法,撮,cuo1,U+F0170,,md
+cf,复式指法,掐撮,qia1cuo1,U+F0171,,md
+cf,复式指法,双弹,shuang1dan4,U+F0172,,md
+cf,复式指法,拨剌,bo1la4,U+F0173,,md
+cf,复式指法,齐撮,qi2cuo1,U+F0174,,md
+ma,记号,少息,shao3xi1,U+F0180,,md
+ma,记号,大息,da4xi1,U+F0181,,md
+ma,记号,入拍,ru4pai1,U+F0182,,md
+ma,记号,入慢,ru4man4,U+F0183,,md
+ma,记号,泛起,fan4qi3,U+F0184,,md
+ma,记号,泛止,fan4zhi3,U+F0185,,md
+ma,记号,间,jian1,U+F0186,,md
+ma,记号,再作,zai4zuo4,U+F0187,,md
+ma,记号,从头再作,cong2tou2zai4zuo4,U+F0188,,md
+ma,记号,曲终,qu1zhong1,U+F0189,,md
+ma,记号,操终,cao1zhong1,U+F0190,,md
+n,数字,一,yi1,U+F0200,,md sm tn
+n,数字,二,er4,U+F0201,,md sm tn
+n,数字,三,san1,U+F0202,,md sm tn
+n,数字,四,si4,U+F0203,,md sm tn
+n,数字,五,wu3,U+F0204,,md sm tn
+n,数字,六,liu4,U+F0205,,md sm tn
+n,数字,七,qi1,U+F0206,,md sm tn
+n,数字,八,ba1,U+F0207,,md sm tn
+n,数字,九,jiu3,U+F0208,,md sm tn
+n,数字,十,shii2,U+F0209,,md sm tn
+n,数字,十一,shi2yi1,U+F0210,U+F0209 U+F0200,md sm tn
+n,数字,十二,shi2er4,U+F0211,U+F0209 U+F0201,md sm tn
+n,数字,十三,shi2san1,U+F0212,U+F0209 U+F0202,md sm tn
+n,数字,外,wai4,U+F0213,,md sm tn
+n,数字,半,ban4,U+F0214,,md sm tn
+hf,其他,就,jiu4,U+F0215,,md
+o,其他,按,an4,U+F0216,,md
+o,其他,泛,fan4,U+F0217,,md
+o,其他,徽,hui1,U+F0218,,md
+o,其他,分,fen1,U+F0219,,md
+o,其他,弦,xian2,U+F0220,,md
