@@ -20,10 +20,10 @@ from .constants import (
 
 @dataclass(frozen=True, slots=True)
 class Area:
-    x: float
-    y: float
-    width: float
-    height: float
+    x: int
+    y: int
+    width: int
+    height: int
 
 _EMPTY_AREA = Area(0, 0, 0, 0)
 
@@ -167,17 +167,17 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
             if key in FORMS:
                 area_filler = Area(0, 0, 1000, 1000)
             else:
-                area_filler = Area(0, 0, area["width"], area["height"])
+                area_filler = Area(0, 0, round(area["width"]), round(area["height"]))
             layout: LayoutNode = LayoutNode(tag=key, name="", area=area_filler)
             layout_templates[key].append(layout)
         elif tag in TAG:
             sublayout = LayoutNode(
                     tag=tag, name="", 
                     area=Area(
-                    x=area["left"],
-                    y=area["top"],
-                    width=area["width"],
-                    height=area["height"],
+                    x=round(area["left"]),
+                    y=round(area["top"]),
+                    width=round(area["width"]),
+                    height=round(area["height"]),
                 )
             )
             layout.set_child(sublayout)
@@ -196,10 +196,10 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
             component_dict[component_name] = Component(
                 name=component_name,
                 area=Area(
-                    x=area["left"],
-                    y=area["top"],
-                    width=area["width"],
-                    height=area["height"],
+                    x=round(area["left"]),
+                    y=round(area["top"]),
+                    width=round(area["width"]),
+                    height=round(area["height"]),
                 ),
                 container_area=last_layout.area,
                 container_tag=last_tag,
