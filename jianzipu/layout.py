@@ -10,7 +10,7 @@ from .constants import (
     GLYPH_ORDER,
     GLYPHS,
     PATH_TO_FIGMA,
-    REDUCED_FROM_FULL_FORM,
+    REDUCED_FROM_FULL,
     TAG,
     CN_from_EN,
     EN_from_CN,
@@ -214,10 +214,10 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
 
     # generate reduced form from full form according to REDUCED_FROM_FULL_FORM
     all_form_templates = deepcopy(full_form_templates)
-    for k, full_forms in full_form_templates.items():
+    for k_form, full_forms in full_form_templates.items():
         for full_form in full_forms:
             full_children_tags = tuple(full_form.get_children_tags())
-            reduced_children_tags_l = REDUCED_FROM_FULL_FORM.get(full_children_tags, [])
+            reduced_children_tags_l = REDUCED_FROM_FULL.get(full_children_tags, [])
             for reduced_children_tags in reduced_children_tags_l:
                 reduced_form = deepcopy(full_form)
                 reduced_form.children = {
@@ -225,10 +225,25 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
                     for tag, child in reduced_form.children.items()
                     if tag in reduced_children_tags
                 }
-                all_form_templates[k].append(reduced_form)
+                all_form_templates[k_form].append(reduced_form)
+    
+    # generate reduced layout from full layout according to REDUCED_FROM_FULL
+    all_layout_templates = deepcopy(layout_templates)
+    for k_layout, full_layouts in layout_templates.items():
+        for full_layout in full_layouts:
+            full_children_tags = tuple(full_layout.get_children_tags())
+            reduced_children_tags_l = REDUCED_FROM_FULL.get(full_children_tags, [])
+            for reduced_children_tags in reduced_children_tags_l:
+                reduced_layout = deepcopy(full_layout)
+                reduced_layout.children = {
+                    tag: child
+                    for tag, child in reduced_layout.children.items()
+                    if tag in reduced_children_tags
+                }
+                all_layout_templates[k_layout].append(reduced_layout)
 
     component_dict = dict(sorted(component_dict.items(), key=lambda item: GLYPH_ORDER.get(item[0], float('inf'))))
-    return all_form_templates, layout_templates, component_dict
+    return all_form_templates, all_layout_templates, component_dict
 
 def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], flatten: bool) -> list[LayoutNode]:
     """Get all possible layouts by injecting layout templates into form templates
