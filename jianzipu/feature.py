@@ -83,6 +83,7 @@ def gen_rule_template():
             key = key.replace("-", " ")
             # break
             rule_templates[tuple(key.split())] = value
+    rule_templates = dict(sorted(rule_templates.items(), key=lambda x: x[0],reverse=True))
     return rule_templates
 
 def write_template(macros, rule_templates, file=PATH_TO_FEATURES):
