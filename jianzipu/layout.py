@@ -10,6 +10,7 @@ from .constants import (
     GLYPH_ORDER,
     GLYPHS,
     PATH_TO_FIGMA,
+    REDUCED_FROM_FULL_FORM,
     TAG,
     CN_from_EN,
     EN_from_CN,
@@ -209,9 +210,25 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
                 container_area=last_layout.area,
                 container_tag=last_tag,
             )
-    form_templates: dict[t_FORM, list[LayoutNode]] = {k: layout_templates.pop(k) for k in FORMS if k in layout_templates}
+    full_form_templates: dict[t_FORM, list[LayoutNode]] = {k: layout_templates.pop(k) for k in FORMS if k in layout_templates}
+
+    # generate reduced form from full form according to REDUCED_FROM_FULL_FORM
+    all_form_templates = deepcopy(full_form_templates)
+    for k, full_forms in full_form_templates.items():
+        for full_form in full_forms:
+            full_children_tags = tuple(full_form.get_children_tags())
+            reduced_children_tags_l = REDUCED_FROM_FULL_FORM.get(full_children_tags, [])
+            for reduced_children_tags in reduced_children_tags_l:
+                reduced_form = deepcopy(full_form)
+                reduced_form.children = {
+                    tag: child
+                    for tag, child in reduced_form.children.items()
+                    if tag in reduced_children_tags
+                }
+                all_form_templates[k].append(reduced_form)
+
     component_dict = dict(sorted(component_dict.items(), key=lambda item: GLYPH_ORDER.get(item[0], float('inf'))))
-    return form_templates, layout_templates, component_dict
+    return all_form_templates, layout_templates, component_dict
 
 def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], flatten: bool) -> list[LayoutNode]:
     """Get all possible layouts by injecting layout templates into form templates
@@ -227,9 +244,3 @@ def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templ
                     combined.fill_child(deepcopy(layout))
                 all_layouts.append(combined.flatten() if flatten else combined)
     return all_layouts
-
-def get_all_layouts_with_reduced(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], rule_templates: dict) -> list[LayoutNode]:
-    """Get all possible layouts by injecting layout templates into form templates, with reduced sub-elements
-    """
-    all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
-    return 

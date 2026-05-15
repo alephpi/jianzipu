@@ -30,6 +30,12 @@ CHILDREN_TAGS_ORDER_INDEX = {
     "xfp": {"xf": 0, "xn1": 1, "xn2": 2},
 }
 
+# key: full form, value: reduced forms that inherit the full form layout
+REDUCED_FROM_FULL_FORM: dict[tuple[t_TAG, ...], list] = {
+    ("hfp", "xfp"): [("hfp"), ("xfp")],
+    ("hfp", "sf", "xfp"): [("hfp", "sf"), ("sf", "xfp"), ("sf")],
+}
+
 # TODO
 t_JIANZI = str
 

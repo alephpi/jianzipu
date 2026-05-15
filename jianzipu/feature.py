@@ -74,7 +74,7 @@ def gen_rule_template():
 
     hfp = hf + hn.optional()
     xfp = xf + xn.optional()
-    SF = hfp.optional() + (sf + xfp).optional()
+    SF = hfp.optional() + sf.optional() + xfp.optional()
 
     rule_templates = {}
     for key in SF.values:
