@@ -82,8 +82,9 @@ def make_glyph_from_components(font: ufoLib2.Font, rounding = True):
         with open(svg_path, "r", encoding="utf-8") as f:
             svg_content = f.read()
         x,y,w,h = component.xywh
+        H = component.container_area.height
         # NOTE: transform from svg coordinate system (y down) to font coordinate system (y up)
-        dx, dy = x, h+y
+        dx, dy = x, H-y
         transform = Transform(1, 0, 0, -1, dx, dy)
         # print(transform)
         # glif = svg2glif(svg_content, name, width=0, height=0, transform=transform)
