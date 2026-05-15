@@ -185,3 +185,16 @@
 2. 根据读法确定布局为`简式布局`(SF)，打标`大`为`徽位指法`(hf)，`九`为`一价徽位数字`(hn1)，`勾`为`弦序指法`(xf)，`三`为`一价弦序数字`(xn1)
 3. 根据减字名与成分找到对应字形，即`da4`，`jiu3`，`gou1`，`san1`
 4. 输出 `da4 jiu3 gou1 san1`
+
+### 从 Figma 导入字形（glyph）与布局（layout）
+
+1. 在 [Figma 设计文件](https://www.figma.com/design/S75E7rV1gZBEIcVNe591A4/Jianzipu-YaoYinQinSong?node-id=23-2&p=f&t=VrvXTnlY2M3Oj06z-0) 中，有两类数据需要导出：
+   1. 以`c_`开头的部件 (component) 数据，包含字形轮廓，选中后右下角导出 svg，保存到`data/svgs`文件夹下。
+   2. 以`l_`开头的布局（layout）数据，包含
+      1. 字形轮廓 (component) 与字面（frame）的相对位置信息
+      2. 布局与子布局的相对位置信息
+    选中后右键点击导出为 css(all layers)，保存到`data/figma.css`文件夹中。
+2. 根据 svg 文件中存储的字形轮廓和 1.2.1 中的相对位置信息，写入字体的字形。这里涉及到 Figma 到字形坐标系的坐标转换。
+    ![](./assets/coord_transform_for_glyph.svg)
+3. 根据 1.2.2 中的相对位置信息，写入字体的 pos rule。这里涉及到 Figma 到字形自身原点到默认排版位置的位移转换。
+    ![](./assets/coord_transform_for_pos_rule.svg)
