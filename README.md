@@ -8,6 +8,10 @@
 
 在 [discord](https://discord.gg/UBPK6hnUJD) 上加入讨论！
 
+# Demo
+[demo.webm](https://github.com/user-attachments/assets/ef872e91-967f-4d40-b534-b4b9ed1ef295)
+
+
 # 介绍
 以往的各种减字谱电子化方案，本质上是预定义的输入字符串与图片格式的减字谱的映射。然而在减字谱被正式编码以前，这些符号要么没有编码（单纯的以图片格式输入），要么编码不统一。然而以 [IRGN2645](https://appsrv.cse.cuhk.edu.hk/~irg/irg/irg61/IRG61.htm) 为代表的减字谱编码方案，其目标在于事无巨细的收录各种古今中外出版物中出现的减字，涉及面太广、审核周期太久，无法满足迫切的使用需求。
 
