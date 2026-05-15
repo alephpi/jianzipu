@@ -3,7 +3,7 @@ from itertools import product
 import yaml
 
 from .constants import GLYPH_ORDER, GLYPHS, PATH_TO_FEA, PATH_TO_FEATURES
-from .layout import LayoutNode, get_all_layouts, get_all_layouts_reduced, parse_figma
+from .layout import LayoutNode, get_all_layouts, parse_figma
 from .metadata import WIDTH
 from .parser import ParseNode
 
@@ -177,19 +177,14 @@ def main():
 
     macros, rule_templates = import_features()
     form_templates, layout_templates, component_dict = parse_figma()
-    # all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
-    all_layouts = get_all_layouts_reduced(form_templates, layout_templates, rule_templates)
+    all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
 
     with open(PATH_TO_FEA, "w") as f:
         f.write(write_macros(macros) + "\n")
-        rules_l = []
         rules = ""
         lookup_pos_name = "jzp_pos_rules"
         for layout in all_layouts:
             rule = write_pos_rule(layout, rule_templates)
-            rules_l.append(rule)
-            rules_l = sorted(set(rules_l))
-        for rule in rules_l:
             rules += f"\t{rule};\n"
         lookup_pos = f"lookup {lookup_pos_name} {{\n{rules}}} {lookup_pos_name};"
         f.write('\n')

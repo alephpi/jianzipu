@@ -228,15 +228,8 @@ def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templ
                 all_layouts.append(combined.flatten() if flatten else combined)
     return all_layouts
 
-def get_all_layouts_reduced(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], rule_templates: dict[tuple[str, ...], str]) -> list[LayoutNode]:
+def get_all_layouts_with_reduced(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], rule_templates: dict) -> list[LayoutNode]:
     """Get all possible layouts by injecting layout templates into form templates, with reduced sub-elements
     """
     all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
-    all_layouts_reduced = []
-    for layout in all_layouts:
-        for rule_template in rule_templates.keys():
-            if set(rule_template).issubset(layout.get_children_tags()):
-                layout_reduced = deepcopy(layout)
-                layout_reduced.children = {tag: child for tag, child in layout_reduced.children.items() if tag in rule_template}
-                all_layouts_reduced.append(layout_reduced)
-    return all_layouts_reduced
+    return 

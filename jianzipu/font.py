@@ -45,14 +45,18 @@ def init(font: ufoLib2.Font):
     notdef = font.newGlyph(".notdef")
     notdef.width = 0
 
-    glyph = font.newGlyph("space")
-    glyph.width = WIDTH
-    glyph.unicode = 0x0020
+    space = font.newGlyph("space")
+    space.width = WIDTH
+    space.unicode = 0x0020
 
-    unicodes = ["U+0020"]
-    glyphnames = ["space"]
-    glyphcnnames = ["空格"]
-    unicode = 0xF0000
+    placeholder = font.newGlyph("placeholder")
+    placeholder.width = 0
+    placeholder.unicode = 0xF0000
+
+    unicodes = ["U+0020", "U+F0000"]
+    glyphnames = ["space", "placeholder"]
+    glyphcnnames = ["空格", "占位符"]
+    unicode = 0xF0001
     for glyph_name in GLYPH_ORDER.keys():
         if glyph_name in font:
             continue
@@ -65,7 +69,7 @@ def init(font: ufoLib2.Font):
         glyphnames.append(glyph_name)
         glyphcnnames.append(CN_from_EN[glyph_name[:-3]])
 
-    font.glyphOrder = [".notdef", "space"] + list(GLYPH_ORDER.keys())
+    font.glyphOrder = [".notdef", "space", "placeholder"] + list(GLYPH_ORDER.keys())
     import pandas as pd
     encodings = pd.DataFrame({"GlyphNameCN": glyphcnnames, "GlyphName": glyphnames, "Unicode": unicodes})
     encodings.to_csv(f"{PWD}/data/encoding.csv", index=False)
