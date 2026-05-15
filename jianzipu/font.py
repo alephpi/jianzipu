@@ -8,7 +8,8 @@ from fontTools.pens.roundingPen import RoundingPointPen
 from fontTools.svgLib import SVGPath
 
 from .constants import (
-    GLYPH_ORDER,
+    GLYPHS,
+    JIANZI_ORDER,
     PATH_TO_FEA,
     PATH_TO_FONT,
     PATH_TO_SVGS,
@@ -49,6 +50,7 @@ def init(font: ufoLib2.Font):
     space.width = WIDTH
     space.unicode = 0x0020
 
+    # jianzi
     placeholder = font.newGlyph("placeholder")
     placeholder.width = 0
     placeholder.unicode = 0xF0000
@@ -57,7 +59,7 @@ def init(font: ufoLib2.Font):
     glyphnames = ["space", "placeholder"]
     glyphcnnames = ["空格", "占位符"]
     unicode = 0xF0001
-    for glyph_name in GLYPH_ORDER.keys():
+    for glyph_name in JIANZI_ORDER.keys():
         if glyph_name in font:
             continue
         glyph = font.newGlyph(glyph_name)
@@ -69,7 +71,23 @@ def init(font: ufoLib2.Font):
         glyphnames.append(glyph_name)
         glyphcnnames.append(CN_from_EN[glyph_name[:-3]])
 
-    font.glyphOrder = [".notdef", "space", "placeholder"] + list(GLYPH_ORDER.keys())
+    # hanzi
+    for i, glyphname in enumerate(GLYPHS.GlyphName.tolist()):
+        if glyphname in font:
+            continue
+        g = font.newGlyph(glyphname)
+        g.width = WIDTH
+        glyphname_cn = CN_from_EN[glyphname]
+        if len(glyphname_cn) == 1:
+            g.unicode = ord(glyphname_cn)
+        else:
+            g.unicode = unicode
+            unicode += 1
+        unicodes.append(f"U+{g.unicode:05X}")
+        glyphnames.append(glyphname)
+        glyphcnnames.append(glyphname_cn)
+
+    font.glyphOrder = [".notdef", "space", "placeholder"] + list(JIANZI_ORDER.keys())
     import pandas as pd
     encodings = pd.DataFrame({"GlyphNameCN": glyphcnnames, "GlyphName": glyphnames, "Unicode": unicodes})
     encodings.to_csv(f"{PWD}/data/encoding.csv", index=False)

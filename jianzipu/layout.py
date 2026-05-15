@@ -7,8 +7,8 @@ from pathlib import Path
 from .constants import (
     CHILDREN_TAGS_ORDER_INDEX,
     FORMS,
-    GLYPH_ORDER,
     GLYPHS,
+    JIANZI_ORDER,
     PATH_TO_FIGMA,
     REDUCED_FROM_FULL,
     TAG,
@@ -227,7 +227,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
                 all_layout_templates[k_layout].append(reduced_layout)
 
     all_form_templates: dict[t_FORM, list[LayoutNode]] = {k: all_layout_templates.pop(k) for k in FORMS if k in all_layout_templates}
-    component_dict = dict(sorted(component_dict.items(), key=lambda item: GLYPH_ORDER.get(item[0], float('inf'))))
+    component_dict = dict(sorted(component_dict.items(), key=lambda item: JIANZI_ORDER.get(item[0], float('inf'))))
     return all_form_templates, all_layout_templates, component_dict
 
 def get_all_layouts(form_templates: dict[t_FORM, list[LayoutNode]], layout_templates: dict[t_TAG, list[LayoutNode]], flatten: bool) -> list[LayoutNode]:

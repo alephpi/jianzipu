@@ -53,16 +53,20 @@ PATH_TO_SVGS = PWD / "data/svgs"
 PATH_TO_FONT = PWD / "font"
 
 # with open(full_path, 'r', encoding='utf-8') as f:
-GLYPHS = pd.read_csv(PATH_TO_GLYPHS, index_col=None)
+GLYPHS = pd.read_csv(PATH_TO_GLYPHS, index_col=None).fillna('')
 JIANZI = GLYPHS.GlyphNameCN.tolist()
 EN_from_CN: Dict[str, str] = dict(zip(GLYPHS.GlyphNameCN, GLYPHS.GlyphName))
 CN_from_EN: Dict[str, str] = dict(zip(GLYPHS.GlyphName, GLYPHS.GlyphNameCN))
 
-GLYPH_ORDER = {}
+# here only contains jianzi glyphs, not hanzi glyphs
+JIANZI_ORDER = {}
 for i, (glyph, vars) in enumerate(zip(GLYPHS.GlyphName, GLYPHS.Variant)):
-    vars = vars.split(' ')
-    for var in vars:
-        GLYPH_ORDER[f"{glyph}.{var}"] = i
+    if vars:
+        vars = vars.split(' ')
+        for var in vars:
+            JIANZI_ORDER[f"{glyph}.{var}"] = i
+
+HANZI = [glyph for glyph in GLYPHS.GlyphNameCN.tolist() if len(glyph) == 1]
 
 # valence of fingers, for linting
 # VALENCE = {

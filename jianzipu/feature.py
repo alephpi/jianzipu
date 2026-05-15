@@ -2,7 +2,7 @@ from itertools import product
 
 import yaml
 
-from .constants import GLYPH_ORDER, GLYPHS, PATH_TO_FEA, PATH_TO_FEATURES
+from .constants import GLYPHS, JIANZI_ORDER, PATH_TO_FEA, PATH_TO_FEATURES
 from .layout import LayoutNode, get_all_layouts, parse_figma
 from .metadata import WIDTH
 from .parser import ParseNode
@@ -48,7 +48,7 @@ def gen_macros():
     scope = ["hf", "xf", "sf", "n"] # NOTE: currently we only support these 4 scopes
     variant = ["tn", "sm", "md", "lg"]
     macros = {f"@{tag}_{var}": [] for tag, var in product(scope, variant)}
-    for glyphname in GLYPH_ORDER.keys():
+    for glyphname in JIANZI_ORDER.keys():
         glyph, var = glyphname.split(".")
         tag = GLYPHS[GLYPHS.GlyphName == glyph].GlyphTag.item()
         # print(tag)
@@ -64,7 +64,7 @@ def gen_macros():
     macros.update(n_d)
     return {k: v for k, v in macros.items() if v}
 
-def gen_rule_template():
+def gen_pos_rule_template():
     # rule template for SF
     hf = Template(["hf"])
     hn = Template(["hn1", "hn1-hn2"])
@@ -76,15 +76,15 @@ def gen_rule_template():
     xfp = xf + xn.optional()
     SF = hfp.optional() + sf.optional() + xfp.optional()
 
-    rule_templates = {}
+    pos_rule_templates = {}
     for key in SF.values:
         if key:
             value = " ".join(SF_d[k] for k in key.split())
             key = key.replace("-", " ")
             # break
-            rule_templates[tuple(key.split())] = value
-    rule_templates = dict(sorted(rule_templates.items(), key=lambda x: x[0],reverse=True))
-    return rule_templates
+            pos_rule_templates[tuple(key.split())] = value
+    pos_rule_templates = dict(sorted(pos_rule_templates.items(), key=lambda x: x[0],reverse=True))
+    return pos_rule_templates
 
 def write_template(macros, rule_templates, file=PATH_TO_FEATURES):
     with open(file, "w") as f:
@@ -173,10 +173,10 @@ def main():
     # write features.fea
     # macros = import_macros()
     macros = gen_macros()
-    rule_templates = gen_rule_template()
-    write_template(macros, rule_templates)
+    pos_rule_templates = gen_pos_rule_template()
+    write_template(macros, pos_rule_templates)
 
-    macros, rule_templates = import_features()
+    macros, pos_rule_templates = import_features()
     form_templates, layout_templates, component_dict = parse_figma()
     all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
 
@@ -185,7 +185,7 @@ def main():
         rules = ""
         lookup_pos_name = "jzp_pos_rules"
         for layout in all_layouts:
-            rule = write_pos_rule(layout, rule_templates)
+            rule = write_pos_rule(layout, pos_rule_templates)
             rules += f"\t{rule};\n"
         lookup_pos = f"lookup {lookup_pos_name} {{\n{rules}}} {lookup_pos_name};"
         f.write('\n')
