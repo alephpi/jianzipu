@@ -150,3 +150,4 @@ package/jianzipu/dev/dump_newest_only.txt
 font/lxgw**
 *.ufo
 *.ttf
+!YaoYinQinSong.ttf
