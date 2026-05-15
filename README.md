@@ -9,7 +9,14 @@
 在 [discord](https://discord.gg/UBPK6hnUJD) 上加入讨论！
 
 # Demo
-[demo.webm](https://github.com/user-attachments/assets/ef872e91-967f-4d40-b534-b4b9ed1ef295)
+打开 `font/index.html`
+
+<div align="center">
+  
+[demo.webm](https://github.com/user-attachments/assets/f57d1592-9c8c-4239-a04c-0df96e96373f)
+
+</div>
+
 
 
 # 介绍
