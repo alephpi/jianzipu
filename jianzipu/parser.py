@@ -187,7 +187,7 @@ class ParseNode:
         return self.children[tag]
 
     def get_children_tags(self):
-        return self.children.keys()
+        return tuple(self.children.keys())
 
     def is_leaf(self) -> bool:
         return not self.children

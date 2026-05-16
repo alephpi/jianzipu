@@ -67,7 +67,7 @@ class LayoutNode:
         return not self.children
 
     def get_children_tags(self):
-        return self.children.keys()
+        return tuple(self.children.keys())
 
     def get_child_of_tag(self, tag: t_TAG) -> "LayoutNode":
         return self.children[tag]
@@ -215,7 +215,7 @@ def parse_figma(file: Path | str=PATH_TO_FIGMA) -> tuple[dict[t_FORM, list[Layou
     all_layout_templates = deepcopy(layout_templates)
     for k_layout, full_layouts in layout_templates.items():
         for full_layout in full_layouts:
-            full_children_tags = tuple(full_layout.get_children_tags())
+            full_children_tags = full_layout.get_children_tags()
             reduced_children_tags_l = REDUCED_FROM_FULL.get(full_children_tags, [])
             for reduced_children_tags in reduced_children_tags_l:
                 reduced_layout = deepcopy(full_layout)
