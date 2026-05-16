@@ -1,8 +1,16 @@
+from collections import defaultdict
 from itertools import product
 
 import yaml
 
-from .constants import GLYPHS, JIANZI_ORDER, PATH_TO_FEA, PATH_TO_FEATURES
+from .constants import (
+    GLYPHS,
+    JIANZI_ORDER,
+    PATH_TO_FEA,
+    PATH_TO_FEATURES,
+    CN_from_EN,
+    EN_from_CN,
+)
 from .layout import LayoutNode, get_all_layouts, parse_figma
 from .metadata import WIDTH
 from .parser import ParseNode
@@ -45,26 +53,31 @@ def import_features(file=PATH_TO_FEATURES):
     return macros, rule_templates
 
 def gen_macros():
+    # glyphclass for hanzi
+    hanzi_macros = defaultdict(list)
+    for glyphname, tag in zip(GLYPHS.GlyphName, GLYPHS.GlyphTag):
+        hanzi_macros[f"@{tag}"].append(glyphname)
+    # glyphclass for jianzi
     scope = ["hf", "xf", "sf", "n"] # NOTE: currently we only support these 4 scopes
     variant = ["tn", "sm", "md", "lg"]
-    macros = {f"@{tag}_{var}": [] for tag, var in product(scope, variant)}
+    jianzi_macros = {f"@{tag}_{var}": [] for tag, var in product(scope, variant)}
     for glyphname in JIANZI_ORDER.keys():
         glyph, var = glyphname.split(".")
         tag = GLYPHS[GLYPHS.GlyphName == glyph].GlyphTag.item()
         # print(tag)
         if (tag in scope) and (var in variant):
-            macros[f"@{tag}_{var}"].append(glyphname)
-    # numbers
+            jianzi_macros[f"@{tag}_{var}"].append(glyphname)
+    ## numbers
     n_d = {
         "@hn_sm": "@n_sm",
         "@hn_md": "@n_md",
         "@xn_sm": "@n_sm",
         "@xn_md": "@n_md",
     }
-    macros.update(n_d)
+    macros = hanzi_macros | jianzi_macros | n_d
     return {k: v for k, v in macros.items() if v}
 
-def gen_pos_rule_template():
+def gen_rule_template():
     # rule template for SF
     hf = Template(["hf"])
     hn = Template(["hn1", "hn1-hn2"])
@@ -76,15 +89,15 @@ def gen_pos_rule_template():
     xfp = xf + xn.optional()
     SF = hfp.optional() + sf.optional() + xfp.optional()
 
-    pos_rule_templates = {}
+    rule_templates = {}
     for key in SF.values:
         if key:
             value = " ".join(SF_d[k] for k in key.split())
             key = key.replace("-", " ")
             # break
-            pos_rule_templates[tuple(key.split())] = value
-    pos_rule_templates = dict(sorted(pos_rule_templates.items(), key=lambda x: x[0],reverse=True))
-    return pos_rule_templates
+            rule_templates[tuple(key.split())] = value
+    rule_templates = dict(sorted(rule_templates.items(), key=lambda x: x[0],reverse=True))
+    return rule_templates
 
 def write_template(macros, rule_templates, file=PATH_TO_FEATURES):
     with open(file, "w") as f:
@@ -124,8 +137,31 @@ def write_macros(macros):
     fea_text = "\n".join(lines)
     return fea_text
 
+def write_sub_rules(rule_templates: dict[tuple[str, ...], list]):
+    '''Write all sub rules according to the rule templates.'''
+    rules = []
+    # many hanzi to one jianzi 
+    for glyphname in GLYPHS.GlyphName.tolist():
+        glyphname_cn = CN_from_EN[glyphname]
+        if len(glyphname_cn) > 1: # is ligature
+            glyph_out = glyphname
+            glyphs_in = ' '.join(EN_from_CN[g] for g in glyphname_cn)
+            rule = f"sub {glyphs_in} by {glyph_out};"
+            rules.append(rule)
+
+    # jianzi to jianzi variant
+    for tags, rule_template in rule_templates.items():
+        glyphclass_in = " ".join("@n'" if 'n' in tag else f"@{tag}'" for tag in tags) # cast hn1,hn2,xn1,xn2 to n
+        glyphclass_out = " ".join(rule_template)
+        rule = f"sub {glyphclass_in} by {glyphclass_out};"
+        rules.append(rule)
+
+    return rules
+
+
 def write_pos_rule(layout: LayoutNode, rule_templates: dict[tuple[str, ...], str]):
-    tags = tuple(layout.get_children_tags())
+    '''Write a pos rule for a given layout node according to the rule template it fits.'''
+    tags = layout.get_children_tags()
     rule_template = rule_templates[tags]
     rule = []
     for node, term in zip(layout.children.values(), rule_template):
@@ -173,27 +209,41 @@ def main():
     # write features.fea
     # macros = import_macros()
     macros = gen_macros()
-    pos_rule_templates = gen_pos_rule_template()
-    write_template(macros, pos_rule_templates)
+    rule_templates = gen_rule_template()
+    write_template(macros, rule_templates)
 
-    macros, pos_rule_templates = import_features()
+    macros, rule_templates = import_features()
     form_templates, layout_templates, component_dict = parse_figma()
     all_layouts = get_all_layouts(form_templates, layout_templates, flatten=True)
 
     with open(PATH_TO_FEA, "w") as f:
+        # macros
         f.write(write_macros(macros) + "\n")
+        # sub rules
+        rules = ""
+        sub_rules = write_sub_rules(rule_templates)
+        for rule in sub_rules:
+            rules += f"\t{rule}\n"
+        lookup_sub_name = "jzp_sub_rules"
+        lookup_sub = f"lookup {lookup_sub_name} {{\n{rules}}} {lookup_sub_name};\n"
+        f.write(lookup_sub)
+        f.write('\n')
+        # pos rules
         rules = ""
         lookup_pos_name = "jzp_pos_rules"
         for layout in all_layouts:
-            rule = write_pos_rule(layout, pos_rule_templates)
+            rule = write_pos_rule(layout, rule_templates)
             rules += f"\t{rule};\n"
-        lookup_pos = f"lookup {lookup_pos_name} {{\n{rules}}} {lookup_pos_name};"
-        f.write('\n')
+        lookup_pos = f"lookup {lookup_pos_name} {{\n{rules}}} {lookup_pos_name};\n"
         f.write(lookup_pos)
         f.write('\n')
 
-        feature_kern = f"feature kern {{\n\tlookup {lookup_pos_name};\n}} kern;"
+        # sub rules goes to liga feature
+        feature_liga = f"feature liga {{\n\tlookup {lookup_sub_name};\n}} liga;\n"
+        f.write(feature_liga)
         f.write('\n')
+        # pos rules goes to kern feature
+        feature_kern = f"feature kern {{\n\tlookup {lookup_pos_name};\n}} kern;\n"
         f.write(feature_kern)
         f.write('\n')
 

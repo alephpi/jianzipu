@@ -1,5 +1,15 @@
+@hf=[san3 da4 shi2 zhong1 ming2 gui4];
+@xf=[tuo1 pi1 mo3 tiao3 gou1 ti1 da3 zhai1 tuo1pi1 mo3tiao3 gou1ti1 da3zhai1 li4 juan1 lun2 ban4lun2 suo3 chang2suo3 ru2yi1 fu2 ru2yi1sheng1 gun3 fo2 zhi4 gun3fo2 quan2fuu2 la4fu2 da3yuan2 tao1qi3 zhua1qi3 dai4qi3 yan3 xu1yan3 tui1chu1 bu2dong4];
+@cf=[bo1 la4 cuo1 qia1cuo1 shuang1tan2 bo1la4 qi2cuo1];
+@mf=[shang4 xia4 jin4 tui4 fu4 jin4fu4 tui4fu4 wang3lai2 zhuang4 dou4 huan4 yin2 nao2];
+@sf=[zhu4 chuo4];
+@mo=[yin3 tang3 ji2 huan3 jin3 man4];
+@jf=[fen1kai1 tong2sheng1 ying4he2 fang4he2 qia1cuo1san1sheng1];
+@ma=[shao3xi1 da4xi1 ru4pai1 ru4man4 fan4qi3 fan4zhi3 jian1 zai4zuo4 cong2tou2zai4zuo4 qu1cjung1 cao1cjung1];
+@n=[yi1 er4 san1 si4 wu3 liu4 qi1 ba1 jiu3 shii2 shii2yi1 shii2er4 shii2san1 wai4 ban4];
+@o=[jiu4 an4 fan4 hui1 fen1 xian2 bu2 cong2 zuo4 ru4 quan2 zai4 chu1 dong4 shuang1 he2 tong2 yuan2 sheng1 tou2 ru2 shao3 dai4 ying1 kai1 tan2 wang3 xi1 fuu2 zhua1 pai1 qia1 tui1 tao1 cao1 fang4 qu1 lai2 zhi3 cjung1 xu1 qi3 zhang3 qi2];
 @hf_sm=[san3.sm da4.sm shi2.sm zhong1.sm ming2.sm gui4.sm];
-@hf_md=[san3.md da4.md shi2.md zhong1.md ming2.md gui4.md jiu4.md];
+@hf_md=[san3.md da4.md shi2.md zhong1.md ming2.md gui4.md];
 @xf_sm=[tuo1.sm pi1.sm mo3.sm tiao3.sm gou1.sm ti1.sm da3.sm zhai1.sm];
 @xf_md=[tuo1.md pi1.md mo3.md tiao3.md gou1.md ti1.md da3.md zhai1.md tuo1pi1.md mo3tiao3.md gou1ti1.md da3zhai1.md li4.md juan1.md lun2.md ban4lun2.md suo3.md chang2suo3.md ru2yi1.md fu2.md ru2yi1sheng1.md gun3.md fo2.md zhi4.md gun3fo2.md quan2fuu2.md la4fu2.md da3yuan2.md tao1qi3.md zhua1qi3.md dai4qi3.md yan3.md xu1yan3.md tui1chu1.md bu2dong4.md];
 @sf_md=[zhu4.md chuo4.md];
@@ -10,6 +20,82 @@
 @hn_md=@n_md;
 @xn_sm=@n_sm;
 @xn_md=@n_md;
+lookup jzp_sub_rules {
+	sub tuo1 pi1 by tuo1pi1;
+	sub mo3 tiao3 by mo3tiao3;
+	sub gou1 ti1 by gou1ti1;
+	sub da3 zhai1 by da3zhai1;
+	sub ban4 lun2 by ban4lun2;
+	sub zhang3 suo3 by chang2suo3;
+	sub ru2 yi1 by ru2yi1;
+	sub ru2 yi1 sheng1 by ru2yi1sheng1;
+	sub gun3 fo2 by gun3fo2;
+	sub quan2 fuu2 by quan2fuu2;
+	sub la4 fu2 by la4fu2;
+	sub da3 yuan2 by da3yuan2;
+	sub tao1 qi3 by tao1qi3;
+	sub zhua1 qi3 by zhua1qi3;
+	sub dai4 qi3 by dai4qi3;
+	sub xu1 yan3 by xu1yan3;
+	sub tui1 chu1 by tui1chu1;
+	sub bu2 dong4 by bu2dong4;
+	sub jin4 fu4 by jin4fu4;
+	sub tui4 fu4 by tui4fu4;
+	sub wang3 lai2 by wang3lai2;
+	sub fen1 kai1 by fen1kai1;
+	sub tong2 sheng1 by tong2sheng1;
+	sub ying1 he2 by ying4he2;
+	sub fang4 he2 by fang4he2;
+	sub qia1 cuo1 san1 sheng1 by qia1cuo1san1sheng1;
+	sub qia1 cuo1 by qia1cuo1;
+	sub shuang1 tan2 by shuang1tan2;
+	sub bo1 la4 by bo1la4;
+	sub qi2 cuo1 by qi2cuo1;
+	sub shao3 xi1 by shao3xi1;
+	sub da4 xi1 by da4xi1;
+	sub ru4 pai1 by ru4pai1;
+	sub ru4 man4 by ru4man4;
+	sub fan4 qi3 by fan4qi3;
+	sub fan4 zhi3 by fan4zhi3;
+	sub zai4 zuo4 by zai4zuo4;
+	sub cong2 tou2 zai4 zuo4 by cong2tou2zai4zuo4;
+	sub qu1 cjung1 by qu1cjung1;
+	sub cao1 cjung1 by cao1cjung1;
+	sub shii2 yi1 by shii2yi1;
+	sub shii2 er4 by shii2er4;
+	sub shii2 san1 by shii2san1;
+	sub @xf' @n' @n' by @xf_md @xn_sm @xn_sm;
+	sub @xf' @n' by @xf_md @xn_md;
+	sub @xf' by @xf_md;
+	sub @sf' @xf' @n' @n' by @sf_md @xf_md @xn_sm @xn_sm;
+	sub @sf' @xf' @n' by @sf_md @xf_md @xn_md;
+	sub @sf' @xf' by @sf_md @xf_md;
+	sub @sf' by @sf_md;
+	sub @hf' @xf' @n' @n' by @hf_md @xf_md @xn_sm @xn_sm;
+	sub @hf' @xf' @n' by @hf_md @xf_md @xn_md;
+	sub @hf' @xf' by @hf_md @xf_md;
+	sub @hf' @sf' @xf' @n' @n' by @hf_md @sf_md @xf_md @xn_sm @xn_sm;
+	sub @hf' @sf' @xf' @n' by @hf_md @sf_md @xf_md @xn_md;
+	sub @hf' @sf' @xf' by @hf_md @sf_md @xf_md;
+	sub @hf' @sf' by @hf_md @sf_md;
+	sub @hf' @n' @xf' @n' @n' by @hf_md @hn_md @xf_md @xn_sm @xn_sm;
+	sub @hf' @n' @xf' @n' by @hf_md @hn_md @xf_md @xn_md;
+	sub @hf' @n' @xf' by @hf_md @hn_md @xf_md;
+	sub @hf' @n' @sf' @xf' @n' @n' by @hf_md @hn_md @sf_md @xf_md @xn_sm @xn_sm;
+	sub @hf' @n' @sf' @xf' @n' by @hf_md @hn_md @sf_md @xf_md @xn_md;
+	sub @hf' @n' @sf' @xf' by @hf_md @hn_md @sf_md @xf_md;
+	sub @hf' @n' @sf' by @hf_md @hn_md @sf_md;
+	sub @hf' @n' @n' @xf' @n' @n' by @hf_md @hn_sm @hn_sm @xf_md @xn_sm @xn_sm;
+	sub @hf' @n' @n' @xf' @n' by @hf_md @hn_sm @hn_sm @xf_md @xn_md;
+	sub @hf' @n' @n' @xf' by @hf_md @hn_sm @hn_sm @xf_md;
+	sub @hf' @n' @n' @sf' @xf' @n' @n' by @hf_md @hn_sm @hn_sm @sf_md @xf_md @xn_sm @xn_sm;
+	sub @hf' @n' @n' @sf' @xf' @n' by @hf_md @hn_sm @hn_sm @sf_md @xf_md @xn_md;
+	sub @hf' @n' @n' @sf' @xf' by @hf_md @hn_sm @hn_sm @sf_md @xf_md;
+	sub @hf' @n' @n' @sf' by @hf_md @hn_sm @hn_sm @sf_md;
+	sub @hf' @n' @n' by @hf_md @hn_sm @hn_sm;
+	sub @hf' @n' by @hf_md @hn_md;
+	sub @hf' by @hf_md;
+} jzp_sub_rules;
 
 lookup jzp_pos_rules {
 	pos @hf_md' <140 540 0 0> @hn_sm' <500 758 0 0> @hn_sm' <500 540 0 0> @sf_md' <24 -66 0 0> tuo1.md' <180 -66 0 0> @xn_md' <571 58 0 0>;
@@ -263,6 +349,11 @@ lookup jzp_pos_rules {
 	pos da3zhai1.md' <76 -66 0 0>;
 } jzp_pos_rules;
 
+feature liga {
+	lookup jzp_sub_rules;
+} liga;
+
 feature kern {
 	lookup jzp_pos_rules;
 } kern;
+
