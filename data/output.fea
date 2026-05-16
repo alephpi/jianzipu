@@ -16,11 +16,14 @@
 @n_tn=[yi1.tn er4.tn san1.tn si4.tn wu3.tn liu4.tn qi1.tn ba1.tn jiu3.tn shii2.tn shii2yi1.tn shii2er4.tn shii2san1.tn wai4.tn ban4.tn];
 @n_sm=[yi1.sm er4.sm san1.sm si4.sm wu3.sm liu4.sm qi1.sm ba1.sm jiu3.sm shii2.sm shii2yi1.sm shii2er4.sm shii2san1.sm wai4.sm ban4.sm];
 @n_md=[yi1.md er4.md san1.md si4.md wu3.md liu4.md qi1.md ba1.md jiu3.md shii2.md shii2yi1.md shii2er4.md shii2san1.md wai4.md ban4.md];
+@hn=@n;
+@xn=@n;
 @hn_sm=@n_sm;
 @hn_md=@n_md;
 @xn_sm=@n_sm;
 @xn_md=@n_md;
-lookup jzp_sub_rules {
+
+lookup many2one {
 	sub tuo1 pi1 by tuo1pi1;
 	sub mo3 tiao3 by mo3tiao3;
 	sub gou1 ti1 by gou1ti1;
@@ -64,38 +67,59 @@ lookup jzp_sub_rules {
 	sub shii2 yi1 by shii2yi1;
 	sub shii2 er4 by shii2er4;
 	sub shii2 san1 by shii2san1;
-	sub @xf' @n' @n' by @xf_md @xn_sm @xn_sm;
-	sub @xf' @n' by @xf_md @xn_md;
-	sub @xf' by @xf_md;
-	sub @sf' @xf' @n' @n' by @sf_md @xf_md @xn_sm @xn_sm;
-	sub @sf' @xf' @n' by @sf_md @xf_md @xn_md;
-	sub @sf' @xf' by @sf_md @xf_md;
-	sub @sf' by @sf_md;
-	sub @hf' @xf' @n' @n' by @hf_md @xf_md @xn_sm @xn_sm;
-	sub @hf' @xf' @n' by @hf_md @xf_md @xn_md;
-	sub @hf' @xf' by @hf_md @xf_md;
-	sub @hf' @sf' @xf' @n' @n' by @hf_md @sf_md @xf_md @xn_sm @xn_sm;
-	sub @hf' @sf' @xf' @n' by @hf_md @sf_md @xf_md @xn_md;
-	sub @hf' @sf' @xf' by @hf_md @sf_md @xf_md;
-	sub @hf' @sf' by @hf_md @sf_md;
-	sub @hf' @n' @xf' @n' @n' by @hf_md @hn_md @xf_md @xn_sm @xn_sm;
-	sub @hf' @n' @xf' @n' by @hf_md @hn_md @xf_md @xn_md;
-	sub @hf' @n' @xf' by @hf_md @hn_md @xf_md;
-	sub @hf' @n' @sf' @xf' @n' @n' by @hf_md @hn_md @sf_md @xf_md @xn_sm @xn_sm;
-	sub @hf' @n' @sf' @xf' @n' by @hf_md @hn_md @sf_md @xf_md @xn_md;
-	sub @hf' @n' @sf' @xf' by @hf_md @hn_md @sf_md @xf_md;
-	sub @hf' @n' @sf' by @hf_md @hn_md @sf_md;
-	sub @hf' @n' @n' @xf' @n' @n' by @hf_md @hn_sm @hn_sm @xf_md @xn_sm @xn_sm;
-	sub @hf' @n' @n' @xf' @n' by @hf_md @hn_sm @hn_sm @xf_md @xn_md;
-	sub @hf' @n' @n' @xf' by @hf_md @hn_sm @hn_sm @xf_md;
-	sub @hf' @n' @n' @sf' @xf' @n' @n' by @hf_md @hn_sm @hn_sm @sf_md @xf_md @xn_sm @xn_sm;
-	sub @hf' @n' @n' @sf' @xf' @n' by @hf_md @hn_sm @hn_sm @sf_md @xf_md @xn_md;
-	sub @hf' @n' @n' @sf' @xf' by @hf_md @hn_sm @hn_sm @sf_md @xf_md;
-	sub @hf' @n' @n' @sf' by @hf_md @hn_sm @hn_sm @sf_md;
-	sub @hf' @n' @n' by @hf_md @hn_sm @hn_sm;
-	sub @hf' @n' by @hf_md @hn_md;
-	sub @hf' by @hf_md;
-} jzp_sub_rules;
+} many2one;
+
+lookup md {
+	sub @hf by @hf_md;
+	sub @xf by @xf_md;
+	sub @n by @n_md;
+} md;
+
+lookup sm {
+	sub @hf by @hf_sm;
+	sub @n by @n_sm;
+} sm;
+
+lookup jianzi2variant {
+	sub @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @xf' lookup md @xn' lookup md;
+	sub @xf' lookup md;
+	sub @sf' lookup md @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @sf' lookup md @xf' lookup md @xn' lookup md;
+	sub @sf' lookup md @xf' lookup md;
+	sub @sf' lookup md;
+	sub @hf' lookup md @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @hf' lookup md @xf' lookup md @xn' lookup md;
+	sub @hf' lookup md @xf' lookup md;
+	sub @hf' lookup md @sf' lookup md @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @hf' lookup md @sf' lookup md @xf' lookup md @xn' lookup md;
+	sub @hf' lookup md @sf' lookup md @xf' lookup md;
+	sub @hf' lookup md @sf' lookup md;
+	sub @hf' lookup md @hn' lookup md @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @hf' lookup md @hn' lookup md @xf' lookup md @xn' lookup md;
+	sub @hf' lookup md @hn' lookup md @xf' lookup md;
+	sub @hf' lookup md @hn' lookup md @sf' lookup md @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @hf' lookup md @hn' lookup md @sf' lookup md @xf' lookup md @xn' lookup md;
+	sub @hf' lookup md @hn' lookup md @sf' lookup md @xf' lookup md;
+	sub @hf' lookup md @hn' lookup md @sf' lookup md;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @xf' lookup md @xn' lookup md;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @xf' lookup md;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @sf' lookup md @xf' lookup md @xn' lookup sm @xn' lookup sm;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @sf' lookup md @xf' lookup md @xn' lookup md;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @sf' lookup md @xf' lookup md;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm @sf' lookup md;
+	sub @hf' lookup md @hn' lookup sm @hn' lookup sm;
+	sub @hf' lookup md @hn' lookup md;
+	sub @hf' lookup md;
+} jianzi2variant;
+
+feature liga {
+	lookup many2one;
+	lookup md;
+	lookup sm;
+	lookup jianzi2variant;
+} liga;
 
 lookup jzp_pos_rules {
 	pos @hf_md' <140 540 0 0> @hn_sm' <500 758 0 0> @hn_sm' <500 540 0 0> @sf_md' <24 -66 0 0> tuo1.md' <180 -66 0 0> @xn_md' <571 58 0 0>;
@@ -348,10 +372,6 @@ lookup jzp_pos_rules {
 	pos tuo1pi1.md' <76 -66 0 0>;
 	pos da3zhai1.md' <76 -66 0 0>;
 } jzp_pos_rules;
-
-feature liga {
-	lookup jzp_sub_rules;
-} liga;
 
 feature kern {
 	lookup jzp_pos_rules;

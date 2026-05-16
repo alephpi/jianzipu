@@ -1,4 +1,5 @@
 from collections import defaultdict
+from dataclasses import dataclass, field
 from itertools import product
 
 import yaml
@@ -40,6 +41,24 @@ class Template:
     def __repr__(self):
         return str(self.values)
 
+@dataclass
+class Lookup:
+    name: str
+    rules: list[str] = field(default_factory=list)
+
+    def to_str(self):
+        rules = "".join(f"\t{rule}\n" for rule in self.rules)
+        return f"lookup {self.name} {{\n{rules}}} {self.name};\n"
+
+@dataclass
+class Feature:
+    name: str
+    lookups: list[Lookup] = field(default_factory=list)
+
+    def to_str(self):
+        lookups = "".join(f"\tlookup {lookup.name};\n" for lookup in self.lookups)
+        return "\n".join(lookup.to_str() for lookup in self.lookups) + "\n" + f"feature {self.name} {{\n{lookups}}} {self.name};\n"
+
 def import_features(file=PATH_TO_FEATURES):
     with open(file, "r") as f:
         features = yaml.safe_load(f)
@@ -69,6 +88,8 @@ def gen_macros():
             jianzi_macros[f"@{tag}_{var}"].append(glyphname)
     ## numbers
     n_d = {
+        "@hn": "@n",
+        "@xn": "@n",
         "@hn_sm": "@n_sm",
         "@hn_md": "@n_md",
         "@xn_sm": "@n_sm",
@@ -139,6 +160,7 @@ def write_macros(macros):
 
 def write_sub_rules(rule_templates: dict[tuple[str, ...], list]):
     '''Write all sub rules according to the rule templates.'''
+    lookups = []
     rules = []
     # many hanzi to one jianzi 
     for glyphname in GLYPHS.GlyphName.tolist():
@@ -148,31 +170,57 @@ def write_sub_rules(rule_templates: dict[tuple[str, ...], list]):
             glyphs_in = ' '.join(EN_from_CN[g] for g in glyphname_cn)
             rule = f"sub {glyphs_in} by {glyph_out};"
             rules.append(rule)
+    lookup = Lookup(name="many2one", rules=rules)
+    lookups.append(lookup)
+
+    # lookups for variants
+    rules = [
+        "sub @hf by @hf_md;",
+        "sub @xf by @xf_md;",
+        "sub @n by @n_md;",
+    ]
+    lookup = Lookup(name="md", rules=rules)
+    lookups.append(lookup)
+    rules = [
+        "sub @hf by @hf_sm;",
+        # "sub @xf by @xf_sm;", # TODO not all xf has sm variant
+        "sub @n by @n_sm;",
+    ]
+    lookup = Lookup(name="sm", rules=rules)
+    lookups.append(lookup)
 
     # jianzi to jianzi variant
+    rules = []
     for tags, rule_template in rule_templates.items():
-        glyphclass_in = " ".join("@n'" if 'n' in tag else f"@{tag}'" for tag in tags) # cast hn1,hn2,xn1,xn2 to n
-        glyphclass_out = " ".join(rule_template)
-        rule = f"sub {glyphclass_in} by {glyphclass_out};"
+        rule = "sub"
+        for tag, glyphclass in zip(tags, rule_template):
+            tag = tag.replace("1", "").replace("2", "") # remove number suffix in hn1, hn2, xn1, xn2
+            suffix = glyphclass.split("_")[-1]
+            rule += f" @{tag}' lookup {suffix}"
+        rule += ";"
         rules.append(rule)
+    lookup = Lookup(name="jianzi2variant", rules=rules)
+    lookups.append(lookup)
 
-    return rules
+    feature = Feature(name="liga", lookups=lookups)
+    return feature
 
 
 def write_pos_rule(layout: LayoutNode, rule_templates: dict[tuple[str, ...], str]):
     '''Write a pos rule for a given layout node according to the rule template it fits.'''
     tags = layout.get_children_tags()
     rule_template = rule_templates[tags]
-    rule = []
+    rule = "pos"
     for node, term in zip(layout.children.values(), rule_template):
         x,y,w,h = node.area.xywh
         # NOTE: transform from layout coordinate system (y down) to glyph coordinate system (y up), remember the xywh here is relative to the design box, whose origin is the top-left corner (0,WIDTH) in glyph coordinate system 
         dx,dy = x, WIDTH-(h+y)
         if node.name == "":
-            rule.append(f"{term}' <{dx} {dy} 0 0>")
+            rule += f" {term}' <{dx} {dy} 0 0>"
         else:
-            rule.append(f"{node.name_en}.{term[-2:]}' <{dx} {dy} 0 0>")
-    return "pos " + " ".join(rule)
+            rule += f" {node.name_en}.{term[-2:]}' <{dx} {dy} 0 0>"
+    rule += ";"
+    return rule
 
 def find_matching_layout(puzi: ParseNode, all_layouts: list[LayoutNode]):
     """Return all layouts matching a parse tree.
@@ -218,33 +266,26 @@ def main():
 
     with open(PATH_TO_FEA, "w") as f:
         # macros
-        f.write(write_macros(macros) + "\n")
+        f.write(write_macros(macros) + "\n\n")
         # sub rules
         rules = ""
-        sub_rules = write_sub_rules(rule_templates)
-        for rule in sub_rules:
-            rules += f"\t{rule}\n"
-        lookup_sub_name = "jzp_sub_rules"
-        lookup_sub = f"lookup {lookup_sub_name} {{\n{rules}}} {lookup_sub_name};\n"
-        f.write(lookup_sub)
-        f.write('\n')
-        # pos rules
-        rules = ""
-        lookup_pos_name = "jzp_pos_rules"
-        for layout in all_layouts:
-            rule = write_pos_rule(layout, rule_templates)
-            rules += f"\t{rule};\n"
-        lookup_pos = f"lookup {lookup_pos_name} {{\n{rules}}} {lookup_pos_name};\n"
-        f.write(lookup_pos)
+        feature_liga = write_sub_rules(rule_templates)
+        # sub rules goes to liga feature
+        f.write(feature_liga.to_str())
         f.write('\n')
 
-        # sub rules goes to liga feature
-        feature_liga = f"feature liga {{\n\tlookup {lookup_sub_name};\n}} liga;\n"
-        f.write(feature_liga)
-        f.write('\n')
+        # pos rules
+        lookups = []
+        rules = []
+        for layout in all_layouts:
+            rule = write_pos_rule(layout, rule_templates)
+            rules.append(rule)
+        lookup = Lookup(name="jzp_pos_rules", rules=rules)
+        lookups.append(lookup)
+
         # pos rules goes to kern feature
-        feature_kern = f"feature kern {{\n\tlookup {lookup_pos_name};\n}} kern;\n"
-        f.write(feature_kern)
+        feature_kern = Feature(name="kern", lookups=lookups)
+        f.write(feature_kern.to_str())
         f.write('\n')
 
 if __name__ == "__main__":

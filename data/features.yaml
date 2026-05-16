@@ -18,6 +18,8 @@
 '@n_tn': ['yi1.tn','er4.tn','san1.tn','si4.tn','wu3.tn','liu4.tn','qi1.tn','ba1.tn','jiu3.tn','shii2.tn','shii2yi1.tn','shii2er4.tn','shii2san1.tn','wai4.tn','ban4.tn']
 '@n_sm': ['yi1.sm','er4.sm','san1.sm','si4.sm','wu3.sm','liu4.sm','qi1.sm','ba1.sm','jiu3.sm','shii2.sm','shii2yi1.sm','shii2er4.sm','shii2san1.sm','wai4.sm','ban4.sm']
 '@n_md': ['yi1.md','er4.md','san1.md','si4.md','wu3.md','liu4.md','qi1.md','ba1.md','jiu3.md','shii2.md','shii2yi1.md','shii2er4.md','shii2san1.md','wai4.md','ban4.md']
+'@hn': '@n'
+'@xn': '@n'
 '@hn_sm': '@n_sm'
 '@hn_md': '@n_md'
 '@xn_sm': '@n_sm'
